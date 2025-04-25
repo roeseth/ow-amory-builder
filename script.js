@@ -550,9 +550,15 @@ function updateBuildDisplay() {
                 }
             });
             
-            // Add tooltip functionality
-            itemElement.addEventListener('mouseenter', (event) => showTooltip(fullItem, event));
-            itemElement.addEventListener('mouseleave', hideTooltip);
+            // Add tooltip and original item highlight functionality
+            itemElement.addEventListener('mouseenter', (event) => {
+                showTooltip(fullItem, event);
+                highlightOriginalItem(item.id);
+            });
+            itemElement.addEventListener('mouseleave', () => {
+                hideTooltip();
+                removeOriginalItemHighlight();
+            });
         }
     });
 }
@@ -1600,5 +1606,21 @@ function removeSlotHighlight() {
     const highlightedSlots = document.querySelectorAll('.target-slot');
     highlightedSlots.forEach(slot => {
         slot.classList.remove('target-slot', 'target-common', 'target-rare', 'target-epic', 'target-red');
+    });
+}
+
+// Function to highlight the original item in the shop when hovering over an equipped item
+function highlightOriginalItem(itemId) {
+    const originalItem = document.querySelector(`.item[data-item-id="${itemId}"]`);
+    if (originalItem) {
+        originalItem.classList.add('highlight-original');
+    }
+}
+
+// Function to remove highlight from the original item
+function removeOriginalItemHighlight() {
+    const highlightedItems = document.querySelectorAll('.highlight-original');
+    highlightedItems.forEach(item => {
+        item.classList.remove('highlight-original');
     });
 }

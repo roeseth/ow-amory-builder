@@ -732,22 +732,22 @@ body {
 
 .green-item {
     background: radial-gradient(circle, #2aff4a 0%, #0a8020 100%);
-    box-shadow: 0 0 10px rgba(42, 255, 74, 0.5);
+    border: 1px solid #4a5a7a;
 }
 
 .blue-item {
     background: radial-gradient(circle, #2a9aff 0%, #0a4080 100%);
-    box-shadow: 0 0 10px rgba(42, 154, 255, 0.5);
+    border: 1px solid #4a5a7a;
 }
 
 .purple-item {
     background: radial-gradient(circle, #aa2aff 0%, #5a0a80 100%);
-    box-shadow: 0 0 10px rgba(170, 42, 255, 0.5);
+    border: 1px solid #4a5a7a;
 }
 
 .red-item {
     background: radial-gradient(circle, #ff2a2a 0%, #800a0a 100%);
-    box-shadow: 0 0 10px rgba(255, 42, 42, 0.5);
+    border: 1px solid #4a5a7a;
 }
 
 .item.owned {
@@ -919,31 +919,27 @@ body {
     border-radius: 50%;
     margin-bottom: 0;
     box-sizing: border-box;
-    border: 1px solid #4a5a7a;
+    border: 1px solid white;
 }
 
 .item-slot .green-item {
     background: radial-gradient(circle, #2aff4a 0%, #0a8020 100%);
-    border: 1px solid #1ac030;
-    box-shadow: 0 0 5px rgba(42, 255, 74, 0.4);
+    border: 1px solid #4a5a7a;
 }
 
 .item-slot .blue-item {
     background: radial-gradient(circle, #2a9aff 0%, #0a4080 100%);
-    border: 1px solid #1a70c0;
-    box-shadow: 0 0 5px rgba(42, 154, 255, 0.4);
+    border: 1px solid #4a5a7a;
 }
 
 .item-slot .purple-item {
     background: radial-gradient(circle, #aa2aff 0%, #5a0a80 100%);
-    border: 1px solid #8a2ad0;
-    box-shadow: 0 0 5px rgba(170, 42, 255, 0.4);
+    border: 1px solid #4a5a7a;
 }
 
 .item-slot .red-item {
     background: radial-gradient(circle, #ff2a2a 0%, #800a0a 100%);
-    border: 1px solid #c02020;
-    box-shadow: 0 0 5px rgba(255, 42, 42, 0.4);
+    border: 1px solid #4a5a7a;
 }
 
 .power-card.equipped {
@@ -1593,6 +1589,7 @@ body {
 .target-slot .empty-slot {
     border-width: 2px;
     border-style: solid;
+    border-color: #aaaaaa;
     transform: scale(1.05);
     transition: all 0.2s ease;
 }
@@ -1601,6 +1598,7 @@ body {
 .target-slot .item {
     border-width: 2px;
     border-style: solid;
+    border-color: #aaaaaa;
     transform: scale(1.05);
     transition: all 0.2s ease;
 }
@@ -1608,23 +1606,29 @@ body {
 .target-slot.target-common .empty-slot,
 .target-slot.target-common .item {
     border-color: #aaaaaa;
-    box-shadow: 0 0 10px rgba(170, 170, 170, 0.5);
+    box-shadow: none;
 }
 
 .target-slot.target-rare .empty-slot,
 .target-slot.target-rare .item {
-    border-color: #4b96ff;
-    box-shadow: 0 0 10px rgba(75, 150, 255, 0.5);
+    border-color: #aaaaaa;
+    box-shadow: none;
 }
 
 .target-slot.target-epic .empty-slot,
 .target-slot.target-epic .item {
-    border-color: #b66dff;
-    box-shadow: 0 0 10px rgba(182, 109, 255, 0.5);
+    border-color: #aaaaaa;
+    box-shadow: none;
 }
 
 .target-slot.target-red .empty-slot,
 .target-slot.target-red .item {
-    border-color: #ff6b6b;
-    box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+    border-color: #aaaaaa;
+    box-shadow: none;
+}
+
+/* Style for highlighting original items when hovering over slot items */
+.highlight-original {
+    transform: scale(1.1);
+    z-index: 10;
 }
