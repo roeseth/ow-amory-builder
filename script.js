@@ -1,37 +1,51 @@
 // Global variable for tooltip
 let tooltip;
 let isHoveringItem = false;  // Track if we're hovering over an item
+let config; // Config object loaded from JSON
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Create tooltip element to display item information
-    tooltip = document.createElement('div');
-    tooltip.classList.add('item-tooltip');
-    tooltip.style.display = 'none';
-    document.body.appendChild(tooltip);
-    
-    // Initialize tabs
-    initTabs();
-    
-    // Initialize build data
-    initBuildData();
-    
-    // Initialize round selector
-    initRoundSelector();
-    
-    // Initialize reset button
-    initResetButton();
-    
-    // Populate items and powers from config
-    populateItems();
-    populatePowers();
-    
-    // Update build display
-    updateBuildDisplay();
-    updatePowerDisplay();
-    updateRoundDisplay();
-    
-    // Update stats display initially
-    updateStatsDisplay();
+document.addEventListener('DOMContentLoaded', async function() {
+    // Load config from JSON file
+    try {
+        const response = await fetch('config.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        config = await response.json();
+        console.log('Config loaded successfully');
+        
+        // Create tooltip element to display item information
+        tooltip = document.createElement('div');
+        tooltip.classList.add('item-tooltip');
+        tooltip.style.display = 'none';
+        document.body.appendChild(tooltip);
+        
+        // Initialize tabs
+        initTabs();
+        
+        // Initialize build data
+        initBuildData();
+        
+        // Initialize round selector
+        initRoundSelector();
+        
+        // Initialize reset button
+        initResetButton();
+        
+        // Populate items and powers from config
+        populateItems();
+        populatePowers();
+        
+        // Update build display
+        updateBuildDisplay();
+        updatePowerDisplay();
+        updateRoundDisplay();
+        
+        // Update stats display initially
+        updateStatsDisplay();
+    } catch (error) {
+        console.error('Error loading config:', error);
+        alert('Failed to load configuration data. Please refresh the page.');
+    }
 });
 
 // Default build data structure
@@ -653,7 +667,9 @@ function createPowerElement(power, isEquipped = false) {
     powerHeader.className = 'power-header';
     
     const powerIcon = document.createElement('div');
-    powerIcon.className = `power-icon ${getPowerColorClass(power.color)}`;
+    powerIcon.className = 'power-icon common';
+    // Add background image to the power icon
+    powerIcon.style.backgroundImage = `url(${power.icon})`;
     
     const powerTitle = document.createElement('div');
     powerTitle.className = 'power-title';
@@ -682,13 +698,11 @@ function createPowerElement(power, isEquipped = false) {
         }
     });
     
-    // Add tooltip functionality and target slot highlighting 
+    // Add only target slot highlighting without tooltips
     powerCard.addEventListener('mouseenter', (event) => {
-        showPowerTooltip(power, event);
         highlightTargetPowerSlot(power, isEquipped);
     });
     powerCard.addEventListener('mouseleave', () => {
-        hideTooltip();
         removePowerSlotHighlight();
     });
     
@@ -703,80 +717,105 @@ function findPowerById(powerId) {
 
 // Update the power slots display
 function updatePowerDisplay() {
+    // Clear all power slots first
     const powerSlots = document.querySelectorAll('.power-slots .power-slot');
-    
-    // Map the power slots to their corresponding rounds
-    const roundToSlotMap = {
-        1: 0,  // first slot is for round 1
-        3: 1,  // second slot is for round 3 
-        5: 2,  // third slot is for round 5
-        7: 3   // fourth slot is for round 7
-    };
-    
-    // Clear all power slots
     powerSlots.forEach(slot => {
-        slot.innerHTML = '<div class="empty-slot"></div><div class="slot-label">' + slot.querySelector('.slot-label').textContent + '</div>';
-    });
-    
-    // Get the round number from slot label
-    function getSlotRound(slot) {
-        const label = slot.querySelector('.slot-label').textContent;
-        return parseInt(label.replace('ROUND ', ''));
-    }
-    
-    // If there are no equipped powers or buildData is reset, just clear the slots
-    if (!buildData || !buildData.equippedPowers || buildData.equippedPowers.length === 0) {
-        return;
-    }
-    
-    // Add equipped powers to their corresponding slots based on the assigned round
-    buildData.equippedPowers.forEach(power => {
-        // Skip powers assigned to future rounds
-        if (power.round > buildData.currentRound) {
-            return;
+        // Remove any existing power icons
+        const existingIcon = slot.querySelector('.power-icon');
+        if (existingIcon) {
+            existingIcon.remove();
         }
         
-        // Get the slot for this power's round
-        const slotIndex = roundToSlotMap[power.round];
-        if (slotIndex !== undefined && slotIndex < powerSlots.length) {
+        // Make the empty slot visible again
+        const emptySlot = slot.querySelector('.empty-slot');
+        if (emptySlot) {
+            emptySlot.style.display = 'flex';
+        }
+    });
+    
+    // Map out which rounds have active slots
+    const roundSlots = [1, 3, 5, 7]; // The rounds that have slots
+    
+    // First, mark all slots according to their round status
+    powerSlots.forEach((slot, index) => {
+        const slotRound = getSlotRound(slot);
+        
+        // Remove any existing status classes
+        slot.classList.remove('active-round', 'current-round', 'between-rounds');
+        
+        // Check if this is the current round's slot
+        if (slotRound === buildData.currentRound) {
+            slot.classList.add('current-round');
+            slot.classList.add('active-round');
+        }
+        // Check if this is an active round (one that has a power equipped)
+        else if (buildData.equippedPowers.some(p => p.round === slotRound)) {
+            slot.classList.add('active-round');
+        }
+        
+        // Check if this is a between-rounds slot
+        const isDisabledRound = buildData.currentRound === 2 || 
+                               buildData.currentRound === 4 || 
+                               buildData.currentRound === 6;
+        
+        if (isDisabledRound) {
+            // Find the next available round
+            let nextRound = buildData.currentRound + 1;
+            const nextSlotIndex = roundSlots.indexOf(nextRound);
+            
+            if (nextSlotIndex !== -1 && nextSlotIndex === index) {
+                slot.classList.add('between-rounds');
+                slot.classList.add('active-round');
+            }
+        }
+    });
+    
+    // Add equipped powers to slots
+    buildData.equippedPowers.forEach(power => {
+        const slotIndex = roundSlots.indexOf(power.round);
+        
+        if (slotIndex !== -1 && slotIndex < powerSlots.length) {
             const slot = powerSlots[slotIndex];
             const emptySlot = slot.querySelector('.empty-slot');
             
-            if (!emptySlot) return; // Skip if the slot has already been filled
-            
-            const slotLabel = slot.querySelector('.slot-label').textContent;
-            
-            // Replace empty slot with power icon
-            const powerIcon = document.createElement('div');
-            powerIcon.className = `power-icon ${getPowerColorClass(power.color)}`;
-            powerIcon.dataset.powerId = power.id;
-            
-            // Replace empty slot with power icon
-            emptySlot.replaceWith(powerIcon);
-            
-            // Add click handler to unequip
-            powerIcon.addEventListener('click', function() {
-                const powerId = this.dataset.powerId;
+            if (emptySlot) {
+                // Hide the empty slot
+                emptySlot.style.display = 'none';
                 
-                // Find the original power card and update its state
-                const originalPower = document.querySelector(`.power-card[data-power-id="${powerId}"]`);
+                // Create a power icon for the slot
+                const fullPower = findPowerById(power.id);
                 
-                if (originalPower) {
-                    unequipPower(powerId, originalPower);
+                if (fullPower) {
+                    const powerIcon = document.createElement('div');
+                    powerIcon.className = 'power-icon common';
+                    powerIcon.setAttribute('data-power-id', power.id);
+                    powerIcon.style.backgroundImage = `url(${fullPower.icon})`;
+                    
+                    // Add tooltip and highlight functionality
+                    powerIcon.addEventListener('mouseenter', (event) => {
+                        highlightOriginalPower(power.id);
+                    });
+                    
+                    powerIcon.addEventListener('mouseleave', () => {
+                        removeOriginalPowerHighlight();
+                    });
+                    
+                    // Add click handler to unequip the power
+                    powerIcon.addEventListener('click', function() {
+                        unequipPower(power.id);
+                    });
+                    
+                    slot.appendChild(powerIcon);
                 }
-            });
-            
-            // Add tooltip and highlight functionality
-            powerIcon.addEventListener('mouseenter', (event) => {
-                showPowerTooltip(power, event);
-                highlightOriginalPower(power.id);
-            });
-            powerIcon.addEventListener('mouseleave', () => {
-                hideTooltip();
-                removeOriginalPowerHighlight();
-            });
+            }
         }
     });
+    
+    // Helper function to get the round associated with a slot
+    function getSlotRound(slot) {
+        const index = Array.from(powerSlots).indexOf(slot);
+        return roundSlots[index];
+    }
 }
 
 // Equip a power
@@ -819,7 +858,6 @@ function equipPower(powerId, powerElement) {
     buildData.equippedPowers.push({
         id: powerId,
         title: powerData.title,
-        color: powerData.color,
         description: powerData.description,
         round: assignedRound
     });
@@ -846,7 +884,7 @@ function equipPower(powerId, powerElement) {
             const emptySlot = slot.querySelector('.empty-slot');
             if (emptySlot) {
                 const powerIcon = document.createElement('div');
-                powerIcon.className = `power-icon ${getPowerColorClass(powerData.color)}`;
+                powerIcon.className = 'power-icon common';
                 powerIcon.dataset.powerId = powerId;
                 
                 // Add tooltip
@@ -869,11 +907,9 @@ function equipPower(powerId, powerElement) {
                 
                 // Add tooltip and highlight functionality
                 powerIcon.addEventListener('mouseenter', (event) => {
-                    showPowerTooltip(powerData, event);
                     highlightOriginalPower(powerId);
                 });
                 powerIcon.addEventListener('mouseleave', () => {
-                    hideTooltip();
                     removeOriginalPowerHighlight();
                 });
             }
@@ -1508,51 +1544,6 @@ function loadItems() {
     });
 }
 
-// Function to show power tooltip
-function showPowerTooltip(power, event) {
-    if (!power) return;
-    
-    // Set hovering flag
-    isHoveringItem = true;
-    
-    // Create tooltip content
-    let tooltipContent = `
-        <div class="tooltip-header tooltip-power ${getPowerColorClass(power.color)}">${power.title}</div>
-    `;
-    
-    tooltip.innerHTML = tooltipContent;
-    tooltip.style.display = 'block';
-    
-    // Get element position and dimensions
-    const itemRect = event.currentTarget.getBoundingClientRect();
-    
-    // Position tooltip centered beneath the item
-    tooltip.style.left = `${window.pageXOffset + itemRect.left + (itemRect.width / 2) - (tooltip.offsetWidth / 2)}px`;
-    tooltip.style.top = `${window.pageYOffset + itemRect.bottom + 10}px`; // 10px below the item
-    
-    // Reposition if tooltip goes off-screen
-    setTimeout(() => { // Use setTimeout to calculate after the tooltip is rendered
-        const tooltipRect = tooltip.getBoundingClientRect();
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
-        
-        // Prevent tooltip from going off the right edge
-        if (tooltipRect.right > viewportWidth) {
-            tooltip.style.left = `${window.pageXOffset + viewportWidth - tooltipRect.width - 10}px`;
-        }
-        
-        // Prevent tooltip from going off the left edge
-        if (tooltipRect.left < 10) {
-            tooltip.style.left = `${window.pageXOffset + 10}px`;
-        }
-        
-        // If tooltip would go off the bottom of the screen, position it above the item instead
-        if (tooltipRect.bottom > viewportHeight) {
-            tooltip.style.top = `${window.pageYOffset + itemRect.top - tooltipRect.height - 10}px`;
-        }
-    }, 0);
-}
-
 // Function to highlight the target slot where an item would be equipped
 function highlightTargetSlot(item, isOwned = false) {
     // Get all item slots and current round items
@@ -1690,7 +1681,6 @@ function highlightTargetPowerSlot(power, isEquipped = false) {
             if (slotIndex !== undefined && slotIndex < powerSlots.length) {
                 // Highlight the slot
                 powerSlots[slotIndex].classList.add('target-power-slot');
-                powerSlots[slotIndex].classList.add(`target-${getPowerColorClass(power.color)}`);
             }
         }
     } else {
@@ -1715,7 +1705,6 @@ function highlightTargetPowerSlot(power, isEquipped = false) {
             if (!isSlotTaken) {
                 // Highlight the slot only if it's not already taken
                 powerSlots[targetSlotIndex].classList.add('target-power-slot');
-                powerSlots[targetSlotIndex].classList.add(`target-${getPowerColorClass(power.color)}`);
             }
         }
     }
@@ -1726,7 +1715,7 @@ function removePowerSlotHighlight() {
     // Remove highlighting classes from all power slots
     const highlightedSlots = document.querySelectorAll('.target-power-slot');
     highlightedSlots.forEach(slot => {
-        slot.classList.remove('target-power-slot', 'target-orange', 'target-rare', 'target-epic', 'target-common');
+        slot.classList.remove('target-power-slot');
     });
 }
 
@@ -1744,15 +1733,4 @@ function removeOriginalPowerHighlight() {
     highlightedPowers.forEach(power => {
         power.classList.remove('highlight-original-power');
     });
-}
-
-// Helper function to get power color class based on the color property
-function getPowerColorClass(color) {
-    switch (color) {
-        case 'blue': return 'rare';
-        case 'purple': return 'epic';
-        case 'green': return 'common';
-        case 'orange': // Keep orange as is
-        default: return color;
-    }
 }

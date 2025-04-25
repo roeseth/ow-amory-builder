@@ -275,7 +275,7 @@ body {
     border-radius: 5px;
     background-color: #1a2a4a;
     border: 1px solid #4a5a7a;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
 }
 
 .slot-label {
@@ -622,7 +622,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    border: 2px solid white;
+    border: 2px solid var(--highlight-border);
     border-radius: 4px;
     animation: breathe 2.0s infinite ease-in-out;
     pointer-events: none;
@@ -641,28 +641,33 @@ body {
     background-color: #1a2a4a;
 }
 
+/* Unified power icon style - only common variant */
 .power-icon {
     width: 40px;
     height: 40px;
     border-radius: 5px;
     background-color: #3a5a9a;
     flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
+/* Update power icon variants to use consistent coloring */
 .power-icon.orange {
-    background: radial-gradient(circle, var(--gradient-orange-start) 0%, var(--gradient-orange-end) 100%);
+    border: 1px solid var(--gradient-orange-start);
 }
 
 .power-icon.rare {
-    background: radial-gradient(circle, var(--gradient-rare-start) 0%, var(--gradient-rare-end) 100%);
+    border: 1px solid var(--gradient-rare-start);
 }
 
 .power-icon.epic {
-    background: radial-gradient(circle, var(--gradient-epic-start) 0%, var(--gradient-epic-end) 100%);
+    border: 1px solid var(--gradient-epic-start);
 }
 
 .power-icon.common {
-    background: radial-gradient(circle, var(--gradient-common-start) 0%, var(--gradient-common-end) 100%);
+    border: 1px solid var(--gradient-common-start);
 }
 
 .power-title {
@@ -1038,10 +1043,155 @@ body {
     content: none;
 }
 
-/* Common styles for all power slot icons */
+/* Remove unused tooltip-power styling */
+.tooltip-header.tooltip-power,
+.tooltip-header.tooltip-power.orange,
+.tooltip-header.tooltip-power.rare,
+.tooltip-header.tooltip-power.epic,
+.tooltip-header.tooltip-power.common {
+    display: none; /* Hide all power tooltips */
+}
+
+.tooltip-stats {
+    padding: 2px 0;
+    margin-bottom: 5px;
+}
+
+.tooltip-stat {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.stat-name {
+    color: #9ee5ff; /* Brighter blue for better contrast */
+    font-weight: 500;
+}
+
+.stat-value {
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
+}
+
+.tooltip-cost {
+    color: #ffdd44; /* Brighter yellow for better contrast */
+    margin-top: 5px;
+    text-align: right;
+    font-weight: bold;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
+}
+
+.tooltip-cost i {
+    color: #ffdd44; /* Match the text color */
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+/* Base style for item-image */
+.item-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Rarity color indicators for slot items only */
+.item-slot .common-item .item-image,
+.item-slot .common-item .item-icon,
+.item-slot .rare-item .item-image,
+.item-slot .rare-item .item-icon,
+.item-slot .epic-item .item-image,
+.item-slot .epic-item .item-icon,
+.item-slot .red-item .item-image,
+.item-slot .red-item .item-icon {
+    border: 2px solid var(--highlight-border);
+}
+
+.item-slot .rare-item .item-image,
+.item-slot .rare-item .item-icon {
+    border: 2px solid var(--gradient-rare-start);
+}
+
+.item-slot .epic-item .item-image,
+.item-slot .epic-item .item-icon {
+    border: 2px solid var(--gradient-epic-start);
+}
+
+.item-slot .red-item .item-image,
+.item-slot .red-item .item-icon {
+    border: 2px solid var(--gradient-red-start);
+}
+
+/* Common target slot highlighting styles */
+.target-slot .empty-slot,
+.target-slot .item,
+.target-power-slot .empty-slot,
+.target-power-slot .power-icon {
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--highlight-border);
+    transform: scale(1.05);
+    transition: all 0.2s ease;
+}
+
+/* Target slot color overrides - consolidated */
+.target-slot.target-common .empty-slot,
+.target-slot.target-common .item,
+.target-slot.target-rare .empty-slot,
+.target-slot.target-rare .item,
+.target-slot.target-epic .empty-slot,
+.target-slot.target-epic .item,
+.target-slot.target-red .empty-slot,
+.target-slot.target-red .item {
+    border-color: var(--highlight-border);
+    box-shadow: none;
+}
+
+/* Power slot target color overrides - consolidated */
+.target-power-slot.target-orange .empty-slot,
+.target-power-slot.target-orange .power-icon,
+.target-power-slot.target-rare .empty-slot,
+.target-power-slot.target-rare .power-icon,
+.target-power-slot.target-epic .empty-slot,
+.target-power-slot.target-epic .power-icon,
+.target-power-slot.target-red .empty-slot,
+.target-power-slot.target-red .power-icon {
+    border-color: var(--text-primary);
+}
+
+/* Style for highlighting original items when hovering over slot items */
+.highlight-original {
+    transform: scale(1.1);
+    z-index: 10;
+    border: 2px solid var(--highlight-border);
+    position: relative;
+}
+
+/* Style for highlighting original power cards when hovering over slot powers */
+.power-card.highlight-original-power {
+    transform: scale(1.05);
+    z-index: 10;
+    border: 2px solid var(--highlight-border);
+    position: relative;
+}
+
+/* Prevent duplicate hover effects when highlighted */
+.highlight-original:hover::after,
+.power-card.highlight-original-power:hover::after {
+    display: none;
+}
+
+/* Unified power icon in slots */
 .power-slot .power-icon {
-    width: 59px;
-    height: 59px;
+    width: 60px;
+    height: 60px;
     border-radius: 5px;
     display: flex;
     justify-content: center;
@@ -1049,40 +1199,38 @@ body {
     margin-bottom: 5px;
     cursor: pointer;
     transition: transform 0.2s ease;
-    border: 1px solid var(--border-secondary);
-    background-color: var(--bg-element);
+    background-color: #3a5a9a;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .power-slot .power-icon:hover {
     transform: scale(1.05);
 }
 
-/* Color variants for power icons */
+/* Update power slot icon variants to match main power icon variants */
 .power-slot .power-icon.orange {
-    background: radial-gradient(circle, var(--gradient-orange-start) 0%, var(--gradient-orange-end) 100%);
-    border: 1px solid var(--accent-orange);
+    border: 1px solid var(--gradient-orange-start);
 }
 
 .power-slot .power-icon.rare {
-    background: radial-gradient(circle, var(--gradient-rare-start) 0%, var(--gradient-rare-end) 100%);
-    border: 1px solid #1a70c0;
+    border: 1px solid var(--gradient-rare-start);
 }
 
 .power-slot .power-icon.epic {
-    background: radial-gradient(circle, var(--gradient-epic-start) 0%, var(--gradient-epic-end) 100%);
-    border: 1px solid #8a2ad0;
+    border: 1px solid var(--gradient-epic-start);
 }
 
 .power-slot .power-icon.common {
-    background: radial-gradient(circle, var(--gradient-common-start) 0%, var(--gradient-common-end) 100%);
-    border: 1px solid #1ac030;
+    border: 1px solid var(--gradient-common-start);
 }
 
 .top-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    width: 93%;
     margin-bottom: 4px;
 }
 
@@ -1506,35 +1654,6 @@ body {
     color: #ff6b6b;
 }
 
-/* Power tooltip styling */
-.tooltip-header.tooltip-power {
-    text-align: center;
-    padding: 8px 5px;
-    margin: -12px -12px 0 -12px;
-    border-radius: 8px;
-    border-bottom: none;
-}
-
-.tooltip-header.tooltip-power.orange {
-    background: linear-gradient(135deg, rgba(255, 138, 92, 0.9) 0%, rgba(255, 77, 0, 0.9) 100%);
-    box-shadow: 0 2px 10px rgba(255, 77, 0, 0.3);
-}
-
-.tooltip-header.tooltip-power.rare {
-    background: linear-gradient(135deg, rgba(42, 154, 255, 0.9) 0%, rgba(10, 64, 128, 0.9) 100%);
-    box-shadow: 0 2px 10px rgba(42, 154, 255, 0.3);
-}
-
-.tooltip-header.tooltip-power.epic {
-    background: linear-gradient(135deg, rgba(170, 42, 255, 0.9) 0%, rgba(90, 10, 128, 0.9) 100%);
-    box-shadow: 0 2px 10px rgba(170, 42, 255, 0.3);
-}
-
-.tooltip-header.tooltip-power.common {
-    background: linear-gradient(135deg, rgba(42, 255, 74, 0.9) 0%, rgba(10, 128, 32, 0.9) 100%);
-    box-shadow: 0 2px 10px rgba(42, 255, 74, 0.3);
-}
-
 .tooltip-stats {
     padding: 2px 0;
     margin-bottom: 5px;
@@ -1663,4 +1782,10 @@ body {
     z-index: 10;
     border: 2px solid var(--highlight-border);
     position: relative;
+}
+
+/* Prevent duplicate hover effects when highlighted */
+.highlight-original:hover::after,
+.power-card.highlight-original-power:hover::after {
+    display: none;
 }
