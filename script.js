@@ -161,7 +161,7 @@ function initBuildData() {
 
 // Initialize round selector
 function initRoundSelector() {
-    const roundTabs = document.querySelectorAll('.round-tab');
+    const roundTabs = document.querySelectorAll('.round-tab:not(.copy-button)');
     
     // Set the initial active round
     roundTabs.forEach(tab => {
@@ -200,6 +200,65 @@ function initRoundSelector() {
             // Save changes
             saveBuildData();
         });
+    });
+    
+    // Initialize the copy to next round button
+    initCopyToNextRoundButton();
+}
+
+// Initialize the copy to next round button
+function initCopyToNextRoundButton() {
+    const copyButton = document.getElementById('copy-next-round');
+    if (!copyButton) return;
+    
+    copyButton.addEventListener('click', function() {
+        // Get the current round
+        const currentRound = buildData.currentRound;
+        
+        // Check if we're already at the last round
+        if (currentRound >= 7) {
+            showMessage("Already at the last round!");
+            return;
+        }
+        
+        // Copy items from current round to next round
+        const nextRound = currentRound + 1;
+        buildData.equippedItemsByRound[nextRound] = [...buildData.equippedItemsByRound[currentRound]];
+        
+        // Update the current round to the next one
+        buildData.currentRound = nextRound;
+        
+        // Update the active tab
+        const roundTabs = document.querySelectorAll('.round-tab:not(.copy-button)');
+        roundTabs.forEach(tab => {
+            const round = parseInt(tab.getAttribute('data-round'));
+            if (round === nextRound) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
+            }
+        });
+        
+        // Update UI for the new round
+        updateRoundDisplay();
+        
+        // Repopulate items for the new round
+        populateItems();
+        
+        // Repopulate powers for the new round
+        populatePowers();
+        
+        // Update cash display for the new round
+        updateCashDisplay();
+        
+        // Refresh power hover effects
+        initPowerHoverEffects();
+        
+        // Save changes
+        saveBuildData();
+        
+        // Show a confirmation message
+        showMessage(`Copied items to Round ${nextRound}!`);
     });
 }
 
@@ -1184,148 +1243,92 @@ function updateStatsDisplay() {
         
         // Each segment represents 25 life
         const lifePerSegment = 25;
-        const fullSegments = Math.floor(totalLife / lifePerSegment);
-        const remainder = totalLife % lifePerSegment;
         
-        // Calculate how many segments to show
-        const totalSegments = remainder > 0 ? fullSegments + 1 : fullSegments;
+        // Calculate the number of total segments to show (always display at least 10 segments for visual consistency)
+        const minSegments = 10;
+        const actualSegments = Math.ceil(totalLife / lifePerSegment);
+        const totalSegments = Math.max(minSegments, actualSegments);
         
-        // Ensure we always show at least 1 segment
-        const segmentsToShow = Math.max(1, totalSegments);
-        
-        // Calculate proportions of health, armor, shield
-        const healthProportion = health / totalLife;
-        const armorProportion = armor / totalLife;
-        // Shield proportion is the remaining (1 - healthProportion - armorProportion)
-        
-        // Calculate life values for tracking where we are
+        // Calculate how much life we have to distribute
         let remainingHealth = health;
         let remainingArmor = armor;
         let remainingShield = shield;
-        let currentLifeTotal = 0;
         
-        // Create segments according to our requirements
-        for (let i = 0; i < segmentsToShow; i++) {
+        // Create all segments
+        for (let i = 0; i < totalSegments; i++) {
             const segment = document.createElement('div');
             segment.className = 'stat-segment';
             
-            // Calculate how much life this segment represents
-            let segmentLifeValue;
-            if (i === segmentsToShow - 1 && remainder > 0) {
-                segmentLifeValue = remainder; // Last segment represents the remainder
+            // Calculate how much life is available for this segment
+            const availableLife = Math.min(lifePerSegment, remainingHealth + remainingArmor + remainingShield);
+            
+            if (availableLife <= 0) {
+                // Empty segment (beyond our current life)
+                segment.classList.add('empty');
             } else {
-                segmentLifeValue = lifePerSegment; // Full segment
-            }
-            
-            // Calculate width of the segment relative to others
-            const segmentWidth = `${(segmentLifeValue / totalLife) * 100}%`;
-            segment.style.maxWidth = 'none'; // Override the default max-width
-            segment.style.width = segmentWidth;
-            
-            // Determine what life components to display in this segment
-            if (remainingHealth > 0) {
-                // Determine how much health to display in this segment
-                const healthInSegment = Math.min(remainingHealth, segmentLifeValue);
-                const healthPercentage = (healthInSegment / segmentLifeValue) * 100;
+                // Fill this segment according to the life components
+                let filledSpace = 0;
                 
-                if (healthPercentage === 100) {
-                    // If the segment is all health, just add the health class
-                    segment.classList.add('health');
-                } else {
-                    // Create partial health fill
-                    const healthFill = document.createElement('div');
-                    healthFill.className = 'segment-fill health';
-                    healthFill.style.width = `${healthPercentage}%`;
-                    segment.appendChild(healthFill);
+                // First fill with health if available
+                if (remainingHealth > 0) {
+                    const healthInSegment = Math.min(remainingHealth, lifePerSegment - filledSpace);
+                    const healthPercentage = (healthInSegment / lifePerSegment) * 100;
+                    
+                    if (healthPercentage === 100) {
+                        // Full health segment
+                        segment.classList.add('health');
+                    } else {
+                        // Partial health fill
+                        const healthFill = document.createElement('div');
+                        healthFill.className = 'segment-fill health';
+                        healthFill.style.width = `${healthPercentage}%`;
+                        segment.appendChild(healthFill);
+                    }
+                    
+                    remainingHealth -= healthInSegment;
+                    filledSpace += healthInSegment;
                 }
                 
-                remainingHealth -= healthInSegment;
-                currentLifeTotal += healthInSegment;
-                
-                // If we still have life to fill in this segment and we have armor
-                const remainingSpaceInSegment = segmentLifeValue - (currentLifeTotal % lifePerSegment);
-                
-                if (remainingSpaceInSegment > 0 && remainingArmor > 0) {
-                    const armorInSegment = Math.min(remainingArmor, remainingSpaceInSegment);
-                    const armorPercentage = (armorInSegment / segmentLifeValue) * 100;
-                    const armorStartPercentage = (healthInSegment / segmentLifeValue) * 100;
+                // Then fill with armor if there's space
+                if (filledSpace < lifePerSegment && remainingArmor > 0) {
+                    const armorInSegment = Math.min(remainingArmor, lifePerSegment - filledSpace);
+                    const armorPercentage = (armorInSegment / lifePerSegment) * 100;
                     
-                    if (armorPercentage === 100 - healthPercentage) {
-                        // If the remaining segment is all armor
+                    if (filledSpace === 0 && armorPercentage === 100) {
+                        // Full armor segment
                         segment.classList.add('armor');
                     } else {
-                        // Create partial armor fill
+                        // Partial armor fill
                         const armorFill = document.createElement('div');
                         armorFill.className = 'segment-fill armor';
                         armorFill.style.width = `${armorPercentage}%`;
-                        armorFill.style.left = `${armorStartPercentage}%`;
+                        armorFill.style.left = `${(filledSpace / lifePerSegment) * 100}%`;
                         segment.appendChild(armorFill);
                     }
                     
                     remainingArmor -= armorInSegment;
-                    currentLifeTotal += armorInSegment;
+                    filledSpace += armorInSegment;
+                }
+                
+                // Finally fill with shield if there's space
+                if (filledSpace < lifePerSegment && remainingShield > 0) {
+                    const shieldInSegment = Math.min(remainingShield, lifePerSegment - filledSpace);
+                    const shieldPercentage = (shieldInSegment / lifePerSegment) * 100;
                     
-                    // Check if we still have space for shield
-                    const remainingSpaceAfterArmor = segmentLifeValue - (currentLifeTotal % lifePerSegment);
-                    
-                    if (remainingSpaceAfterArmor > 0 && remainingShield > 0) {
-                        const shieldInSegment = Math.min(remainingShield, remainingSpaceAfterArmor);
-                        const shieldPercentage = (shieldInSegment / segmentLifeValue) * 100;
-                        const shieldStartPercentage = ((healthInSegment + armorInSegment) / segmentLifeValue) * 100;
-                        
-                        // Create partial shield fill
+                    if (filledSpace === 0 && shieldPercentage === 100) {
+                        // Full shield segment
+                        segment.classList.add('shield');
+                    } else {
+                        // Partial shield fill
                         const shieldFill = document.createElement('div');
                         shieldFill.className = 'segment-fill shield';
                         shieldFill.style.width = `${shieldPercentage}%`;
-                        shieldFill.style.left = `${shieldStartPercentage}%`;
+                        shieldFill.style.left = `${(filledSpace / lifePerSegment) * 100}%`;
                         segment.appendChild(shieldFill);
-                        
-                        remainingShield -= shieldInSegment;
-                        currentLifeTotal += shieldInSegment;
                     }
-                }
-            } else if (remainingArmor > 0) {
-                // This segment starts with armor
-                const armorInSegment = Math.min(remainingArmor, segmentLifeValue);
-                const armorPercentage = (armorInSegment / segmentLifeValue) * 100;
-                
-                if (armorPercentage === 100) {
-                    // If the segment is all armor, just add the armor class
-                    segment.classList.add('armor');
-                } else {
-                    // Create partial armor fill
-                    const armorFill = document.createElement('div');
-                    armorFill.className = 'segment-fill armor';
-                    armorFill.style.width = `${armorPercentage}%`;
-                    segment.appendChild(armorFill);
-                }
-                
-                remainingArmor -= armorInSegment;
-                currentLifeTotal += armorInSegment;
-                
-                // Check if we still have space for shield
-                const remainingSpaceInSegment = segmentLifeValue - (currentLifeTotal % lifePerSegment);
-                
-                if (remainingSpaceInSegment > 0 && remainingShield > 0) {
-                    const shieldInSegment = Math.min(remainingShield, remainingSpaceInSegment);
-                    const shieldPercentage = (shieldInSegment / segmentLifeValue) * 100;
-                    const shieldStartPercentage = (armorInSegment / segmentLifeValue) * 100;
-                    
-                    // Create partial shield fill
-                    const shieldFill = document.createElement('div');
-                    shieldFill.className = 'segment-fill shield';
-                    shieldFill.style.width = `${shieldPercentage}%`;
-                    shieldFill.style.left = `${shieldStartPercentage}%`;
-                    segment.appendChild(shieldFill);
                     
                     remainingShield -= shieldInSegment;
-                    currentLifeTotal += shieldInSegment;
                 }
-            } else if (remainingShield > 0) {
-                // This segment is all shield
-                segment.classList.add('shield');
-                remainingShield -= segmentLifeValue;
-                currentLifeTotal += segmentLifeValue;
             }
             
             progressTrack.appendChild(segment);

@@ -25,9 +25,9 @@
     --gradient-orange-end: #ff4d00;
     
     /* Additional component colors */
-    --health-color: #ff5722;
-    --armor-color: #f0f0f0;
-    --shield-color: #00bcd4;
+    --health-color: #e8e8e8;
+    --armor-color: #f47c0b;
+    --shield-color: #06b1f4;
     --power-bg: #3a5a9a;
     --power-border: #4a6ba6;
     --tooltip-stat: #9ee5ff;
@@ -74,7 +74,7 @@ body {
 }
 
 .header {
-    padding: 20px;
+    padding: 20px 20px 15px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -182,12 +182,11 @@ body {
     display: inline-block;
     width: 18px;
     height: 20px;
-    background-image: url("currency.svg");
+    background-image: url("res/currency.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center -1px;
     vertical-align: middle;
-    transform: translateY(-1px) scale(0.9);
 }
 
 .item-cost .diamond-icon {
@@ -206,12 +205,11 @@ body {
     display: inline-block;
     width: 14px;
     height: 15px;
-    background-image: url("currency.svg");
+    background-image: url("res/currency.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     vertical-align: middle;
-    transform: scale(1) translateY(-1px);
     margin-right: 0px;
     content: "";
 }
@@ -431,7 +429,7 @@ body {
     display: block; /* Override flex display */
 }
 
-/* Keep only the life track segmented */
+/* Life track - segmented view */
 .total-life-track {
     position: relative;
     overflow: hidden;
@@ -442,7 +440,9 @@ body {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     z-index: 1;
-    gap: 2px; /* Small gap between segments */
+    gap: 1px; /* Small gap between segments */
+    padding: 0 1px; /* Add a little padding to the container */
+    background-color: rgba(10, 21, 37, 0.5); /* Subtle background */
 }
 
 /* Fill bar for regular stats */
@@ -468,28 +468,39 @@ body {
     position: relative; /* For proper positioning of inner content */
     overflow: hidden; /* To keep rounded corners visible */
     border-radius: 2px;
+    margin-right: 1px; /* Add a small gap between segments */
 }
 
 .stat-segment:last-child {
     border-right: 1px solid #2a4b8d;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
+    margin-right: 0; /* Remove margin from last segment */
 }
 
 /* Segment coloring based on health type */
 .stat-segment.health {
     background-color: var(--health-color);
     z-index: 1;
+    border-color: rgba(232, 232, 232, 0.5);
 }
 
 .stat-segment.armor {
     background-color: var(--armor-color);
     z-index: 1;
+    border-color: rgba(244, 124, 11, 0.5);
 }
 
 .stat-segment.shield {
     background-color: var(--shield-color);
     z-index: 1;
+    border-color: rgba(6, 177, 244, 0.5);
+}
+
+.stat-segment.empty {
+    background-color: #0a1525;
+    border-color: #1a2a4a;
+    opacity: 0.6;
 }
 
 /* Partial segment styling */
@@ -551,9 +562,15 @@ body {
     padding: 15px 20px;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
     border-radius: 3px;
-    margin: 2px;
+    margin: 2px 3px;
+}
+
+.tab:hover:not(.active) {
+    background-color: rgba(255, 107, 61, 0.2);
+    color: #ffffff;
+    box-shadow: 0 0 5px rgba(255, 107, 61, 0.3);
 }
 
 .tab.active {
@@ -852,7 +869,7 @@ body {
     display: inline-block;
     width: 14px;
     height: 15px;
-    background-image: url("currency.svg");
+    background-image: url("res/currency.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -897,10 +914,21 @@ body {
         width: 100%;
         border-right: none;
         border-bottom: 2px solid #1a2a4a;
+        margin-bottom: 15px;
+        margin-right: 0;
     }
     
     .power-slot, .item-slot {
         width: calc(25% - 8px);
+    }
+    
+    .round-tab.copy-button {
+        font-size: 8px;
+        padding: 2px 4px;
+        margin-left: 5px;
+        height: 34px;
+        min-width: 70px;
+        max-width: 75px;
     }
 }
 
@@ -921,10 +949,22 @@ body {
     .item-column {
         border-right: none;
         border-bottom: 2px solid #1a2a4a;
+        width: 100%;
+        margin-bottom: 15px;
     }
     
     .item-column:last-child {
         border-bottom: none;
+        margin-bottom: 0;
+    }
+    
+    .round-tab.copy-button {
+        font-size: 7px;
+        padding: 2px 3px;
+        margin-left: 3px;
+        min-width: 60px;
+        max-width: 65px;
+        height: 34px;
     }
 }
 
@@ -1273,10 +1313,55 @@ body {
     color: #8a9bbd; /* Brighter text on hover */
     border-color: rgba(42, 75, 141, 0.5); /* More visible border on hover */
     box-shadow: 0 0 5px rgba(42, 75, 141, 0.3); /* Subtle hover glow */
+    cursor: pointer;
+}
+
+/* Style for copy to next round button */
+.round-tab.copy-button {
+    background-color: rgba(150, 50, 20, 0.5); /* Dark orange background */
+    color: rgba(255, 120, 80, 1); /* Brighter orange text */
+    font-weight: bold;
+    transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
+    white-space: normal;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    margin: 2px;
+    margin-left: 5px;
+    border: 1px solid rgba(180, 60, 20, 0.9); /* Darker orange border */
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.2;
+    padding: 3px 8px;
+    height: auto;
+    min-width: 80px;
+    box-shadow: 0 0 5px rgba(180, 60, 20, 0.4), inset 0 0 3px rgba(255, 255, 255, 0.3); /* Adjusted glow to match darker border */
+}
+
+.round-tab.copy-button:hover {
+    background-color: rgba(180, 60, 20, 0.7); /* Slightly brighter dark orange */
+    color: #ffffff;
+    border-color: rgba(200, 70, 30, 0.9);
+    box-shadow: 0 0 8px rgba(200, 70, 30, 0.5), inset 0 0 3px rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+}
+
+.round-tab.copy-button.active {
+    background-color: rgba(200, 70, 30, 0.9); /* Even brighter when active */
+    color: #ffffff;
+    border-color: rgba(220, 80, 40, 1);
+    box-shadow: 0 0 8px rgba(220, 80, 40, 0.8), inset 0 0 5px rgba(255, 255, 255, 0.4);
+}
+
+.round-tab.copy-button:active {
+    transform: translateY(1px);
 }
 
 .reset-tab {
-    background-color: #1a2a4a;
+    background-color: rgba(255, 107, 61, 0.15);
     color: #ff6b3d;
     border: 1px solid #ff6b3d;
     border-radius: 3px;
@@ -1286,7 +1371,7 @@ body {
     text-transform: uppercase;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
     padding: 0 15px; /* Slightly wider padding */
     display: flex;
     align-items: center;
@@ -1296,9 +1381,9 @@ body {
 }
 
 .reset-tab:hover {
-    background-color: #ff6b3d;
+    background-color: rgba(255, 107, 61, 0.3);
     color: white;
-    box-shadow: 0 0 10px rgba(255, 107, 61, 0.5);
+    box-shadow: 0 0 5px rgba(255, 107, 61, 0.3);
 }
 
 .reset-tab:active {
