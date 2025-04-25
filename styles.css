@@ -10,7 +10,7 @@
     --text-secondary: #8a9bbd;
     --accent-orange: #ff6b3d;
     --accent-green: #00ff00;
-    --highlight-border: #aaaaaa;
+    --highlight-border: #ffffff;
     
     /* Item & power color gradients */
     --gradient-common-start: #2aff4a;
@@ -23,6 +23,16 @@
     --gradient-red-end: #800a0a;
     --gradient-orange-start: #ff8a5c;
     --gradient-orange-end: #ff4d00;
+    
+    /* Additional component colors */
+    --health-color: #ff5722;
+    --armor-color: #f0f0f0;
+    --shield-color: #00bcd4;
+    --power-bg: #3a5a9a;
+    --power-border: #4a6ba6;
+    --tooltip-stat: #9ee5ff;
+    --tooltip-cost: #ffdd44;
+    --subtle-text: #6a7b9d;
 }
 
 * {
@@ -441,7 +451,7 @@ body {
     top: 0;
     left: 0;
     height: 100%;
-    background-color: #ff5722; /* Default color, will be overridden in JS */
+    background-color: var(--health-color);
     transition: width 0.3s ease;
     border-radius: 2px;
 }
@@ -468,17 +478,17 @@ body {
 
 /* Segment coloring based on health type */
 .stat-segment.health {
-    background-color: #ff5722; /* Orange for health */
+    background-color: var(--health-color);
     z-index: 1;
 }
 
 .stat-segment.armor {
-    background-color: #f0f0f0; /* White/gray for armor */
+    background-color: var(--armor-color);
     z-index: 1;
 }
 
 .stat-segment.shield {
-    background-color: #00bcd4; /* Blue for shield */
+    background-color: var(--shield-color);
     z-index: 1;
 }
 
@@ -492,22 +502,22 @@ body {
 }
 
 .stat-segment .segment-fill.health {
-    background-color: #ff5722;
+    background-color: var(--health-color);
     z-index: 2;
 }
 
 .stat-segment .segment-fill.armor {
-    background-color: #f0f0f0;
+    background-color: var(--armor-color);
     z-index: 3;
 }
 
 .stat-segment .segment-fill.shield {
-    background-color: #00bcd4;
+    background-color: var(--shield-color);
     z-index: 4;
 }
 
 .stat-segment.active {
-    background-color: #ff5722;
+    background-color: var(--health-color);
 }
 
 /* Fix icon that's not in FontAwesome */
@@ -641,33 +651,25 @@ body {
     background-color: #1a2a4a;
 }
 
-/* Unified power icon style - only common variant */
+/* Unified power icon style - no rarity variants needed */
 .power-icon {
     width: 40px;
     height: 40px;
     border-radius: 5px;
-    background-color: #3a5a9a;
+    background-color: var(--power-bg);
+    border: 1px solid var(--power-border);
     flex-shrink: 0;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-/* Update power icon variants to use consistent coloring */
-.power-icon.orange {
-    border: 1px solid var(--gradient-orange-start);
-}
-
-.power-icon.rare {
-    border: 1px solid var(--gradient-rare-start);
-}
-
-.power-icon.epic {
-    border: 1px solid var(--gradient-epic-start);
-}
-
+/* Remove all power icon rarity variants since they're not used */
+.power-icon.orange,
+.power-icon.rare,
+.power-icon.epic,
 .power-icon.common {
-    border: 1px solid var(--gradient-common-start);
+    /* No special styling needed */
 }
 
 .power-title {
@@ -1064,7 +1066,7 @@ body {
 }
 
 .stat-name {
-    color: #9ee5ff; /* Brighter blue for better contrast */
+    color: var(--tooltip-stat);
     font-weight: 500;
 }
 
@@ -1075,7 +1077,7 @@ body {
 }
 
 .tooltip-cost {
-    color: #ffdd44; /* Brighter yellow for better contrast */
+    color: var(--tooltip-cost);
     margin-top: 5px;
     text-align: right;
     font-weight: bold;
@@ -1087,7 +1089,7 @@ body {
 }
 
 .tooltip-cost i {
-    color: #ffdd44; /* Match the text color */
+    color: var(--tooltip-cost);
     margin-right: 5px;
     font-size: 14px;
 }
@@ -1100,18 +1102,6 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-}
-
-/* Rarity color indicators for slot items only */
-.item-slot .common-item .item-image,
-.item-slot .common-item .item-icon,
-.item-slot .rare-item .item-image,
-.item-slot .rare-item .item-icon,
-.item-slot .epic-item .item-image,
-.item-slot .epic-item .item-icon,
-.item-slot .red-item .item-image,
-.item-slot .red-item .item-icon {
-    border: 2px solid var(--highlight-border);
 }
 
 .item-slot .rare-item .item-image,
@@ -1129,41 +1119,44 @@ body {
     border: 2px solid var(--gradient-red-start);
 }
 
-/* Common target slot highlighting styles */
+/* Make sure there's only one instance of these common target slot highlighting styles */
 .target-slot .empty-slot,
 .target-slot .item,
 .target-power-slot .empty-slot,
 .target-power-slot .power-icon {
-    border-width: 2px;
-    border-style: solid;
-    border-color: var(--highlight-border);
+    position: relative;
     transform: scale(1.05);
     transition: all 0.2s ease;
+    z-index: 5;
 }
 
-/* Target slot color overrides - consolidated */
-.target-slot.target-common .empty-slot,
-.target-slot.target-common .item,
-.target-slot.target-rare .empty-slot,
-.target-slot.target-rare .item,
-.target-slot.target-epic .empty-slot,
-.target-slot.target-epic .item,
-.target-slot.target-red .empty-slot,
-.target-slot.target-red .item {
-    border-color: var(--highlight-border);
-    box-shadow: none;
+/* Add a distinctive highlight border using ::after pseudo-element that matches item hover style */
+.target-slot .empty-slot::after,
+.target-slot .item::after,
+.target-power-slot .empty-slot::after,
+.target-power-slot .power-icon::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 2px solid white;
+    border-radius: inherit;
+    animation: breathe 2.0s infinite ease-in-out;
+    pointer-events: none;
 }
 
-/* Power slot target color overrides - consolidated */
-.target-power-slot.target-orange .empty-slot,
-.target-power-slot.target-orange .power-icon,
-.target-power-slot.target-rare .empty-slot,
-.target-power-slot.target-rare .power-icon,
-.target-power-slot.target-epic .empty-slot,
-.target-power-slot.target-epic .power-icon,
-.target-power-slot.target-red .empty-slot,
-.target-power-slot.target-red .power-icon {
-    border-color: var(--text-primary);
+/* Unify all animation keyframes */
+@keyframes pulse {
+    0% { opacity: 0.5; box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+    50% { opacity: 1; box-shadow: 0 0 8px rgba(255, 255, 255, 0.7); }
+    100% { opacity: 0.5; box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+}
+
+@keyframes breathe {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
 }
 
 /* Style for highlighting original items when hovering over slot items */
@@ -1199,7 +1192,8 @@ body {
     margin-bottom: 5px;
     cursor: pointer;
     transition: transform 0.2s ease;
-    background-color: #3a5a9a;
+    background-color: var(--power-bg);
+    border: 1px solid var(--power-border);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -1209,21 +1203,12 @@ body {
     transform: scale(1.05);
 }
 
-/* Update power slot icon variants to match main power icon variants */
-.power-slot .power-icon.orange {
-    border: 1px solid var(--gradient-orange-start);
-}
-
-.power-slot .power-icon.rare {
-    border: 1px solid var(--gradient-rare-start);
-}
-
-.power-slot .power-icon.epic {
-    border: 1px solid var(--gradient-epic-start);
-}
-
+/* Remove all power slot icon rarity variants since they're not used */
+.power-slot .power-icon.orange,
+.power-slot .power-icon.rare,
+.power-slot .power-icon.epic,
 .power-slot .power-icon.common {
-    border: 1px solid var(--gradient-common-start);
+    /* No special styling needed */
 }
 
 .top-controls {
@@ -1265,15 +1250,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #6a7b9d; /* More subtle text color */
+    color: var(--subtle-text);
     font-size: 10px;
     letter-spacing: 0.5px;
     white-space: nowrap;
     flex: 1;
     min-width: 50px;
     text-transform: uppercase;
-    background-color: rgba(26, 42, 74, 0.4); /* More subtle background */
-    border: 1px solid rgba(42, 75, 141, 0.3); /* Subtle border */
+    background-color: rgba(26, 42, 74, 0.4);
+    border: 1px solid rgba(42, 75, 141, 0.3);
 }
 
 .round-tab.active {
@@ -1666,7 +1651,7 @@ body {
 }
 
 .stat-name {
-    color: #9ee5ff; /* Brighter blue for better contrast */
+    color: var(--tooltip-stat);
     font-weight: 500;
 }
 
@@ -1677,7 +1662,7 @@ body {
 }
 
 .tooltip-cost {
-    color: #ffdd44; /* Brighter yellow for better contrast */
+    color: var(--tooltip-cost);
     margin-top: 5px;
     text-align: right;
     font-weight: bold;
@@ -1689,7 +1674,7 @@ body {
 }
 
 .tooltip-cost i {
-    color: #ffdd44; /* Match the text color */
+    color: var(--tooltip-cost);
     margin-right: 5px;
     font-size: 14px;
 }
@@ -1702,18 +1687,6 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-}
-
-/* Rarity color indicators for slot items only */
-.item-slot .common-item .item-image,
-.item-slot .common-item .item-icon,
-.item-slot .rare-item .item-image,
-.item-slot .rare-item .item-icon,
-.item-slot .epic-item .item-image,
-.item-slot .epic-item .item-icon,
-.item-slot .red-item .item-image,
-.item-slot .red-item .item-icon {
-    border: 2px solid var(--highlight-border);
 }
 
 .item-slot .rare-item .item-image,
@@ -1729,63 +1702,4 @@ body {
 .item-slot .red-item .item-image,
 .item-slot .red-item .item-icon {
     border: 2px solid var(--gradient-red-start);
-}
-
-/* Common target slot highlighting styles */
-.target-slot .empty-slot,
-.target-slot .item,
-.target-power-slot .empty-slot,
-.target-power-slot .power-icon {
-    border-width: 2px;
-    border-style: solid;
-    border-color: var(--highlight-border);
-    transform: scale(1.05);
-    transition: all 0.2s ease;
-}
-
-/* Target slot color overrides - consolidated */
-.target-slot.target-common .empty-slot,
-.target-slot.target-common .item,
-.target-slot.target-rare .empty-slot,
-.target-slot.target-rare .item,
-.target-slot.target-epic .empty-slot,
-.target-slot.target-epic .item,
-.target-slot.target-red .empty-slot,
-.target-slot.target-red .item {
-    border-color: var(--highlight-border);
-    box-shadow: none;
-}
-
-/* Power slot target color overrides - consolidated */
-.target-power-slot.target-orange .empty-slot,
-.target-power-slot.target-orange .power-icon,
-.target-power-slot.target-rare .empty-slot,
-.target-power-slot.target-rare .power-icon,
-.target-power-slot.target-epic .empty-slot,
-.target-power-slot.target-epic .power-icon,
-.target-power-slot.target-red .empty-slot,
-.target-power-slot.target-red .power-icon {
-    border-color: var(--text-primary);
-}
-
-/* Style for highlighting original items when hovering over slot items */
-.highlight-original {
-    transform: scale(1.1);
-    z-index: 10;
-    border: 2px solid var(--highlight-border);
-    position: relative;
-}
-
-/* Style for highlighting original power cards when hovering over slot powers */
-.power-card.highlight-original-power {
-    transform: scale(1.05);
-    z-index: 10;
-    border: 2px solid var(--highlight-border);
-    position: relative;
-}
-
-/* Prevent duplicate hover effects when highlighted */
-.highlight-original:hover::after,
-.power-card.highlight-original-power:hover::after {
-    display: none;
 }

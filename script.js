@@ -42,6 +42,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         
         // Update stats display initially
         updateStatsDisplay();
+        
+        // Add new function to initialize hover effects properly
+        initPowerHoverEffects();
     } catch (error) {
         console.error('Error loading config:', error);
         alert('Failed to load configuration data. Please refresh the page.');
@@ -190,6 +193,9 @@ function initRoundSelector() {
             
             // Update cash display for the new round
             updateCashDisplay();
+            
+            // Refresh power hover effects
+            initPowerHoverEffects();
             
             // Save changes
             saveBuildData();
@@ -619,6 +625,12 @@ function populatePowers() {
     // Determine if we're in a round that doesn't allow power selection
     const isDisabledRound = buildData.currentRound === 2 || buildData.currentRound === 4 || buildData.currentRound === 6;
     
+    // Get the current round's assigned group (1, 3, 5, or 7)
+    const currentRoundGroup = getAssignedRound(buildData.currentRound);
+    
+    // Check if this round already has an equipped power
+    const isRoundPowerEquipped = buildData.equippedPowers.some(power => power.round === currentRoundGroup);
+    
     // Group powers into rows of 4
     for (let i = 0; i < config.powers.length; i += 4) {
         const row = document.createElement('div');
@@ -644,6 +656,11 @@ function populatePowers() {
                     powerElement.classList.add('disabled');
                     powerElement.title = "Powers can only be selected in rounds 1, 3, 5, and 7";
                 }
+                // If we're in a round where a power is already equipped, disable other powers
+                else if (!isDisabledRound && isRoundPowerEquipped && !isEquipped) {
+                    powerElement.classList.add('disabled');
+                    powerElement.title = "You've already equipped a power for this round";
+                }
                 
                 row.appendChild(powerElement);
             }
@@ -667,7 +684,7 @@ function createPowerElement(power, isEquipped = false) {
     powerHeader.className = 'power-header';
     
     const powerIcon = document.createElement('div');
-    powerIcon.className = 'power-icon common';
+    powerIcon.className = 'power-icon';
     // Add background image to the power icon
     powerIcon.style.backgroundImage = `url(${power.icon})`;
     
@@ -779,7 +796,7 @@ function updatePowerDisplay() {
             const emptySlot = slot.querySelector('.empty-slot');
             
             if (emptySlot) {
-                // Hide the empty slot
+                // Hide the empty slot instead of removing it
                 emptySlot.style.display = 'none';
                 
                 // Create a power icon for the slot
@@ -787,17 +804,23 @@ function updatePowerDisplay() {
                 
                 if (fullPower) {
                     const powerIcon = document.createElement('div');
-                    powerIcon.className = 'power-icon common';
+                    powerIcon.className = 'power-icon';
                     powerIcon.setAttribute('data-power-id', power.id);
                     powerIcon.style.backgroundImage = `url(${fullPower.icon})`;
                     
                     // Add tooltip and highlight functionality
                     powerIcon.addEventListener('mouseenter', (event) => {
                         highlightOriginalPower(power.id);
+                        // Also highlight the target power slot
+                        const fullPower = findPowerById(power.id);
+                        if (fullPower) {
+                            highlightTargetPowerSlot(fullPower, true);
+                        }
                     });
                     
                     powerIcon.addEventListener('mouseleave', () => {
                         removeOriginalPowerHighlight();
+                        removePowerSlotHighlight();
                     });
                     
                     // Add click handler to unequip the power
@@ -805,7 +828,8 @@ function updatePowerDisplay() {
                         unequipPower(power.id);
                     });
                     
-                    slot.appendChild(powerIcon);
+                    // Add to slot but preserve the slot-label
+                    slot.insertBefore(powerIcon, slot.querySelector('.slot-label'));
                 }
             }
         }
@@ -816,6 +840,9 @@ function updatePowerDisplay() {
         const index = Array.from(powerSlots).indexOf(slot);
         return roundSlots[index];
     }
+    
+    // Make sure to reinitialize hover effects after updating power display
+    initPowerHoverEffects();
 }
 
 // Equip a power
@@ -865,6 +892,15 @@ function equipPower(powerId, powerElement) {
     // Update UI
     powerElement.classList.add('equipped');
     
+    // Disable all other powers for the current round
+    const powerCards = document.querySelectorAll('.power-card:not([data-power-id="' + powerId + '"])');
+    powerCards.forEach(card => {
+        if (!card.classList.contains('equipped')) {
+            card.classList.add('disabled');
+            card.title = "You've already equipped a power for this round";
+        }
+    });
+    
     // Update only the specific power slot
     const roundToSlotMap = {
         1: 0,  // first slot is for round 1
@@ -878,20 +914,26 @@ function equipPower(powerId, powerElement) {
         const powerSlots = document.querySelectorAll('.power-slots .power-slot');
         if (slotIndex < powerSlots.length) {
             const slot = powerSlots[slotIndex];
-            const slotLabel = slot.querySelector('.slot-label').textContent;
             
-            // Replace empty slot with power icon
+            // Get the empty slot
             const emptySlot = slot.querySelector('.empty-slot');
             if (emptySlot) {
+                // Create a power icon
                 const powerIcon = document.createElement('div');
-                powerIcon.className = 'power-icon common';
+                powerIcon.className = 'power-icon';
                 powerIcon.dataset.powerId = powerId;
                 
                 // Add tooltip
                 powerIcon.title = powerData.title;
                 
-                // Replace empty slot with power icon
-                emptySlot.replaceWith(powerIcon);
+                // Set background image for the power icon
+                powerIcon.style.backgroundImage = `url(${powerData.icon})`;
+                
+                // Hide the empty slot instead of replacing it
+                emptySlot.style.display = 'none';
+                
+                // Add power icon before the slot label
+                slot.insertBefore(powerIcon, slot.querySelector('.slot-label'));
                 
                 // Add click handler to unequip
                 powerIcon.addEventListener('click', function() {
@@ -908,9 +950,15 @@ function equipPower(powerId, powerElement) {
                 // Add tooltip and highlight functionality
                 powerIcon.addEventListener('mouseenter', (event) => {
                     highlightOriginalPower(powerId);
+                    // Also highlight the target power slot
+                    const fullPower = findPowerById(powerId);
+                    if (fullPower) {
+                        highlightTargetPowerSlot(fullPower, true);
+                    }
                 });
                 powerIcon.addEventListener('mouseleave', () => {
                     removeOriginalPowerHighlight();
+                    removePowerSlotHighlight();
                 });
             }
         }
@@ -918,6 +966,9 @@ function equipPower(powerId, powerElement) {
     
     // Save changes
     saveBuildData();
+    
+    // Reinitialize power hover effects to ensure they work correctly
+    initPowerHoverEffects();
 }
 
 // Unequip a power
@@ -939,6 +990,20 @@ function unequipPower(powerId, powerElement) {
                 powerElement.classList.remove('highlight-original-power');
             }
             
+            // Re-enable all powers if we're in the same round that the power was unequipped from
+            const currentRoundGroup = getAssignedRound(buildData.currentRound);
+            if (powerRound === currentRoundGroup) {
+                // Only re-enable powers if we're in a power selection round (1, 3, 5, 7)
+                if (buildData.currentRound === 1 || buildData.currentRound === 3 || 
+                    buildData.currentRound === 5 || buildData.currentRound === 7) {
+                    const powerCards = document.querySelectorAll('.power-card.disabled');
+                    powerCards.forEach(card => {
+                        card.classList.remove('disabled');
+                        card.removeAttribute('title');
+                    });
+                }
+            }
+            
             // Find and update just the specific power slot that was unequipped
             if (powerRound) {
                 const roundToSlotMap = {
@@ -954,9 +1019,23 @@ function unequipPower(powerId, powerElement) {
                     if (slotIndex < powerSlots.length) {
                         const slot = powerSlots[slotIndex];
                         
-                        // Only update this specific slot
-                        const slotLabel = slot.querySelector('.slot-label').textContent;
-                        slot.innerHTML = '<div class="empty-slot"></div><div class="slot-label">' + slotLabel + '</div>';
+                        // Remove the power icon
+                        const powerIcon = slot.querySelector('.power-icon');
+                        if (powerIcon) {
+                            powerIcon.remove();
+                        }
+                        
+                        // Show the empty slot instead of recreating it
+                        const emptySlot = slot.querySelector('.empty-slot');
+                        if (emptySlot) {
+                            emptySlot.style.display = 'flex';
+                        } else {
+                            // If the empty slot is missing (should not happen), recreate it
+                            const newEmptySlot = document.createElement('div');
+                            newEmptySlot.className = 'empty-slot';
+                            newEmptySlot.style.display = 'flex';
+                            slot.insertBefore(newEmptySlot, slot.querySelector('.slot-label'));
+                        }
                         
                         // Ensure the unlocked class is maintained
                         if (powerRound <= buildData.currentRound) {
@@ -972,10 +1051,42 @@ function unequipPower(powerId, powerElement) {
             
             // Save changes
             saveBuildData();
+            
+            // Give a small delay for DOM updates to complete
+            setTimeout(() => {
+                // Reset power cards state to ensure clean state
+                const powerCards = document.querySelectorAll('.power-card');
+                powerCards.forEach(card => {
+                    card.classList.remove('highlight-original-power');
+                });
+                
+                // Clear all highlighting
+                removeOriginalPowerHighlight();
+                removePowerSlotHighlight();
+                removeOriginalItemHighlight();
+                removeSlotHighlight();
+                
+                // Reinitialize hover effects to ensure everything works properly
+                initPowerHoverEffects();
+            }, 50);
+            
         } catch (error) {
             console.error("Error unequipping power:", error);
             showMessage("Error unequipping power");
         }
+    }
+}
+
+// Helper function to get the assigned round group for a given round
+function getAssignedRound(round) {
+    if (round <= 2) {
+        return 1;
+    } else if (round <= 4) {
+        return 3;
+    } else if (round <= 6) {
+        return 5;
+    } else {
+        return 7;
     }
 }
 
@@ -1011,16 +1122,26 @@ function initResetButton() {
         const powerCards = document.querySelectorAll('.power-card');
         powerCards.forEach(card => {
             card.classList.remove('equipped');
+            card.classList.remove('highlight-original-power');
         });
+        
+        // Clear any lingering highlights
+        removeOriginalPowerHighlight();
+        removePowerSlotHighlight();
+        removeOriginalItemHighlight();
+        removeSlotHighlight();
         
         // Update UI
         updateRoundDisplay();
         updateCashDisplay();
         updateBuildDisplay();
-        updatePowerDisplay();
+        updatePowerDisplay(); // This will call initPowerHoverEffects internally
         updateStatsDisplay(); // Update stats display
         populateItems();
         populatePowers();
+        
+        // Explicitly reinitialize hover effects
+        initPowerHoverEffects();
         
         // Show success message
         showMessage('All data has been reset to defaults');
@@ -1679,7 +1800,7 @@ function highlightTargetPowerSlot(power, isEquipped = false) {
             
             const slotIndex = roundToSlotMap[equippedRound];
             if (slotIndex !== undefined && slotIndex < powerSlots.length) {
-                // Highlight the slot
+                // Highlight the slot with a consistent style
                 powerSlots[slotIndex].classList.add('target-power-slot');
             }
         }
@@ -1732,5 +1853,69 @@ function removeOriginalPowerHighlight() {
     const highlightedPowers = document.querySelectorAll('.highlight-original-power');
     highlightedPowers.forEach(power => {
         power.classList.remove('highlight-original-power');
+    });
+}
+
+// New function to initialize power hover effects properly
+function initPowerHoverEffects() {
+    // Refresh power hover effects for equipped powers
+    const powerIcons = document.querySelectorAll('.power-icon[data-power-id]');
+    powerIcons.forEach(icon => {
+        // Remove existing event listeners by cloning and replacing
+        const newIcon = icon.cloneNode(true);
+        const powerId = newIcon.getAttribute('data-power-id');
+        
+        // Add proper event listeners
+        newIcon.addEventListener('mouseenter', (event) => {
+            highlightOriginalPower(powerId);
+            // Also highlight the target power slot
+            const fullPower = findPowerById(powerId);
+            if (fullPower) {
+                highlightTargetPowerSlot(fullPower, true);
+            }
+        });
+        
+        newIcon.addEventListener('mouseleave', () => {
+            removeOriginalPowerHighlight();
+            removePowerSlotHighlight();
+        });
+        
+        // Replace the original icon
+        icon.parentNode.replaceChild(newIcon, icon);
+    });
+    
+    // Also refresh for power cards
+    const powerCards = document.querySelectorAll('.power-card');
+    powerCards.forEach(card => {
+        // Remove existing listeners by cloning
+        const newCard = card.cloneNode(true);
+        const powerId = newCard.dataset.powerId;
+        const isEquipped = newCard.classList.contains('equipped');
+        
+        // Get the full power data - moved up to ensure we have this for event handlers
+        const fullPower = findPowerById(powerId);
+        
+        // Add proper listeners
+        newCard.addEventListener('mouseenter', (event) => {
+            if (fullPower) {
+                highlightTargetPowerSlot(fullPower, isEquipped);
+            }
+        });
+        
+        newCard.addEventListener('mouseleave', () => {
+            removePowerSlotHighlight();
+        });
+        
+        // Restore click handlers as well
+        newCard.addEventListener('click', function() {
+            if (this.classList.contains('equipped')) {
+                unequipPower(powerId, this);
+            } else {
+                equipPower(powerId, this);
+            }
+        });
+        
+        // Replace the original card
+        card.parentNode.replaceChild(newCard, card);
     });
 }
