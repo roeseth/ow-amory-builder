@@ -474,6 +474,7 @@ function unequipItem(itemId, itemElement, costElement, itemData) {
     
     // Update UI
     itemElement.classList.remove('owned');
+    itemElement.classList.remove('highlight-original');
     
     const gemIcon = document.createElement('i');
     gemIcon.className = 'fas fa-gem';
@@ -485,8 +486,9 @@ function unequipItem(itemId, itemElement, costElement, itemData) {
     // Update stats for the unequipped item
     updateItemStats(itemData, false);
     
-    // Remove any slot highlighting that might be active
+    // Remove any highlighting that might be active
     removeSlotHighlight();
+    removeOriginalItemHighlight();
     
     // Update build display
     updateBuildDisplay();
@@ -566,10 +568,10 @@ function updateBuildDisplay() {
 // Helper function to get rarity class
 function getRarityClass(rarity) {
     switch (rarity) {
-        case 'common': return 'green-item';
-        case 'rare': return 'blue-item';
-        case 'epic': return 'purple-item';
-        default: return 'green-item';
+        case 'common': return 'common-item';
+        case 'rare': return 'rare-item';
+        case 'epic': return 'epic-item';
+        default: return 'common-item';
     }
 }
 
@@ -651,7 +653,7 @@ function createPowerElement(power, isEquipped = false) {
     powerHeader.className = 'power-header';
     
     const powerIcon = document.createElement('div');
-    powerIcon.className = `power-icon ${power.color}`;
+    powerIcon.className = `power-icon ${getPowerColorClass(power.color)}`;
     
     const powerTitle = document.createElement('div');
     powerTitle.className = 'power-title';
@@ -680,9 +682,15 @@ function createPowerElement(power, isEquipped = false) {
         }
     });
     
-    // Add tooltip functionality
-    powerCard.addEventListener('mouseenter', (event) => showPowerTooltip(power, event));
-    powerCard.addEventListener('mouseleave', hideTooltip);
+    // Add tooltip functionality and target slot highlighting 
+    powerCard.addEventListener('mouseenter', (event) => {
+        showPowerTooltip(power, event);
+        highlightTargetPowerSlot(power, isEquipped);
+    });
+    powerCard.addEventListener('mouseleave', () => {
+        hideTooltip();
+        removePowerSlotHighlight();
+    });
     
     return powerCard;
 }
@@ -740,7 +748,7 @@ function updatePowerDisplay() {
             
             // Replace empty slot with power icon
             const powerIcon = document.createElement('div');
-            powerIcon.className = `power-icon ${power.color}`;
+            powerIcon.className = `power-icon ${getPowerColorClass(power.color)}`;
             powerIcon.dataset.powerId = power.id;
             
             // Replace empty slot with power icon
@@ -758,10 +766,15 @@ function updatePowerDisplay() {
                 }
             });
             
-            // Add tooltip functionality
-            const fullPower = findPowerById(power.id);
-            powerIcon.addEventListener('mouseenter', (event) => showPowerTooltip(fullPower, event));
-            powerIcon.addEventListener('mouseleave', hideTooltip);
+            // Add tooltip and highlight functionality
+            powerIcon.addEventListener('mouseenter', (event) => {
+                showPowerTooltip(power, event);
+                highlightOriginalPower(power.id);
+            });
+            powerIcon.addEventListener('mouseleave', () => {
+                hideTooltip();
+                removeOriginalPowerHighlight();
+            });
         }
     });
 }
@@ -833,7 +846,7 @@ function equipPower(powerId, powerElement) {
             const emptySlot = slot.querySelector('.empty-slot');
             if (emptySlot) {
                 const powerIcon = document.createElement('div');
-                powerIcon.className = `power-icon ${powerData.color}`;
+                powerIcon.className = `power-icon ${getPowerColorClass(powerData.color)}`;
                 powerIcon.dataset.powerId = powerId;
                 
                 // Add tooltip
@@ -852,6 +865,16 @@ function equipPower(powerId, powerElement) {
                     if (originalPower) {
                         unequipPower(powerId, originalPower);
                     }
+                });
+                
+                // Add tooltip and highlight functionality
+                powerIcon.addEventListener('mouseenter', (event) => {
+                    showPowerTooltip(powerData, event);
+                    highlightOriginalPower(powerId);
+                });
+                powerIcon.addEventListener('mouseleave', () => {
+                    hideTooltip();
+                    removeOriginalPowerHighlight();
                 });
             }
         }
@@ -877,6 +900,7 @@ function unequipPower(powerId, powerElement) {
             // Update UI
             if (powerElement) {
                 powerElement.classList.remove('equipped');
+                powerElement.classList.remove('highlight-original-power');
             }
             
             // Find and update just the specific power slot that was unequipped
@@ -905,6 +929,10 @@ function unequipPower(powerId, powerElement) {
                     }
                 }
             }
+            
+            // Remove any highlighting that might be active
+            removeOriginalPowerHighlight();
+            removePowerSlotHighlight();
             
             // Save changes
             saveBuildData();
@@ -1489,7 +1517,7 @@ function showPowerTooltip(power, event) {
     
     // Create tooltip content
     let tooltipContent = `
-        <div class="tooltip-header tooltip-power ${power.color}">${power.title}</div>
+        <div class="tooltip-header tooltip-power ${getPowerColorClass(power.color)}">${power.title}</div>
     `;
     
     tooltip.innerHTML = tooltipContent;
@@ -1623,4 +1651,108 @@ function removeOriginalItemHighlight() {
     highlightedItems.forEach(item => {
         item.classList.remove('highlight-original');
     });
+}
+
+// Function to highlight the target power slot where a power would be equipped
+function highlightTargetPowerSlot(power, isEquipped = false) {
+    // Get all power slots
+    const powerSlots = document.querySelectorAll('.power-slots .power-slot');
+    const roundSlots = [1, 3, 5, 7]; // The rounds that have slots
+    
+    // Determine which round this power would be assigned to
+    let targetRound;
+    if (buildData.currentRound <= 2) {
+        targetRound = 1;
+    } else if (buildData.currentRound <= 4) {
+        targetRound = 3;
+    } else if (buildData.currentRound <= 6) {
+        targetRound = 5;
+    } else {
+        targetRound = 7;
+    }
+    
+    if (isEquipped) {
+        // Find which slot this power is equipped in
+        const equippedPowerIndex = buildData.equippedPowers.findIndex(p => p.id === power.id);
+        if (equippedPowerIndex !== -1) {
+            const equippedPower = buildData.equippedPowers[equippedPowerIndex];
+            const equippedRound = equippedPower.round;
+            
+            // Map the round to the slot index
+            const roundToSlotMap = {
+                1: 0,  // first slot is for round 1
+                3: 1,  // second slot is for round 3 
+                5: 2,  // third slot is for round 5
+                7: 3   // fourth slot is for round 7
+            };
+            
+            const slotIndex = roundToSlotMap[equippedRound];
+            if (slotIndex !== undefined && slotIndex < powerSlots.length) {
+                // Highlight the slot
+                powerSlots[slotIndex].classList.add('target-power-slot');
+                powerSlots[slotIndex].classList.add(`target-${getPowerColorClass(power.color)}`);
+            }
+        }
+    } else {
+        // For powers not yet equipped, highlight the appropriate round slot
+        // Check if we're in a round that shouldn't allow power selection
+        const isDisabledRound = buildData.currentRound === 2 || 
+                               buildData.currentRound === 4 || 
+                               buildData.currentRound === 6;
+        
+        if (isDisabledRound) {
+            // Don't highlight any slot in the disabled rounds
+            return;
+        }
+        
+        // Find the slot index for the target round
+        const targetSlotIndex = roundSlots.indexOf(targetRound);
+        
+        if (targetSlotIndex !== -1 && targetSlotIndex < powerSlots.length) {
+            // Check if this slot already has a power equipped
+            const isSlotTaken = buildData.equippedPowers.some(p => p.round === targetRound);
+            
+            if (!isSlotTaken) {
+                // Highlight the slot only if it's not already taken
+                powerSlots[targetSlotIndex].classList.add('target-power-slot');
+                powerSlots[targetSlotIndex].classList.add(`target-${getPowerColorClass(power.color)}`);
+            }
+        }
+    }
+}
+
+// Function to remove power slot highlighting
+function removePowerSlotHighlight() {
+    // Remove highlighting classes from all power slots
+    const highlightedSlots = document.querySelectorAll('.target-power-slot');
+    highlightedSlots.forEach(slot => {
+        slot.classList.remove('target-power-slot', 'target-orange', 'target-rare', 'target-epic', 'target-common');
+    });
+}
+
+// Function to highlight the original power card when hovering over a power in a slot
+function highlightOriginalPower(powerId) {
+    const originalPower = document.querySelector(`.power-card[data-power-id="${powerId}"]`);
+    if (originalPower) {
+        originalPower.classList.add('highlight-original-power');
+    }
+}
+
+// Function to remove highlight from the original power card
+function removeOriginalPowerHighlight() {
+    const highlightedPowers = document.querySelectorAll('.highlight-original-power');
+    highlightedPowers.forEach(power => {
+        power.classList.remove('highlight-original-power');
+    });
+}
+
+// Helper function to get power color class based on the color property
+function getPowerColorClass(color) {
+    switch (color) {
+        case 'blue': return 'rare';
+        case 'purple': return 'epic';
+        case 'green': return 'common';
+        case 'orange': // Keep orange as is
+        default: return color;
+    }
 }

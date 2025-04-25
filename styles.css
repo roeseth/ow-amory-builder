@@ -1,3 +1,30 @@
+:root {
+    /* Color palette */
+    --bg-dark: #0a1525;
+    --bg-darker: #081020;
+    --bg-panel: #0c1a30;
+    --bg-element: #1a2a4a;
+    --border-primary: #2a4b8d;
+    --border-secondary: #4a5a7a;
+    --text-primary: #ffffff;
+    --text-secondary: #8a9bbd;
+    --accent-orange: #ff6b3d;
+    --accent-green: #00ff00;
+    --highlight-border: #aaaaaa;
+    
+    /* Item & power color gradients */
+    --gradient-common-start: #2aff4a;
+    --gradient-common-end: #0a8020;
+    --gradient-rare-start: #2a9aff; 
+    --gradient-rare-end: #0a4080;
+    --gradient-epic-start: #aa2aff;
+    --gradient-epic-end: #5a0a80;
+    --gradient-red-start: #ff2a2a;
+    --gradient-red-end: #800a0a;
+    --gradient-orange-start: #ff8a5c;
+    --gradient-orange-end: #ff4d00;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -8,8 +35,8 @@
 }
 
 body {
-    background-color: #0a1525;
-    color: white;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,7 +47,7 @@ body {
 .container {
     width: 100%;
     max-width: 1360px;
-    background-color: #0a1525;
+    background-color: var(--bg-dark);
     border-radius: 10px;
     overflow: visible;
     position: relative;
@@ -31,7 +58,7 @@ body {
     position: absolute;
     width: 95%;
     height: 2px;
-    background: linear-gradient(90deg, transparent, #2a4b8d, transparent);
+    background: linear-gradient(90deg, transparent, var(--border-primary), transparent);
     top: 0;
     left: 0;
 }
@@ -599,11 +626,12 @@ body {
     border-radius: 4px;
     animation: breathe 2.0s infinite ease-in-out;
     pointer-events: none;
+    opacity: 0.8;
 }
 
 @keyframes breathe {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.8; }
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
 }
 
 .power-header {
@@ -622,42 +650,42 @@ body {
 }
 
 .power-icon.orange {
-    background: radial-gradient(circle, #ff8a5c 0%, #ff4d00 100%);
+    background: radial-gradient(circle, var(--gradient-orange-start) 0%, var(--gradient-orange-end) 100%);
 }
 
-.power-icon.blue {
-    background: radial-gradient(circle, #2a9aff 0%, #0a4080 100%);
+.power-icon.rare {
+    background: radial-gradient(circle, var(--gradient-rare-start) 0%, var(--gradient-rare-end) 100%);
 }
 
-.power-icon.purple {
-    background: radial-gradient(circle, #aa2aff 0%, #5a0a80 100%);
+.power-icon.epic {
+    background: radial-gradient(circle, var(--gradient-epic-start) 0%, var(--gradient-epic-end) 100%);
 }
 
-.power-icon.green {
-    background: radial-gradient(circle, #2aff4a 0%, #0a8020 100%);
+.power-icon.common {
+    background: radial-gradient(circle, var(--gradient-common-start) 0%, var(--gradient-common-end) 100%);
 }
 
 .power-title {
     font-weight: bold;
     font-size: 14px;
     padding-left: 10px;
-    color: white;
+    color: var(--text-primary);
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
 }
 
 .power-description {
     font-size: 13px;
-    color: #8a9bbd;
+    color: var(--text-secondary);
     line-height: 1.5;
     padding: 8px;
-    background-color: #081020;
+    background-color: var(--bg-darker);
     margin: 0 10px 10px;
     border-radius: 5px;
     flex-grow: 1;
 }
 
 .power-description strong {
-    color: #ffffff;
+    color: var(--text-primary);
     font-weight: bold;
 }
 
@@ -730,24 +758,24 @@ body {
     pointer-events: none;
 }
 
-.green-item {
-    background: radial-gradient(circle, #2aff4a 0%, #0a8020 100%);
-    border: 1px solid #4a5a7a;
+.common-item {
+    background: radial-gradient(circle, var(--gradient-common-start) 0%, var(--gradient-common-end) 100%);
+    border: 1px solid var(--border-secondary);
 }
 
-.blue-item {
-    background: radial-gradient(circle, #2a9aff 0%, #0a4080 100%);
-    border: 1px solid #4a5a7a;
+.rare-item {
+    background: radial-gradient(circle, var(--gradient-rare-start) 0%, var(--gradient-rare-end) 100%);
+    border: 1px solid var(--border-secondary);
 }
 
-.purple-item {
-    background: radial-gradient(circle, #aa2aff 0%, #5a0a80 100%);
-    border: 1px solid #4a5a7a;
+.epic-item {
+    background: radial-gradient(circle, var(--gradient-epic-start) 0%, var(--gradient-epic-end) 100%);
+    border: 1px solid var(--border-secondary);
 }
 
 .red-item {
-    background: radial-gradient(circle, #ff2a2a 0%, #800a0a 100%);
-    border: 1px solid #4a5a7a;
+    background: radial-gradient(circle, var(--gradient-red-start) 0%, var(--gradient-red-end) 100%);
+    border: 1px solid var(--border-secondary);
 }
 
 .item.owned {
@@ -922,24 +950,28 @@ body {
     border: 1px solid white;
 }
 
-.item-slot .green-item {
-    background: radial-gradient(circle, #2aff4a 0%, #0a8020 100%);
-    border: 1px solid #4a5a7a;
+.item-slot .common-item,
+.item-slot .rare-item,
+.item-slot .epic-item,
+.item-slot .red-item {
+    background-repeat: no-repeat;
+    border: 1px solid var(--border-secondary);
 }
 
-.item-slot .blue-item {
-    background: radial-gradient(circle, #2a9aff 0%, #0a4080 100%);
-    border: 1px solid #4a5a7a;
+.item-slot .common-item {
+    background: radial-gradient(circle, var(--gradient-common-start) 0%, var(--gradient-common-end) 100%);
 }
 
-.item-slot .purple-item {
-    background: radial-gradient(circle, #aa2aff 0%, #5a0a80 100%);
-    border: 1px solid #4a5a7a;
+.item-slot .rare-item {
+    background: radial-gradient(circle, var(--gradient-rare-start) 0%, var(--gradient-rare-end) 100%);
+}
+
+.item-slot .epic-item {
+    background: radial-gradient(circle, var(--gradient-epic-start) 0%, var(--gradient-epic-end) 100%);
 }
 
 .item-slot .red-item {
-    background: radial-gradient(circle, #ff2a2a 0%, #800a0a 100%);
-    border: 1px solid #4a5a7a;
+    background: radial-gradient(circle, var(--gradient-red-start) 0%, var(--gradient-red-end) 100%);
 }
 
 .power-card.equipped {
@@ -1006,6 +1038,7 @@ body {
     content: none;
 }
 
+/* Common styles for all power slot icons */
 .power-slot .power-icon {
     width: 59px;
     height: 59px;
@@ -1016,31 +1049,32 @@ body {
     margin-bottom: 5px;
     cursor: pointer;
     transition: transform 0.2s ease;
-    border: 1px solid #4a5a7a;
-    background-color: #1a2a4a;
+    border: 1px solid var(--border-secondary);
+    background-color: var(--bg-element);
 }
 
 .power-slot .power-icon:hover {
     transform: scale(1.05);
 }
 
+/* Color variants for power icons */
 .power-slot .power-icon.orange {
-    background: radial-gradient(circle, #ff8a5c 0%, #ff4d00 100%);
-    border: 1px solid #ff6b3d;
+    background: radial-gradient(circle, var(--gradient-orange-start) 0%, var(--gradient-orange-end) 100%);
+    border: 1px solid var(--accent-orange);
 }
 
-.power-slot .power-icon.blue {
-    background: radial-gradient(circle, #2a9aff 0%, #0a4080 100%);
+.power-slot .power-icon.rare {
+    background: radial-gradient(circle, var(--gradient-rare-start) 0%, var(--gradient-rare-end) 100%);
     border: 1px solid #1a70c0;
 }
 
-.power-slot .power-icon.purple {
-    background: radial-gradient(circle, #aa2aff 0%, #5a0a80 100%);
+.power-slot .power-icon.epic {
+    background: radial-gradient(circle, var(--gradient-epic-start) 0%, var(--gradient-epic-end) 100%);
     border: 1px solid #8a2ad0;
 }
 
-.power-slot .power-icon.green {
-    background: radial-gradient(circle, #2aff4a 0%, #0a8020 100%);
+.power-slot .power-icon.common {
+    background: radial-gradient(circle, var(--gradient-common-start) 0%, var(--gradient-common-end) 100%);
     border: 1px solid #1ac030;
 }
 
@@ -1486,17 +1520,17 @@ body {
     box-shadow: 0 2px 10px rgba(255, 77, 0, 0.3);
 }
 
-.tooltip-header.tooltip-power.blue {
+.tooltip-header.tooltip-power.rare {
     background: linear-gradient(135deg, rgba(42, 154, 255, 0.9) 0%, rgba(10, 64, 128, 0.9) 100%);
     box-shadow: 0 2px 10px rgba(42, 154, 255, 0.3);
 }
 
-.tooltip-header.tooltip-power.purple {
+.tooltip-header.tooltip-power.epic {
     background: linear-gradient(135deg, rgba(170, 42, 255, 0.9) 0%, rgba(90, 10, 128, 0.9) 100%);
     box-shadow: 0 2px 10px rgba(170, 42, 255, 0.3);
 }
 
-.tooltip-header.tooltip-power.green {
+.tooltip-header.tooltip-power.common {
     background: linear-gradient(135deg, rgba(42, 255, 74, 0.9) 0%, rgba(10, 128, 32, 0.9) 100%);
     box-shadow: 0 2px 10px rgba(42, 255, 74, 0.3);
 }
@@ -1551,84 +1585,82 @@ body {
     background-repeat: no-repeat;
 }
 
-/* Rarity color indicators for items */
-.common-item .item-image {
-    border: 2px solid #aaaaaa;
+/* Rarity color indicators for slot items only */
+.item-slot .common-item .item-image,
+.item-slot .common-item .item-icon,
+.item-slot .rare-item .item-image,
+.item-slot .rare-item .item-icon,
+.item-slot .epic-item .item-image,
+.item-slot .epic-item .item-icon,
+.item-slot .red-item .item-image,
+.item-slot .red-item .item-icon {
+    border: 2px solid var(--highlight-border);
 }
 
-.rare-item .item-image {
-    border: 2px solid #4b96ff;
+.item-slot .rare-item .item-image,
+.item-slot .rare-item .item-icon {
+    border: 2px solid var(--gradient-rare-start);
 }
 
-.epic-item .item-image {
-    border: 2px solid #b66dff;
+.item-slot .epic-item .item-image,
+.item-slot .epic-item .item-icon {
+    border: 2px solid var(--gradient-epic-start);
 }
 
-.red-item .item-image {
-    border: 2px solid #ff6b6b;
+.item-slot .red-item .item-image,
+.item-slot .red-item .item-icon {
+    border: 2px solid var(--gradient-red-start);
 }
 
-/* Rarity borders for item-icon (shop items) */
-.common-item .item-icon {
-    border: 2px solid #aaaaaa;
-}
-
-.rare-item .item-icon {
-    border: 2px solid #4b96ff;
-}
-
-.epic-item .item-icon {
-    border: 2px solid #b66dff;
-}
-
-.red-item .item-icon {
-    border: 2px solid #ff6b6b;
-}
-
-/* Target slot highlight styles */
-.target-slot .empty-slot {
+/* Common target slot highlighting styles */
+.target-slot .empty-slot,
+.target-slot .item,
+.target-power-slot .empty-slot,
+.target-power-slot .power-icon {
     border-width: 2px;
     border-style: solid;
-    border-color: #aaaaaa;
+    border-color: var(--highlight-border);
     transform: scale(1.05);
     transition: all 0.2s ease;
 }
 
-/* Target styles for slots with an equipped item */
-.target-slot .item {
-    border-width: 2px;
-    border-style: solid;
-    border-color: #aaaaaa;
-    transform: scale(1.05);
-    transition: all 0.2s ease;
-}
-
+/* Target slot color overrides - consolidated */
 .target-slot.target-common .empty-slot,
-.target-slot.target-common .item {
-    border-color: #aaaaaa;
-    box-shadow: none;
-}
-
+.target-slot.target-common .item,
 .target-slot.target-rare .empty-slot,
-.target-slot.target-rare .item {
-    border-color: #aaaaaa;
-    box-shadow: none;
-}
-
+.target-slot.target-rare .item,
 .target-slot.target-epic .empty-slot,
-.target-slot.target-epic .item {
-    border-color: #aaaaaa;
-    box-shadow: none;
-}
-
+.target-slot.target-epic .item,
 .target-slot.target-red .empty-slot,
 .target-slot.target-red .item {
-    border-color: #aaaaaa;
+    border-color: var(--highlight-border);
     box-shadow: none;
+}
+
+/* Power slot target color overrides - consolidated */
+.target-power-slot.target-orange .empty-slot,
+.target-power-slot.target-orange .power-icon,
+.target-power-slot.target-rare .empty-slot,
+.target-power-slot.target-rare .power-icon,
+.target-power-slot.target-epic .empty-slot,
+.target-power-slot.target-epic .power-icon,
+.target-power-slot.target-red .empty-slot,
+.target-power-slot.target-red .power-icon {
+    border-color: var(--text-primary);
 }
 
 /* Style for highlighting original items when hovering over slot items */
 .highlight-original {
     transform: scale(1.1);
     z-index: 10;
+    border: 2px solid var(--highlight-border);
+    position: relative;
+}
+
+/* Style for highlighting original power cards when hovering over slot powers */
+.power-card.highlight-original-power {
+    transform: scale(1.05);
+    z-index: 10;
+    border: 2px solid var(--highlight-border);
+    position: relative;
 }
