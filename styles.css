@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'BigNoodleToo';
+    src: url('res/BigNoodleToo.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
 :root {
     /* Color palette */
     --bg-dark: #0a1525;
@@ -117,24 +124,34 @@ body {
 .name {
     display: flex;
     flex-direction: column;
+    width: auto;
+    min-width: 300px; /* Ensure enough width for the text */
 }
 
 .title {
-    font-size: 24px;
+    font-size: 54px;
     font-weight: bold;
     color: #8a9bbd;
     text-transform: uppercase;
     letter-spacing: 2px;
     text-shadow: 0 0 10px rgba(138, 155, 189, 0.5);
+    font-family: 'BigNoodleToo', 'Arial', sans-serif;
+    font-style: italic;
+    margin-bottom: -24px;
+    -webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 90%);
+    mask-image: linear-gradient(to bottom, black 30%, transparent 90%);
 }
 
 .hero {
-    font-size: 32px;
+    font-size: 36px;
     font-weight: bold;
     color: #ffffff;
     text-transform: uppercase;
     letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    font-family: 'BigNoodleToo', 'Arial', sans-serif;
+    font-style: italic;
+    position: relative;
+    z-index: 10;
 }
 
 .main-content {
@@ -245,6 +262,9 @@ body {
     color: #8a9bbd;
     margin: 0 8px;
     text-align: center;
+    font-family: 'BigNoodleToo', 'Arial', sans-serif;
+    font-style: italic;
+    transform: skewX(-10deg);
 }
 
 .power-slots, .item-slots {
