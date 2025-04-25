@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D.Va Build Panel</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="character-info">
+                <div class="portrait">
+                    <div class="portrait-placeholder"></div>
+                </div>
+                <div class="name">
+                    <div class="title">THE ARMORY</div>
+                    <div class="hero">D.VA</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="build-cost">
+                    <span>CASH:</span>
+                    <span class="diamond-icon"><i class="fas fa-gem"></i></span>
+                    <span class="cost">1,000</span>
+                </div>
+
+                <div class="section-header">
+                    <div class="section-title">POWERS</div>
+                </div>
+
+                <div class="powers-section">
+                    <div class="power-slots">
+                        <div class="power-slot">
+                            <div class="empty-slot"></div>
+                            <div class="slot-label">ROUND 1</div>
+                        </div>
+                        <div class="power-slot">
+                            <div class="empty-slot"></div>
+                            <div class="slot-label">ROUND 3</div>
+                        </div>
+                        <div class="power-slot">
+                            <div class="empty-slot"></div>
+                            <div class="slot-label">ROUND 5</div>
+                        </div>
+                        <div class="power-slot">
+                            <div class="empty-slot"></div>
+                            <div class="slot-label">ROUND 7</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <div class="section-title">ITEMS</div>
+                </div>
+
+                <div class="items-section">
+                    <div class="item-slots">
+                        <div class="item-slot">
+                            <div class="item green-item">
+                                <div class="item-icon"></div>
+                            </div>
+                        </div>
+                        <div class="item-slot">
+                            <div class="empty-slot"></div>
+                        </div>
+                        <div class="item-slot">
+                            <div class="empty-slot"></div>
+                        </div>
+                        <div class="item-slot">
+                            <div class="empty-slot"></div>
+                        </div>
+                        <div class="item-slot">
+                            <div class="empty-slot"></div>
+                        </div>
+                        <div class="item-slot">
+                            <div class="empty-slot"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <div class="stat-group full-width">
+                        <div class="stat-header">
+                            <div class="stat-name">Life</div>
+                            <div class="stat-value total-life-value">0</div>
+                        </div>
+                        <div class="stat-bar-wrapper">
+                            <div class="stat-icon">❤️</div>
+                            <div class="stat-track total-life-track">
+                                <!-- Segments will be created by JS -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Single column layout for all stats -->
+                    <div class="stats-columns">
+                        <!-- Left column -->
+                        <div class="stats-column">
+                            <div class="stat-group">
+                                <div class="stat-header">
+                                    <div class="stat-name">Weapon Power</div>
+                                    <div class="stat-value">0</div>
+                                </div>
+                                <div class="stat-bar-wrapper">
+                                    <div class="stat-icon">⚔️</div>
+                                    <div class="stat-track">
+                                        <!-- Segments will be created by JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-group">
+                                <div class="stat-header">
+                                    <div class="stat-name">Ability Power</div>
+                                    <div class="stat-value">0</div>
+                                </div>
+                                <div class="stat-bar-wrapper">
+                                    <div class="stat-icon">✨</div>
+                                    <div class="stat-track">
+                                        <!-- Segments will be created by JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-group">
+                                <div class="stat-header">
+                                    <div class="stat-name">Attack Speed</div>
+                                    <div class="stat-value">0</div>
+                                </div>
+                                <div class="stat-bar-wrapper">
+                                    <div class="stat-icon">⚡</div>
+                                    <div class="stat-track">
+                                        <!-- Segments will be created by JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-group">
+                                <div class="stat-header">
+                                    <div class="stat-name">Cooldown Reduction</div>
+                                    <div class="stat-value">0</div>
+                                </div>
+                                <div class="stat-bar-wrapper">
+                                    <div class="stat-icon">⏱️</div>
+                                    <div class="stat-track">
+                                        <!-- Segments will be created by JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-group">
+                                <div class="stat-header">
+                                    <div class="stat-name">Max Ammo</div>
+                                    <div class="stat-value">0</div>
+                                </div>
+                                <div class="stat-bar-wrapper">
+                                    <div class="stat-icon">🔫</div>
+                                    <div class="stat-track">
+                                        <!-- Segments will be created by JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right column -->
+                        <div class="stats-column">
+                            <div class="stat-group">
+                                <div class="stat-header">
+                                    <div class="stat-name">Weapon Lifesteal</div>
+                                    <div class="stat-value">0</div>
+                                </div>
+                                <div class="stat-bar-wrapper">
+                                    <div class="stat-icon">💉</div>
+                                    <div class="stat-track">
+                                        <!-- Segments will be created by JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-group">
+                                <div class="stat-header">
+                                    <div class="stat-name">Critical Damage</div>
+                                    <div class="stat-value">0</div>
+                                </div>
+                                <div class="stat-bar-wrapper">
+                                    <div class="stat-icon">💢</div>
+                                    <div class="stat-track">
+                                        <!-- Segments will be created by JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-group">
+                                <div class="stat-header">
+                                    <div class="stat-name">Ability Lifesteal</div>
+                                    <div class="stat-value">0</div>
+                                </div>
+                                <div class="stat-bar-wrapper">
+                                    <div class="stat-icon">🌀</div>
+                                    <div class="stat-track">
+                                        <!-- Segments will be created by JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-group">
+                                <div class="stat-header">
+                                    <div class="stat-name">Move Speed</div>
+                                    <div class="stat-value">0</div>
+                                </div>
+                                <div class="stat-bar-wrapper">
+                                    <div class="stat-icon">🏃</div>
+                                    <div class="stat-track">
+                                        <!-- Segments will be created by JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-group">
+                                <div class="stat-header">
+                                    <div class="stat-name">Reload Speed</div>
+                                    <div class="stat-value">0</div>
+                                </div>
+                                <div class="stat-bar-wrapper">
+                                    <div class="stat-icon">🔄</div>
+                                    <div class="stat-track">
+                                        <!-- Segments will be created by JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-group">
+                                <div class="stat-header">
+                                    <div class="stat-name">Melee Damage</div>
+                                    <div class="stat-value">0</div>
+                                </div>
+                                <div class="stat-bar-wrapper">
+                                    <div class="stat-icon">👊</div>
+                                    <div class="stat-track">
+                                        <!-- Segments will be created by JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="top-controls">
+                    <div class="round-selector">
+                        <div class="round-tabs">
+                            <div class="round-tab active" data-round="1">ROUND 1</div>
+                            <div class="round-tab" data-round="2">ROUND 2</div>
+                            <div class="round-tab" data-round="3">ROUND 3</div>
+                            <div class="round-tab" data-round="4">ROUND 4</div>
+                            <div class="round-tab" data-round="5">ROUND 5</div>
+                            <div class="round-tab" data-round="6">ROUND 6</div>
+                            <div class="round-tab" data-round="7">ROUND 7</div>
+                        </div>
+                    </div>
+                    <div class="reset-container">
+                        <button id="reset-button" class="reset-tab">RESET</button>
+                    </div>
+                </div>
+
+                <div class="tab-container">
+                    <div class="tabs">
+                        <div class="tab active" data-tab="weapon">WEAPON</div>
+                        <div class="tab" data-tab="ability">ABILITY</div>
+                        <div class="tab" data-tab="survival">SURVIVAL</div>
+                        <div class="tab" data-tab="power">POWER</div>
+                    </div>
+                </div>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="weapon-tab">
+                        <div class="items-grid">
+                    <div class="item-column">
+                        <div class="column-header">COMMON</div>
+                        <div class="items">
+                            <div class="item-row">
+                                <div class="item green-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 1,000</div>
+                                </div>
+                                <div class="item green-item owned">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost">Owned</div>
+                                </div>
+                                <div class="item green-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 1,000</div>
+                                </div>
+                            </div>
+                            <div class="item-row">
+                                <div class="item green-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 1,500</div>
+                                </div>
+                                <div class="item green-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 1,500</div>
+                                </div>
+                                <div class="empty-item"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item-column">
+                        <div class="column-header">RARE</div>
+                        <div class="items">
+                            <div class="item-row">
+                                <div class="item blue-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 3,750</div>
+                                </div>
+                                <div class="item blue-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 4,000</div>
+                                </div>
+                                <div class="item blue-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 4,000</div>
+                                </div>
+                            </div>
+                            <div class="item-row">
+                                <div class="item blue-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 4,000</div>
+                                </div>
+                                <div class="item blue-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 4,500</div>
+                                </div>
+                                <div class="item blue-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 5,000</div>
+                                </div>
+                            </div>
+                            <div class="item-row">
+                                <div class="item blue-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 5,500</div>
+                                </div>
+                                <div class="empty-item"></div>
+                                <div class="empty-item"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item-column">
+                        <div class="column-header">EPIC</div>
+                        <div class="items">
+                            <div class="item-row">
+                                <div class="item purple-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 9,000</div>
+                                </div>
+                                <div class="item purple-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 9,500</div>
+                                </div>
+                                <div class="item purple-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 9,500</div>
+                                </div>
+                            </div>
+                            <div class="item-row">
+                                <div class="item purple-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 10,000</div>
+                                </div>
+                                <div class="item purple-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 10,000</div>
+                                </div>
+                                <div class="item purple-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 11,000</div>
+                                </div>
+                            </div>
+                            <div class="item-row">
+                                <div class="item purple-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 11,000</div>
+                                </div>
+                                <div class="item purple-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 11,000</div>
+                                </div>
+                                <div class="item purple-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 11,000</div>
+                                </div>
+                            </div>
+                            <div class="item-row">
+                                <div class="item purple-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 13,000</div>
+                                </div>
+                                <div class="item purple-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 13,500</div>
+                                </div>
+                                <div class="item red-item">
+                                    <div class="item-icon"></div>
+                                    <div class="item-cost"><i class="fas fa-gem"></i> 10,000</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                
+                <div class="tab-pane" id="ability-tab">
+                    <div class="items-grid">
+                        <div class="item-column">
+                            <div class="column-header">COMMON</div>
+                            <div class="items">
+                                <div class="item-row">
+                                    <div class="item green-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 1,200</div>
+                                    </div>
+                                    <div class="item green-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 1,300</div>
+                                    </div>
+                                    <div class="item green-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 1,400</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item-column">
+                            <div class="column-header">RARE</div>
+                            <div class="items">
+                                <div class="item-row">
+                                    <div class="item blue-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 4,200</div>
+                                    </div>
+                                    <div class="item blue-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 4,300</div>
+                                    </div>
+                                    <div class="item blue-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 4,400</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item-column">
+                            <div class="column-header">EPIC</div>
+                            <div class="items">
+                                <div class="item-row">
+                                    <div class="item purple-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 9,200</div>
+                                    </div>
+                                    <div class="item purple-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 9,300</div>
+                                    </div>
+                                    <div class="item purple-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 9,400</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-pane" id="survival-tab">
+                    <div class="items-grid">
+                        <div class="item-column">
+                            <div class="column-header">COMMON</div>
+                            <div class="items">
+                                <div class="item-row">
+                                    <div class="item green-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 1,600</div>
+                                    </div>
+                                    <div class="item green-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 1,700</div>
+                                    </div>
+                                    <div class="item green-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 1,800</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item-column">
+                            <div class="column-header">RARE</div>
+                            <div class="items">
+                                <div class="item-row">
+                                    <div class="item blue-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 4,600</div>
+                                    </div>
+                                    <div class="item blue-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 4,700</div>
+                                    </div>
+                                    <div class="item blue-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 4,800</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item-column">
+                            <div class="column-header">EPIC</div>
+                            <div class="items">
+                                <div class="item-row">
+                                    <div class="item purple-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 9,600</div>
+                                    </div>
+                                    <div class="item purple-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 9,700</div>
+                                    </div>
+                                    <div class="item purple-item">
+                                        <div class="item-icon"></div>
+                                        <div class="item-cost"><i class="fas fa-gem"></i> 9,800</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-pane" id="power-tab">
+                    <div class="power-grid">
+                        <!-- Powers will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Reset Modal -->
+        <div id="reset-modal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-title">Reset Build</div>
+                <div class="modal-message">Are you sure you want to reset your build? This will clear all equipped items and powers.</div>
+                <div class="modal-buttons">
+                    <button id="cancel-reset" class="modal-button cancel">Cancel</button>
+                    <button id="confirm-reset" class="modal-button confirm">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
