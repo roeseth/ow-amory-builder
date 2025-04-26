@@ -1,0 +1,77 @@
+{
+  "name": "Mercy",
+  "role": "Support",
+  "portraitPath": "res/portraits/mercy.png",
+  "health": 200,
+  "armor": 0,
+  "shield": 0,
+  "moveSpeed": 5.5,
+  "meleeDamage": 30,
+  "weapons": [
+    {
+      "name": "Placeholder Weapon",
+      "type": "healing",
+      "damageValue": 0,
+      "healingValue": 55,
+      "criticalHitMultiplier": 1.0,
+      "attackSpeed": 1,
+      "ammo": 0,
+      "reloadSpeed": 0,
+      "lifeSteal": 0
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Placeholder Ability",
+      "type": "healing",
+      "damageValue": 0,
+      "healingValue": 100,
+      "duration": 3,
+      "cooldown": 8,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    }
+  ],
+  "specialItems": [
+    {
+      "name": "CADUCEUS STAFF AMPLIFIER",
+      "cost": 2900,
+      "description": "Enhances Mercy's Caduceus Staff with improved healing and damage boost.",
+      "iconPath": "res/items/mercy_staff.png",
+      "stats": {
+        "abilityPower": 20,
+        "cooldownReduction": 10
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "GUARDIAN ANGEL ENHANCEMENT",
+      "cost": 3100,
+      "description": "Improves Mercy's Guardian Angel with increased range and speed.",
+      "iconPath": "res/items/mercy_angel.png",
+      "stats": {
+        "moveSpeed": 15,
+        "cooldownReduction": 12
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "RESURRECT OPTIMIZER",
+      "cost": 4500,
+      "description": "Enhances Mercy's Resurrect with reduced cast time and cooldown.",
+      "iconPath": "res/items/mercy_resurrect.png",
+      "stats": {
+        "cooldownReduction": 20,
+        "abilityPower": 15
+      },
+      "sharedItem": false
+    }
+  ],
+  "powers": [
+    {
+      "title": "VALKYRIE'S BLESSING",
+      "description": "Healing and damage boosting beams chain to an additional target and have 20% increased effectiveness."
+    }
+  ]
+} 

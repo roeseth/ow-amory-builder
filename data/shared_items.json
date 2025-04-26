@@ -9,8 +9,7 @@
           "iconPath": "res/items/common_compensator.png",
           "stats": {
             "weaponPower": 5
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "RAPID LOADER",
@@ -19,8 +18,7 @@
           "iconPath": "",
           "stats": {
             "reloadSpeed": 5
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "TARGETING SIGHT",
@@ -29,8 +27,7 @@
           "iconPath": "",
           "stats": {
             "criticalDamage": 5
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "ACCELERATOR",
@@ -39,8 +36,7 @@
           "iconPath": "",
           "stats": {
             "attackSpeed": 8
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "EXTENDED MAG",
@@ -49,8 +45,7 @@
           "iconPath": "",
           "stats": {
             "maxAmmo": 10
-          },
-          "sharedItem": true
+          }
         }
       ],
       "rare": [
@@ -61,8 +56,7 @@
           "iconPath": "",
           "stats": {
             "weaponPower": 12
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "TACTICAL LOADER",
@@ -71,8 +65,7 @@
           "iconPath": "",
           "stats": {
             "reloadSpeed": 15
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "PRECISION SIGHT",
@@ -81,8 +74,7 @@
           "iconPath": "",
           "stats": {
             "criticalDamage": 15
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "ENHANCED ACCELERATOR",
@@ -91,8 +83,7 @@
           "iconPath": "",
           "stats": {
             "attackSpeed": 15
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "TACTICAL MAG",
@@ -101,8 +92,7 @@
           "iconPath": "",
           "stats": {
             "maxAmmo": 20
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "VAMPIRIC ROUNDS",
@@ -111,8 +101,7 @@
           "iconPath": "",
           "stats": {
             "weaponLifesteal": 8
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "HEAVY CALIBER",
@@ -121,8 +110,7 @@
           "iconPath": "",
           "stats": {
             "weaponPower": 20
-          },
-          "sharedItem": true
+          }
         }
       ],
       "epic": [
@@ -133,8 +121,7 @@
           "iconPath": "",
           "stats": {
             "weaponPower": 25
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "HYPER LOADER",
@@ -143,8 +130,7 @@
           "iconPath": "",
           "stats": {
             "reloadSpeed": 30
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "QUANTUM SIGHT",
@@ -153,8 +139,7 @@
           "iconPath": "",
           "stats": {
             "criticalDamage": 30
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "HYPER ACCELERATOR",
@@ -163,8 +148,7 @@
           "iconPath": "",
           "stats": {
             "attackSpeed": 30
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "QUANTUM MAG",
@@ -173,8 +157,7 @@
           "iconPath": "",
           "stats": {
             "maxAmmo": 40
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "BLOODTHIRSTY ROUNDS",
@@ -183,8 +166,7 @@
           "iconPath": "",
           "stats": {
             "weaponLifesteal": 15
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "DEVASTATING CALIBER",
@@ -193,8 +175,7 @@
           "iconPath": "",
           "stats": {
             "weaponPower": 35
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "ARMOR PIERCING ROUNDS",
@@ -204,8 +185,7 @@
           "stats": {
             "weaponPower": 25,
             "criticalDamage": 20
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "COMBAT MEDIC ROUNDS",
@@ -215,8 +195,7 @@
           "stats": {
             "weaponPower": 15,
             "weaponLifesteal": 10
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "EXPERIMENTAL AMMUNITION",
@@ -226,8 +205,7 @@
           "stats": {
             "weaponPower": 40,
             "criticalDamage": 15
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "QUANTUM ACCELERATOR",
@@ -237,13 +215,11 @@
           "stats": {
             "weaponPower": 30,
             "attackSpeed": 20
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "UNSTABLE CORE",
           "cost": 10000, 
-          "isRed": true,
           "description": "Increases damage dramatically but damages the user over time.",
           "iconPath": "",
           "stats": {
@@ -261,8 +237,7 @@
           "iconPath": "",
           "stats": {
             "abilityPower": 5
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "EFFICIENCY MODULE",
@@ -271,8 +246,7 @@
           "iconPath": "",
           "stats": {
             "cooldownReduction": 5
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "ABILITY AMPLIFIER",
@@ -281,8 +255,7 @@
           "iconPath": "",
           "stats": {
             "abilityPower": 8
-          },
-          "sharedItem": true
+          }
         }
       ],
       "rare": [
@@ -293,8 +266,7 @@
           "iconPath": "",
           "stats": {
             "abilityPower": 15
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "TACTICAL MODULE",
@@ -303,8 +275,7 @@
           "iconPath": "",
           "stats": {
             "cooldownReduction": 15
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "ENHANCED AMPLIFIER",
@@ -314,8 +285,7 @@
           "stats": {
             "abilityPower": 18,
             "cooldownReduction": 8
-          },
-          "sharedItem": true
+          }
         }
       ],
       "epic": [
@@ -326,8 +296,7 @@
           "iconPath": "",
           "stats": {
             "abilityPower": 30
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "QUANTUM MODULE",
@@ -336,8 +305,7 @@
           "iconPath": "",
           "stats": {
             "cooldownReduction": 30
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "QUANTUM AMPLIFIER",
@@ -347,8 +315,7 @@
           "stats": {
             "abilityPower": 25,
             "cooldownReduction": 15
-          },
-          "sharedItem": true
+          }
         }
       ]
     },
@@ -361,8 +328,7 @@
           "iconPath": "",
           "stats": {
             "health": 50
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "MOBILITY ENHANCER",
@@ -371,8 +337,7 @@
           "iconPath": "",
           "stats": {
             "moveSpeed": 5
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "SHIELD GENERATOR",
@@ -381,8 +346,7 @@
           "iconPath": "",
           "stats": {
             "shield": 25
-          },
-          "sharedItem": true
+          }
         }
       ],
       "rare": [
@@ -394,8 +358,7 @@
           "stats": {
             "health": 100,
             "armor": 20
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "TACTICAL ENHANCER",
@@ -404,8 +367,7 @@
           "iconPath": "",
           "stats": {
             "moveSpeed": 15
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "ENHANCED GENERATOR",
@@ -414,8 +376,7 @@
           "iconPath": "",
           "stats": {
             "shield": 75
-          },
-          "sharedItem": true
+          }
         }
       ],
       "epic": [
@@ -427,8 +388,7 @@
           "stats": {
             "health": 150,
             "armor": 50
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "QUANTUM ENHANCER",
@@ -437,8 +397,7 @@
           "iconPath": "",
           "stats": {
             "moveSpeed": 30
-          },
-          "sharedItem": true
+          }
         },
         { 
           "name": "QUANTUM GENERATOR",
@@ -448,60 +407,9 @@
           "stats": {
             "shield": 100,
             "armor": 25
-          },
-          "sharedItem": true
+          }
         }
       ]
     }
-  },
-  "powers": [
-    {
-      "title": "FOCUSED FUSION",
-      "description": "[Fusion Cannon]'s spread is reduced by 66% and damage falloff range is 20m farther."
-    },
-    {
-      "title": "LEGENDARY LOADOUT",
-      "description": "[Micro Missiles] are replaced with 6 Heavy Rockets, which deal 350% more explosive damage and have 100% increased radius."
-    },
-    {
-      "title": "OVERSTOCKED",
-      "description": "Gain 1 extra charge of [Micro Missiles]."
-    },
-    {
-      "title": "COUNTERMEASURES",
-      "description": "When you mitigate 150 damage with [Defense Matrix], automatically fire 2 [Micro Missiles]."
-    },
-    {
-      "title": "FACETANKING",
-      "description": "[Defense Matrix] heals you for 30% of the damage it blocks."
-    },
-    {
-      "title": "ULTRAWIDE MATRIX",
-      "description": "Increase the size of [Defense Matrix] by 50% and its duration by 20%."
-    },
-    {
-      "title": "IGNITION BURST",
-      "description": "[Boosters] leave a trail of lava that deals 30 damage every 1s."
-    },
-    {
-      "title": "MEKA PUNCH",
-      "description": "While using [Boosters], [Quick Melee] deals 75% more damage. MEKA Punch eliminations reset the cooldown of [Boosters]."
-    },
-    {
-      "title": "STAT BOOST",
-      "description": "During the first 2s of [Boosters], [Defense Matrix] recovers 100% faster."
-    },
-    {
-      "title": "TOKKI SLAM",
-      "description": "During [Boosters], use crouch to slam the ground, dealing damage equal to 20% of your max Armor and knocking up enemies hit."
-    },
-    {
-      "title": "EXPRESS DETONATION",
-      "description": "[Self-Destruct] explodes 15% faster."
-    },
-    {
-      "title": "PARTY PROTECTOR",
-      "description": "When you use [Self-Destruct], allies within [Self-Destruct] radius gain 250 Overhealth for 8s."
-    }
-  ]
+  }
 } 

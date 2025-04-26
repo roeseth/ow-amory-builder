@@ -1,0 +1,76 @@
+{
+  "name": "Reinhardt",
+  "role": "Tank",
+  "portraitPath": "res/portraits/reinhardt.png",
+  "health": 300,
+  "armor": 325,
+  "shield": 0,
+  "moveSpeed": 5.5,
+  "meleeDamage": 30,
+  "weapons": [
+    {
+      "name": "Placeholder Weapon",
+      "type": "damage",
+      "damageValue": 70,
+      "criticalHitMultiplier": 2.0,
+      "attackSpeed": 1.5,
+      "ammo": 6,
+      "reloadSpeed": 1.5,
+      "lifeSteal": 0
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Placeholder Ability",
+      "type": "damage",
+      "damageValue": 100,
+      "healingValue": 0,
+      "duration": 3,
+      "cooldown": 8,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    }
+  ],
+  "specialItems": [
+    {
+      "name": "ROCKET HAMMER UPGRADE",
+      "cost": 3000,
+      "description": "Enhances Reinhardt's Rocket Hammer with increased damage and swing speed.",
+      "iconPath": "res/items/rein_hammer.png",
+      "stats": {
+        "weaponPower": 20,
+        "attackSpeed": 8
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "BARRIER REINFORCEMENT",
+      "cost": 3500,
+      "description": "Strengthens Reinhardt's Barrier Field with additional health and faster recharge.",
+      "iconPath": "res/items/rein_barrier.png",
+      "stats": {
+        "shield": 100,
+        "cooldownReduction": 10
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "CHARGE PROPULSION",
+      "cost": 4000,
+      "description": "Improves Reinhardt's Charge ability with increased distance and control.",
+      "iconPath": "res/items/rein_charge.png",
+      "stats": {
+        "moveSpeed": 15,
+        "abilityPower": 15
+      },
+      "sharedItem": false
+    }
+  ],
+  "powers": [
+    {
+      "title": "EARTHSHATTER MAGNITUDE",
+      "description": "Earthshatter's radius is increased by 25% and stun duration by 1 second."
+    }
+  ]
+} 

@@ -1,0 +1,76 @@
+{
+  "name": "Orisa",
+  "role": "Tank",
+  "portraitPath": "res/portraits/orisa.png",
+  "health": 275,
+  "armor": 275,
+  "shield": 0,
+  "moveSpeed": 5.5,
+  "meleeDamage": 30,
+  "weapons": [
+    {
+      "name": "Placeholder Weapon",
+      "type": "damage",
+      "damageValue": 70,
+      "criticalHitMultiplier": 2.0,
+      "attackSpeed": 1.5,
+      "ammo": 6,
+      "reloadSpeed": 1.5,
+      "lifeSteal": 0
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Placeholder Ability",
+      "type": "damage",
+      "damageValue": 100,
+      "healingValue": 0,
+      "duration": 3,
+      "cooldown": 8,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    }
+  ],
+  "specialItems": [
+    {
+      "name": "AUGMENTED FUSION DRIVER",
+      "cost": 3200,
+      "description": "Enhances Orisa's primary weapon with improved accuracy and damage.",
+      "iconPath": "res/items/orisa_fusion.png",
+      "stats": {
+        "weaponPower": 15,
+        "attackSpeed": 10
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "FORTIFICATION MODULE",
+      "cost": 3700,
+      "description": "Improves Orisa's Fortify ability, providing additional damage reduction.",
+      "iconPath": "res/items/orisa_fortify.png",
+      "stats": {
+        "armor": 40,
+        "health": 75
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "JAVELIN ENHANCEMENT",
+      "cost": 4200,
+      "description": "Increases the damage and stun duration of Orisa's Javelin.",
+      "iconPath": "res/items/orisa_javelin.png",
+      "stats": {
+        "abilityPower": 20,
+        "cooldownReduction": 15
+      },
+      "sharedItem": false
+    }
+  ],
+  "powers": [
+    {
+      "title": "IMPENETRABLE",
+      "description": "Fortify reduces damage taken by an additional 15% and reduces cooldown by 2 seconds."
+    }
+  ]
+} 

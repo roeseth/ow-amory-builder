@@ -1,0 +1,206 @@
+{
+  "name": "D.VA",
+  "role": "Tank",
+  "portraitPath": "res/portraits/dva.jpg",
+  "health": 225,
+  "armor": 325,
+  "shield": 0,
+  "moveSpeed": 5.5,
+  "meleeDamage": 30,
+  "weapons": [
+    {
+      "name": "Fusion Cannons",
+      "type": "damage",
+      "damageType": "direct",
+      "damageValue": 2,
+      "splashDamageToEnemy": 0,
+      "splashDamageToSelf": 0,
+      "criticalHitMultiplier": 2.0,
+      "attackSpeed": 6.67,
+      "ammo": 0,
+      "reloadSpeed": 0,
+      "lifeSteal": 0
+    },
+    {
+      "name": "Light Gun",
+      "type": "damage",
+      "damageType": "direct",
+      "damageValue": 14,
+      "splashDamageToEnemy": 0,
+      "splashDamageToSelf": 0,
+      "criticalHitMultiplier": 2.0,
+      "attackSpeed": 7,
+      "ammo": 20,
+      "reloadSpeed": 1.5,
+      "lifeSteal": 0
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Defense Matrix",
+      "type": "utility",
+      "damageType": "none",
+      "damageValue": 0,
+      "splashDamageToEnemy": 0,
+      "splashDamageToSelf": 0,
+      "healingValue": 0,
+      "duration": 3,
+      "cooldown": 1,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    },
+    {
+      "name": "Boosters",
+      "type": "mobility",
+      "damageType": "direct",
+      "damageValue": 10,
+      "splashDamageToEnemy": 0,
+      "splashDamageToSelf": 0,
+      "healingValue": 0,
+      "duration": 2,
+      "cooldown": 3.5,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 118
+    },
+    {
+      "name": "Micro Missiles",
+      "type": "damage",
+      "damageType": "splash",
+      "damageValue": 126,
+      "splashDamageToEnemy": 35,
+      "splashDamageToSelf": 0,
+      "healingValue": 0,
+      "duration": 1.6,
+      "cooldown": 8,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    },
+    {
+      "name": "Self-Destruct",
+      "type": "damage",
+      "damageType": "splash",
+      "damageValue": 1000,
+      "splashDamageToEnemy": 500,
+      "splashDamageToSelf": 0,
+      "healingValue": 0,
+      "duration": 3,
+      "cooldown": 0,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    },
+    {
+      "name": "Call Mech",
+      "type": "utility",
+      "damageType": "splash",
+      "damageValue": 250,
+      "splashDamageToEnemy": 100,
+      "splashDamageToSelf": 0,
+      "healingValue": 0,
+      "duration": 1.5,
+      "cooldown": 0,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": -100
+    }
+  ],
+  "items": {
+    "weapon": {
+      "epic": [
+        {
+          "name": "QUANTUM FUSION CORE",
+          "cost": 9000,
+          "description": "Cutting-edge technology that dramatically enhances D.Va's fusion cannons with devastating damage.",
+          "iconPath": "res/items/dva_fusion_epic.png",
+          "stats": {
+            "weaponPower": 25,
+            "attackSpeed": 15,
+            "criticalDamage": 20
+          }
+        }
+      ]
+    },
+    "ability": {
+      "epic": [
+        {
+          "name": "HYPER MATRIX PROJECTOR",
+          "cost": 9500,
+          "description": "Revolutionary defense matrix technology that dramatically increases coverage area and absorption capacity.",
+          "iconPath": "res/items/dva_matrix_epic.png",
+          "stats": {
+            "abilityPower": 30,
+            "cooldownReduction": 20
+          }
+        }
+      ]
+    },
+    "survival": {
+      "epic": [
+        {
+          "name": "EXPERIMENTAL MEKA REACTOR",
+          "cost": 9800,
+          "description": "Cutting-edge power system that dramatically improves MEKA durability and recovery systems.",
+          "iconPath": "res/items/dva_reactor.png",
+          "stats": {
+            "armor": 100,
+            "health": 100,
+            "moveSpeed": 15
+          }
+        }
+      ]
+    }
+  },
+  "powers": [
+    {
+      "title": "FOCUSED FUSION",
+      "description": "[Fusion Cannon]'s spread is reduced by 66% and damage falloff range is 20m farther."
+    },
+    {
+      "title": "LEGENDARY LOADOUT",
+      "description": "[Micro Missiles] are replaced with 6 Heavy Rockets, which deal 350% more explosive damage and have 100% increased radius."
+    },
+    {
+      "title": "OVERSTOCKED",
+      "description": "Gain 1 extra charge of [Micro Missiles]."
+    },
+    {
+      "title": "COUNTERMEASURES",
+      "description": "When you mitigate 150 damage with [Defense Matrix], automatically fire 2 [Micro Missiles]."
+    },
+    {
+      "title": "FACETANKING",
+      "description": "[Defense Matrix] heals you for 30% of the damage it blocks."
+    },
+    {
+      "title": "ULTRAWIDE MATRIX",
+      "description": "Increase the size of [Defense Matrix] by 50% and its duration by 20%."
+    },
+    {
+      "title": "IGNITION BURST",
+      "description": "[Boosters] leave a trail of lava that deals 30 damage every 1s."
+    },
+    {
+      "title": "MEKA PUNCH",
+      "description": "While using [Boosters], [Quick Melee] deals 75% more damage. MEKA Punch eliminations reset the cooldown of [Boosters]."
+    },
+    {
+      "title": "STAT BOOST",
+      "description": "During the first 2s of [Boosters], [Defense Matrix] recovers 100% faster."
+    },
+    {
+      "title": "TOKKI SLAM",
+      "description": "During [Boosters], use crouch to slam the ground, dealing damage equal to 20% of your max Armor and knocking up enemies hit."
+    },
+    {
+      "title": "EXPRESS DETONATION",
+      "description": "[Self-Destruct] explodes 15% faster."
+    },
+    {
+      "title": "PARTY PROTECTOR",
+      "description": "When you use [Self-Destruct], allies within [Self-Destruct] radius gain 250 Overhealth for 8s."
+    }
+  ]
+} 

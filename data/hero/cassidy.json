@@ -1,0 +1,76 @@
+{
+  "name": "Cassidy",
+  "role": "Damage",
+  "portraitPath": "res/portraits/cassidy.png",
+  "health": 225,
+  "armor": 0,
+  "shield": 0,
+  "moveSpeed": 5.5,
+  "meleeDamage": 30,
+  "weapons": [
+    {
+      "name": "Placeholder Weapon",
+      "type": "damage",
+      "damageValue": 70,
+      "criticalHitMultiplier": 2.0,
+      "attackSpeed": 1.5,
+      "ammo": 6,
+      "reloadSpeed": 1.5,
+      "lifeSteal": 0
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Placeholder Ability",
+      "type": "damage",
+      "damageValue": 100,
+      "healingValue": 0,
+      "duration": 3,
+      "cooldown": 8,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    }
+  ],
+  "specialItems": [
+    {
+      "name": "PEACEKEEPER UPGRADE",
+      "cost": 2900,
+      "description": "Enhances Cassidy's Peacekeeper with improved accuracy and damage.",
+      "iconPath": "res/items/cassidy_peacekeeper.png",
+      "stats": {
+        "weaponPower": 15,
+        "criticalDamage": 12
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "COMBAT ROLL ENHANCEMENT",
+      "cost": 3300,
+      "description": "Improves Cassidy's Combat Roll with reduced cooldown and increased mobility.",
+      "iconPath": "res/items/cassidy_roll.png",
+      "stats": {
+        "cooldownReduction": 15,
+        "moveSpeed": 10
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "MAGNETIC GRENADE AMPLIFIER",
+      "cost": 3800,
+      "description": "Enhances Cassidy's Magnetic Grenade with increased damage and radius.",
+      "iconPath": "res/items/cassidy_grenade.png",
+      "stats": {
+        "abilityPower": 20,
+        "cooldownReduction": 12
+      },
+      "sharedItem": false
+    }
+  ],
+  "powers": [
+    {
+      "title": "QUICKDRAW",
+      "description": "The first shot after Combat Roll deals 40% more damage and has perfect accuracy."
+    }
+  ]
+} 

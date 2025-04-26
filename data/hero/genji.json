@@ -1,0 +1,76 @@
+{
+  "name": "Genji",
+  "role": "Damage",
+  "portraitPath": "res/portraits/genji.png",
+  "health": 200,
+  "armor": 0,
+  "shield": 0,
+  "moveSpeed": 6.0,
+  "meleeDamage": 30,
+  "weapons": [
+    {
+      "name": "Placeholder Weapon",
+      "type": "damage",
+      "damageValue": 70,
+      "criticalHitMultiplier": 2.0,
+      "attackSpeed": 1.5,
+      "ammo": 6,
+      "reloadSpeed": 1.5,
+      "lifeSteal": 0
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Placeholder Ability",
+      "type": "damage",
+      "damageValue": 100,
+      "healingValue": 0,
+      "duration": 3,
+      "cooldown": 8,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    }
+  ],
+  "specialItems": [
+    {
+      "name": "SHURIKEN ENHANCEMENT",
+      "cost": 2700,
+      "description": "Enhances Genji's Shurikens with improved accuracy and damage.",
+      "iconPath": "res/items/genji_shuriken.png",
+      "stats": {
+        "weaponPower": 15,
+        "criticalDamage": 10
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "SWIFT STRIKE EXTENSION",
+      "cost": 3300,
+      "description": "Improves Genji's Swift Strike with increased range and damage.",
+      "iconPath": "res/items/genji_strike.png",
+      "stats": {
+        "abilityPower": 18,
+        "cooldownReduction": 12
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "DEFLECTION MASTERY",
+      "cost": 3700,
+      "description": "Enhances Genji's Deflect with longer duration and reduced cooldown.",
+      "iconPath": "res/items/genji_deflect.png",
+      "stats": {
+        "cooldownReduction": 15,
+        "moveSpeed": 10
+      },
+      "sharedItem": false
+    }
+  ],
+  "powers": [
+    {
+      "title": "CYBERNETIC AGILITY",
+      "description": "Swift Strike cooldown is reduced by 2 seconds on elimination and Genji's wall climb lasts 50% longer."
+    }
+  ]
+} 

@@ -1,0 +1,76 @@
+{
+  "name": "Ashe",
+  "role": "Damage",
+  "portraitPath": "res/portraits/ashe.png",
+  "health": 200,
+  "armor": 0,
+  "shield": 0,
+  "moveSpeed": 5.5,
+  "meleeDamage": 30,
+  "weapons": [
+    {
+      "name": "Placeholder Weapon",
+      "type": "damage",
+      "damageValue": 70,
+      "criticalHitMultiplier": 2.0,
+      "attackSpeed": 1.5,
+      "ammo": 6,
+      "reloadSpeed": 1.5,
+      "lifeSteal": 0
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Placeholder Ability",
+      "type": "damage",
+      "damageValue": 100,
+      "healingValue": 0,
+      "duration": 3,
+      "cooldown": 8,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    }
+  ],
+  "specialItems": [
+    {
+      "name": "VIPER ENHANCEMENT",
+      "cost": 2800,
+      "description": "Enhances Ashe's Viper rifle with improved accuracy and damage.",
+      "iconPath": "res/items/ashe_viper.png",
+      "stats": {
+        "weaponPower": 15,
+        "criticalDamage": 10
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "COACH GUN UPGRADE",
+      "cost": 3200,
+      "description": "Improves Ashe's Coach Gun with increased knockback and reduced cooldown.",
+      "iconPath": "res/items/ashe_coach.png",
+      "stats": {
+        "cooldownReduction": 15,
+        "abilityPower": 12
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "BOB OPTIMIZATION",
+      "cost": 4500,
+      "description": "Enhances B.O.B.'s combat capabilities with increased damage and duration.",
+      "iconPath": "res/items/ashe_bob.png",
+      "stats": {
+        "abilityPower": 20,
+        "cooldownReduction": 10
+      },
+      "sharedItem": false
+    }
+  ],
+  "powers": [
+    {
+      "title": "SHARPSHOOTER",
+      "description": "Aiming down sights with The Viper reduces damage falloff by 30% and increases headshot damage by 20%."
+    }
+  ]
+} 

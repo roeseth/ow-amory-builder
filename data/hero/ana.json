@@ -1,0 +1,77 @@
+{
+  "name": "Ana",
+  "role": "Support",
+  "portraitPath": "res/portraits/ana.png",
+  "health": 200,
+  "armor": 0,
+  "shield": 0,
+  "moveSpeed": 5.5,
+  "meleeDamage": 30,
+  "weapons": [
+    {
+      "name": "Placeholder Weapon",
+      "type": "healing",
+      "damageValue": 70,
+      "healingValue": 70,
+      "criticalHitMultiplier": 1.0,
+      "attackSpeed": 1.5,
+      "ammo": 12,
+      "reloadSpeed": 1.5,
+      "lifeSteal": 0
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Placeholder Ability",
+      "type": "healing",
+      "damageValue": 0,
+      "healingValue": 100,
+      "duration": 3,
+      "cooldown": 8,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    }
+  ],
+  "specialItems": [
+    {
+      "name": "BIOTIC RIFLE ENHANCEMENT",
+      "cost": 2800,
+      "description": "Enhances Ana's Biotic Rifle with improved healing and damage.",
+      "iconPath": "res/items/ana_rifle.png",
+      "stats": {
+        "abilityPower": 15,
+        "weaponPower": 10
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "SLEEP DART PRECISION",
+      "cost": 3200,
+      "description": "Improves Ana's Sleep Dart with reduced cooldown and increased duration.",
+      "iconPath": "res/items/ana_sleep.png",
+      "stats": {
+        "cooldownReduction": 15,
+        "abilityPower": 12
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "BIOTIC GRENADE AMPLIFIER",
+      "cost": 3800,
+      "description": "Enhances Ana's Biotic Grenade with increased healing boost and anti-heal duration.",
+      "iconPath": "res/items/ana_grenade.png",
+      "stats": {
+        "abilityPower": 20,
+        "cooldownReduction": 10
+      },
+      "sharedItem": false
+    }
+  ],
+  "powers": [
+    {
+      "title": "COMBAT MEDIC",
+      "description": "Ana's Biotic Rifle heals 25% more to allies below 50% health and deals 20% more damage to enemies above 75% health."
+    }
+  ]
+} 

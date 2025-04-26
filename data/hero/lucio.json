@@ -1,0 +1,77 @@
+{
+  "name": "Lucio",
+  "role": "Support",
+  "portraitPath": "res/portraits/lucio.png",
+  "health": 200,
+  "armor": 0,
+  "shield": 0,
+  "moveSpeed": 5.5,
+  "meleeDamage": 30,
+  "weapons": [
+    {
+      "name": "Placeholder Weapon",
+      "type": "damage",
+      "damageValue": 20,
+      "healingValue": 0,
+      "criticalHitMultiplier": 2.0,
+      "attackSpeed": 4,
+      "ammo": 20,
+      "reloadSpeed": 1.5,
+      "lifeSteal": 0
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Placeholder Ability",
+      "type": "healing",
+      "damageValue": 0,
+      "healingValue": 16,
+      "duration": 0,
+      "cooldown": 0,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 20
+    }
+  ],
+  "specialItems": [
+    {
+      "name": "SONIC AMPLIFIER ENHANCEMENT",
+      "cost": 2700,
+      "description": "Enhances Lucio's Sonic Amplifier with improved damage and knockback.",
+      "iconPath": "res/items/lucio_sonic.png",
+      "stats": {
+        "weaponPower": 15,
+        "attackSpeed": 10
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "CROSSFADE BOOSTER",
+      "cost": 3200,
+      "description": "Improves Lucio's Crossfade with increased healing and speed boost effects.",
+      "iconPath": "res/items/lucio_crossfade.png",
+      "stats": {
+        "abilityPower": 18,
+        "moveSpeed": 15
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "AMPED UP AMPLIFIER",
+      "cost": 3600,
+      "description": "Enhances Lucio's Amp It Up with increased effect magnitude and reduced cooldown.",
+      "iconPath": "res/items/lucio_amp.png",
+      "stats": {
+        "abilityPower": 15,
+        "cooldownReduction": 15
+      },
+      "sharedItem": false
+    }
+  ],
+  "powers": [
+    {
+      "title": "WALL RIDER",
+      "description": "Lucio's speed increases by 30% while wall riding and projectile speed is increased by 25%."
+    }
+  ]
+} 

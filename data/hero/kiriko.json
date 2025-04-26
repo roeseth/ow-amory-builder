@@ -1,0 +1,77 @@
+{
+  "name": "Kiriko",
+  "role": "Support",
+  "portraitPath": "res/portraits/kiriko.png",
+  "health": 200,
+  "armor": 0,
+  "shield": 0,
+  "moveSpeed": 5.5,
+  "meleeDamage": 30,
+  "weapons": [
+    {
+      "name": "Placeholder Weapon",
+      "type": "healing",
+      "damageValue": 70,
+      "healingValue": 70,
+      "criticalHitMultiplier": 1.0,
+      "attackSpeed": 1.5,
+      "ammo": 12,
+      "reloadSpeed": 1.5,
+      "lifeSteal": 0
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Placeholder Ability",
+      "type": "healing",
+      "damageValue": 0,
+      "healingValue": 100,
+      "duration": 3,
+      "cooldown": 8,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    }
+  ],
+  "specialItems": [
+    {
+      "name": "HEALING OFUDA ENHANCEMENT",
+      "cost": 2900,
+      "description": "Enhances Kiriko's Healing Ofuda with improved healing and seeking capabilities.",
+      "iconPath": "res/items/kiriko_ofuda.png",
+      "stats": {
+        "abilityPower": 18,
+        "cooldownReduction": 10
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "KUNAI PRECISION",
+      "cost": 3100,
+      "description": "Improves Kiriko's Kunai with increased damage and critical hit chance.",
+      "iconPath": "res/items/kiriko_kunai.png",
+      "stats": {
+        "weaponPower": 15,
+        "criticalDamage": 12
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "SWIFT STEP MASTERY",
+      "cost": 3500,
+      "description": "Enhances Kiriko's Swift Step with reduced cooldown and increased range.",
+      "iconPath": "res/items/kiriko_step.png",
+      "stats": {
+        "cooldownReduction": 15,
+        "moveSpeed": 10
+      },
+      "sharedItem": false
+    }
+  ],
+  "powers": [
+    {
+      "title": "SACRED PROTECTION",
+      "description": "Protection Suzu cleansing duration is increased by 1 second and applies a 20% damage reduction effect."
+    }
+  ]
+} 

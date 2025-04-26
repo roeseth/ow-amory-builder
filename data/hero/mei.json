@@ -1,0 +1,76 @@
+{
+  "name": "Mei",
+  "role": "Damage",
+  "portraitPath": "res/portraits/mei.png",
+  "health": 250,
+  "armor": 0,
+  "shield": 0,
+  "moveSpeed": 5.5,
+  "meleeDamage": 30,
+  "weapons": [
+    {
+      "name": "Placeholder Weapon",
+      "type": "damage",
+      "damageValue": 70,
+      "criticalHitMultiplier": 2.0,
+      "attackSpeed": 1.5,
+      "ammo": 6,
+      "reloadSpeed": 1.5,
+      "lifeSteal": 0
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Placeholder Ability",
+      "type": "damage",
+      "damageValue": 100,
+      "healingValue": 0,
+      "duration": 3,
+      "cooldown": 8,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    }
+  ],
+  "specialItems": [
+    {
+      "name": "ENDOTHERMIC ENHANCER",
+      "cost": 2800,
+      "description": "Enhances Mei's Endothermic Blaster with improved freeze rate and damage.",
+      "iconPath": "res/items/mei_blaster.png",
+      "stats": {
+        "weaponPower": 12,
+        "cooldownReduction": 10
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "ICE WALL REINFORCEMENT",
+      "cost": 3200,
+      "description": "Strengthens Mei's Ice Wall with increased health and reduced cooldown.",
+      "iconPath": "res/items/mei_wall.png",
+      "stats": {
+        "abilityPower": 15,
+        "cooldownReduction": 12
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "CRYO-FREEZE OPTIMIZER",
+      "cost": 3500,
+      "description": "Improves Mei's Cryo-Freeze with enhanced healing and reduced cooldown.",
+      "iconPath": "res/items/mei_freeze.png",
+      "stats": {
+        "health": 75,
+        "cooldownReduction": 15
+      },
+      "sharedItem": false
+    }
+  ],
+  "powers": [
+    {
+      "title": "DEEP FREEZE",
+      "description": "Mei's primary fire freezes enemies 20% faster and frozen enemies take 25% more damage from all sources."
+    }
+  ]
+} 

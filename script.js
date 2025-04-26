@@ -4,13 +4,73 @@ let isHoveringItem = false;  // Track if we're hovering over an item
 let config; // Config object loaded from JSON
 
 document.addEventListener('DOMContentLoaded', async function() {
-    // Load config from JSON file
+    // Reset localStorage to ensure we start fresh with new data structure
+    resetLocalStorage();
+    
+    // Load config from shared_items.json and hero-specific data
     try {
-        const response = await fetch('config.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        // Initialize config structure
+        config = { 
+            items: { weapon: {}, ability: {}, survival: {} }, 
+            powers: [],
+            hero: {} // Add hero data field
+        };
+        
+        // Load shared items first
+        const sharedResponse = await fetch('data/shared_items.json');
+        if (!sharedResponse.ok) {
+            throw new Error(`HTTP error! status: ${sharedResponse.status}`);
         }
-        config = await response.json();
+        const sharedData = await sharedResponse.json();
+        
+        // Load hero-specific data
+        const heroResponse = await fetch('data/hero/dva.json');
+        if (!heroResponse.ok) {
+            throw new Error(`HTTP error! status: ${heroResponse.status}`);
+        }
+        const heroData = await heroResponse.json();
+        
+        // Store hero data
+        config.hero = {
+            name: heroData.name,
+            health: heroData.health || 0,
+            armor: heroData.armor || 0, 
+            shield: heroData.shield || 0,
+            portraitPath: heroData.portraitPath || ''
+        };
+        
+        console.log("Loaded hero data:", config.hero);
+        
+        // Immediately update the default build data with correct life values
+        defaultBuildData.stats.life.health = config.hero.health || 0;
+        defaultBuildData.stats.life.armor = config.hero.armor || 0;
+        defaultBuildData.stats.life.shield = config.hero.shield || 0;
+        
+        console.log("Updated default build data with hero life stats:", defaultBuildData.stats.life);
+        
+        // Merge shared items with hero-specific items
+        // Start with shared items
+        Object.assign(config.items, sharedData.items);
+        
+        // Add hero-specific items
+        if (heroData.items) {
+            for (const category in heroData.items) {
+                for (const rarity in heroData.items[category]) {
+                    // Initialize arrays if they don't exist
+                    if (!config.items[category][rarity]) {
+                        config.items[category][rarity] = [];
+                    }
+                    // Add hero-specific items to the corresponding arrays
+                    config.items[category][rarity] = config.items[category][rarity].concat(heroData.items[category][rarity]);
+                }
+            }
+        }
+        
+        // Add powers from hero data
+        if (heroData.powers) {
+            config.powers = heroData.powers;
+        }
+        
         console.log('Config loaded successfully');
         
         // Create tooltip element to display item information
@@ -18,6 +78,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         tooltip.classList.add('item-tooltip');
         tooltip.style.display = 'none';
         document.body.appendChild(tooltip);
+        
+        // Update hero name and portrait in the UI
+        updateHeroUI();
         
         // Initialize tabs
         initTabs();
@@ -51,6 +114,77 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 });
 
+// Function to update hero name and portrait in UI
+function updateHeroUI() {
+    if (config && config.hero) {
+        console.log("Updating hero UI with:", config.hero);
+        
+        // Update hero name
+        const heroNameElement = document.querySelector('.hero');
+        if (heroNameElement && config.hero.name) {
+            heroNameElement.textContent = config.hero.name;
+            
+            // Update document title with hero name
+            document.title = `${config.hero.name} Build Panel`;
+        }
+        
+        // Update hero portrait if available
+        const portraitContainer = document.querySelector('.portrait');
+        const portraitElement = document.querySelector('.portrait-placeholder');
+        
+        if (portraitElement && config.hero.portraitPath) {
+            console.log("Setting portrait image to:", config.hero.portraitPath);
+            
+            // Remove the placeholder gradient
+            portraitElement.style.background = "none";
+            
+            // Set image properties
+            portraitElement.style.backgroundImage = `url(${config.hero.portraitPath})`;
+            portraitElement.style.backgroundSize = 'cover';
+            portraitElement.style.backgroundPosition = 'center center';
+            portraitElement.style.border = "none";
+            
+            // Add a small delay to allow the browser to process the style changes
+            setTimeout(() => {
+                // Ensure the container is visible
+                if (portraitContainer) {
+                    portraitContainer.style.overflow = "hidden";
+                    portraitContainer.style.display = "flex";
+                    portraitContainer.style.alignItems = "center";
+                    portraitContainer.style.justifyContent = "center";
+                }
+                
+                // Verify the image is loaded
+                console.log("Current background image:", portraitElement.style.backgroundImage);
+            }, 100);
+            
+            // Log image loading with an actual Image object
+            const img = new Image();
+            img.onload = () => {
+                console.log("Portrait image loaded successfully:", config.hero.portraitPath);
+                
+                // Force a repaint
+                portraitElement.style.opacity = "0.99";
+                setTimeout(() => {
+                    portraitElement.style.opacity = "1";
+                }, 50);
+            };
+            img.onerror = (err) => {
+                console.error("Error loading portrait image:", err);
+                // Fallback to a generic placeholder if image fails to load
+                portraitElement.style.background = "linear-gradient(135deg, #ff4d8c, #ff8a5c)";
+            };
+            img.src = config.hero.portraitPath;
+        } else {
+            console.warn("Could not set portrait: ", 
+                portraitElement ? "Missing portraitPath" : "Missing portrait element", 
+                config.hero ? config.hero.portraitPath : "No hero data");
+        }
+    } else {
+        console.warn("Hero data not available for UI update");
+    }
+}
+
 // Default build data structure
 const defaultBuildData = {
     cashByRound: {
@@ -76,14 +210,16 @@ const defaultBuildData = {
     maxPowers: 4,
     currentRound: 1,
     stats: {
+        // Life stats will be loaded from hero JSON file
         life: {
-            health: 350,
-            armor: 50,
-            shield: 50
+            health: 0,
+            armor: 0,
+            shield: 0
         },
+        // All other stats are modifiers (percentage increases)
         weaponPower: 0,
         abilityPower: 0,
-        attackSpeed: 5,
+        attackSpeed: 0,
         cooldownReduction: 0,
         maxAmmo: 0,
         weaponLifesteal: 0,
@@ -101,6 +237,19 @@ let buildData = { ...defaultBuildData };
 // Initialize build data from localStorage or default
 function initBuildData() {
     const savedData = localStorage.getItem('buildData');
+    
+    // Make sure we apply hero data first if config is loaded
+    if (config && config.hero) {
+        console.log("Hero life data from config:", config.hero);
+        // Update default build data with hero stats before potentially loading from localStorage
+        defaultBuildData.stats.life = {
+            health: config.hero.health || 0,
+            armor: config.hero.armor || 0,
+            shield: config.hero.shield || 0
+        };
+        console.log("Updated default build data:", defaultBuildData.stats.life);
+    }
+    
     if (savedData) {
         const parsedData = JSON.parse(savedData);
         
@@ -139,6 +288,20 @@ function initBuildData() {
         }
         
         buildData = parsedData;
+        
+        // Always override life stats with hero data
+        if (config && config.hero) {
+            buildData.stats.life = {
+                health: config.hero.health || 0,
+                armor: config.hero.armor || 0,
+                shield: config.hero.shield || 0
+            };
+            console.log("Overriding saved data with hero life data:", buildData.stats.life);
+        }
+    } else {
+        // Use default data
+        buildData = JSON.parse(JSON.stringify(defaultBuildData));
+        console.log("Using default build data with life:", buildData.stats.life);
     }
     
     // Ensure all rounds exist in the structure
@@ -154,9 +317,17 @@ function initBuildData() {
         }
     }
     
+    // Force a clear of localStorage to ensure we start fresh
+    localStorage.removeItem('buildData');
+    
     // Update cash and stats display
     updateCashDisplay();
     updateStatsDisplay();
+    
+    // Save the data with the updated life values
+    saveBuildData();
+    
+    console.log("Final buildData.stats.life:", buildData.stats.life);
 }
 
 // Initialize round selector
@@ -420,10 +591,6 @@ function createItemElement(item, rarity, isOwned = false) {
     itemElement.className = `item ${getRarityClass(rarity)}`;
     itemElement.dataset.itemId = item.id;
     
-    if (item.isRed) {
-        itemElement.className = 'item red-item';
-    }
-    
     if (isOwned) {
         itemElement.classList.add('owned');
     }
@@ -521,8 +688,7 @@ function purchaseAndEquipItem(itemId, itemElement, costElement, itemData) {
         id: itemId,
         type: itemData.type,
         rarity: itemData.rarity,
-        cost: itemData.cost,
-        isRed: itemData.isRed
+        cost: itemData.cost
     });
     
     // Update UI
@@ -597,10 +763,6 @@ function updateBuildDisplay() {
             
             const itemElement = document.createElement('div');
             itemElement.className = `item ${getRarityClass(item.rarity)}`;
-            
-            if (item.isRed) {
-                itemElement.className = 'item red-item';
-            }
             
             // Get the full item data to get the iconPath
             const fullItem = findItemById(item.id);
@@ -701,6 +863,11 @@ function populatePowers() {
                 const power = config.powers[i + j];
                 power.id = `power-${i + j}`;
                 
+                // Ensure power has an icon property (D.Va powers might not have icons)
+                if (!power.icon) {
+                    power.icon = 'res/items/power_default.png';
+                }
+                
                 // Check if power is already equipped
                 const isEquipped = buildData && 
                                    buildData.equippedPowers && 
@@ -744,8 +911,15 @@ function createPowerElement(power, isEquipped = false) {
     
     const powerIcon = document.createElement('div');
     powerIcon.className = 'power-icon';
-    // Add background image to the power icon
-    powerIcon.style.backgroundImage = `url(${power.icon})`;
+    // Add background image to the power icon - handle missing icon property
+    if (power.icon) {
+        powerIcon.style.backgroundImage = `url(${power.icon})`;
+    } else {
+        // Default icon or placeholder
+        powerIcon.style.backgroundImage = `url(res/items/power_default.png)`;
+        // If no icon, use a subtle background color
+        powerIcon.style.backgroundColor = 'rgba(58, 90, 154, 0.8)';
+    }
     
     const powerTitle = document.createElement('div');
     powerTitle.className = 'power-title';
@@ -865,7 +1039,16 @@ function updatePowerDisplay() {
                     const powerIcon = document.createElement('div');
                     powerIcon.className = 'power-icon';
                     powerIcon.setAttribute('data-power-id', power.id);
-                    powerIcon.style.backgroundImage = `url(${fullPower.icon})`;
+                    
+                    // Handle missing icon in power data
+                    if (fullPower.icon) {
+                        powerIcon.style.backgroundImage = `url(${fullPower.icon})`;
+                    } else {
+                        // Default icon or placeholder
+                        powerIcon.style.backgroundImage = `url(res/items/power_default.png)`;
+                        // If no icon, use a subtle background color
+                        powerIcon.style.backgroundColor = 'rgba(58, 90, 154, 0.8)';
+                    }
                     
                     // Add tooltip and highlight functionality
                     powerIcon.addEventListener('mouseenter', (event) => {
@@ -986,7 +1169,14 @@ function equipPower(powerId, powerElement) {
                 powerIcon.title = powerData.title;
                 
                 // Set background image for the power icon
-                powerIcon.style.backgroundImage = `url(${powerData.icon})`;
+                if (powerData.icon) {
+                    powerIcon.style.backgroundImage = `url(${powerData.icon})`;
+                } else {
+                    // Default icon or placeholder
+                    powerIcon.style.backgroundImage = `url(res/items/power_default.png)`;
+                    // If no icon, use a subtle background color
+                    powerIcon.style.backgroundColor = 'rgba(58, 90, 154, 0.8)';
+                }
                 
                 // Hide the empty slot instead of replacing it
                 emptySlot.style.display = 'none';
@@ -1171,11 +1361,21 @@ function initResetButton() {
         // Hide the modal
         resetModal.classList.remove('active');
         
-        // Reset to default data
+        // Start with clean default build data
         buildData = JSON.parse(JSON.stringify(defaultBuildData)); // Deep copy default data
         
-        // Remove from localStorage
-        localStorage.removeItem('buildData');
+        // Always ensure hero life stats are applied
+        if (config && config.hero) {
+            buildData.stats.life = {
+                health: config.hero.health || 0,
+                armor: config.hero.armor || 0,
+                shield: config.hero.shield || 0
+            };
+            console.log("Reset: Applied hero life stats to build data:", buildData.stats.life);
+        }
+        
+        // Reset localStorage completely
+        resetLocalStorage();
         
         // Reset the power cards in the power tab
         const powerCards = document.querySelectorAll('.power-card');
@@ -1202,6 +1402,9 @@ function initResetButton() {
         // Explicitly reinitialize hover effects
         initPowerHoverEffects();
         
+        // Save changes to localStorage
+        saveBuildData();
+        
         // Show success message
         showMessage('All data has been reset to defaults');
     });
@@ -1223,11 +1426,15 @@ function initResetButton() {
 
 // Update all stats displays
 function updateStatsDisplay() {
+    console.log("updateStatsDisplay - Life data:", buildData.stats.life);
+    
     // Calculate total life (health + armor + shield)
     const health = parseInt(buildData.stats.life.health) || 0;
     const armor = parseInt(buildData.stats.life.armor) || 0;
     const shield = parseInt(buildData.stats.life.shield) || 0;
     const totalLife = health + armor + shield;
+    
+    console.log("Displaying life values - Health:", health, "Armor:", armor, "Shield:", shield, "Total:", totalLife);
     
     // Update the life value in the header
     const lifeValue = document.querySelector('.total-life-value');
@@ -1413,8 +1620,8 @@ function updateStatBar(statId, value) {
         fillBar.style.backgroundColor = '#4CAF50';
     }
     
-    // Calculate percentage and set width
-    const percentage = Math.min(100, Math.max(0, (value / maxValue) * 100));
+    // Calculate percentage and set width - ensure it's at least visible when not 0
+    const percentage = value === 0 ? 0 : Math.min(100, Math.max(1, (value / maxValue) * 100));
     fillBar.style.width = `${percentage}%`;
     
     // Add the fill bar to the track
@@ -1433,7 +1640,7 @@ function updateStatBar(statId, value) {
         }
     }
     
-    // Update the numeric value
+    // Update the numeric value - show as percentage
     if (statId === 'life' || statId === 'total-life') {
         statValue.textContent = value;
     } else {
@@ -1443,40 +1650,40 @@ function updateStatBar(statId, value) {
 
 // Update item stats when purchased
 function updateItemStats(item, add = true) {
-    // Sample stat modifications based on item type and rarity
-    const statModifiers = {
-        weapon: {
-            common: { weaponPower: 5, attackSpeed: 3 },
-            rare: { weaponPower: 10, attackSpeed: 5, criticalDamage: 5 },
-            epic: { weaponPower: 20, attackSpeed: 8, criticalDamage: 10, weaponLifesteal: 5 }
-        },
-        ability: {
-            common: { abilityPower: 5, cooldownReduction: 3 },
-            rare: { abilityPower: 10, cooldownReduction: 8 },
-            epic: { abilityPower: 20, cooldownReduction: 12, abilityLifesteal: 5 }
-        },
-        survival: {
-            common: { health: 50 },
-            rare: { health: 80, armor: 20 },
-            epic: { health: 100, armor: 30, shield: 30, moveSpeed: 5 }
-        }
-    };
+    if (!item || !item.stats) return;
     
-    // Get modifiers based on item type and rarity
-    const modifiers = statModifiers[item.type]?.[item.rarity] || {};
-    const multiplier = add ? 1 : -1; // Add or subtract based on equip/unequip
-    
-    // Apply modifiers to stats
-    for (const [stat, value] of Object.entries(modifiers)) {
+    // Iterate through each stat in the item and apply the modification
+    for (const [stat, value] of Object.entries(item.stats)) {
         if (stat === 'health' || stat === 'armor' || stat === 'shield') {
-            buildData.stats.life[stat] += value * multiplier;
+            // Life stats are base values, not modifiers
+            if (!buildData.stats.life[stat]) {
+                buildData.stats.life[stat] = 0;
+            }
+            buildData.stats.life[stat] += value * (add ? 1 : -1);
+            
+            // Ensure we never go below 0
+            if (buildData.stats.life[stat] < 0) {
+                buildData.stats.life[stat] = 0;
+            }
         } else {
-            buildData.stats[stat] += value * multiplier;
+            // All other stats are percentage modifiers
+            if (buildData.stats[stat] === undefined) {
+                buildData.stats[stat] = 0;
+            }
+            buildData.stats[stat] += value * (add ? 1 : -1);
+            
+            // Ensure we never go below 0
+            if (buildData.stats[stat] < 0) {
+                buildData.stats[stat] = 0;
+            }
         }
     }
     
     // Update the display
     updateStatsDisplay();
+    
+    // Save the updated build data
+    saveBuildData();
 }
 
 // Function to format stat values with % sign for percentage stats
@@ -1521,7 +1728,7 @@ function showTooltip(item, event) {
     
     // Create tooltip content
     let tooltipContent = `
-        <div class="tooltip-header ${item.isRed ? 'red-item' : ''}">${item.name}</div>
+        <div class="tooltip-header">${item.name}</div>
     `;
     
     // Add stats if they exist
@@ -1590,7 +1797,7 @@ function hideTooltip() {
 // Function to update the item slot with event listeners for tooltip
 function updateItemSlot(slot, item) {
     slot.innerHTML = '';
-    slot.classList.remove('common-item', 'rare-item', 'epic-item', 'red-item', 'empty-slot');
+    slot.classList.remove('common-item', 'rare-item', 'epic-item', 'empty-slot');
     slot.classList.add('empty-slot');
     
     if (item) {
@@ -1608,9 +1815,7 @@ function updateItemSlot(slot, item) {
         slot.classList.remove('empty-slot');
         
         // Add class based on item rarity
-        if (item.isRed) {
-            slot.classList.add('red-item');
-        } else if (item.cost >= 9000) {
+        if (item.cost >= 9000) {
             slot.classList.add('epic-item');
         } else if (item.cost >= 3500) {
             slot.classList.add('rare-item');
@@ -1703,9 +1908,7 @@ function highlightTargetSlot(item, isOwned = false) {
             targetSlot.classList.add('target-slot');
             
             // Add the rarity class to show the right color
-            if (item.isRed) {
-                targetSlot.classList.add('target-red');
-            } else if (item.cost >= 9000) {
+            if (item.cost >= 9000) {
                 targetSlot.classList.add('target-epic');
             } else if (item.cost >= 3500) {
                 targetSlot.classList.add('target-rare');
@@ -1730,9 +1933,7 @@ function highlightTargetSlot(item, isOwned = false) {
             targetSlot.classList.add('target-slot');
             
             // Add the rarity class to show the right color
-            if (item.isRed) {
-                targetSlot.classList.add('target-red');
-            } else if (item.cost >= 9000) {
+            if (item.cost >= 9000) {
                 targetSlot.classList.add('target-epic');
             } else if (item.cost >= 3500) {
                 targetSlot.classList.add('target-rare');
@@ -1748,7 +1949,7 @@ function removeSlotHighlight() {
     // Remove the highlighting class from all slots
     const highlightedSlots = document.querySelectorAll('.target-slot');
     highlightedSlots.forEach(slot => {
-        slot.classList.remove('target-slot', 'target-common', 'target-rare', 'target-epic', 'target-red');
+        slot.classList.remove('target-slot', 'target-common', 'target-rare', 'target-epic');
     });
 }
 
@@ -1921,4 +2122,10 @@ function initPowerHoverEffects() {
         // Replace the original card
         card.parentNode.replaceChild(newCard, card);
     });
+}
+
+// Function to reset localStorage and ensure we start fresh
+function resetLocalStorage() {
+    console.log("Resetting localStorage to start fresh");
+    localStorage.removeItem('buildData');
 }

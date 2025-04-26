@@ -1,0 +1,76 @@
+{
+  "name": "Zarya",
+  "role": "Tank",
+  "portraitPath": "res/portraits/zarya.png",
+  "health": 250,
+  "armor": 0,
+  "shield": 225,
+  "moveSpeed": 5.5,
+  "meleeDamage": 30,
+  "weapons": [
+    {
+      "name": "Placeholder Weapon",
+      "type": "damage",
+      "damageValue": 70,
+      "criticalHitMultiplier": 2.0,
+      "attackSpeed": 1.5,
+      "ammo": 6,
+      "reloadSpeed": 1.5,
+      "lifeSteal": 0
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Placeholder Ability",
+      "type": "damage",
+      "damageValue": 100,
+      "healingValue": 0,
+      "duration": 3,
+      "cooldown": 8,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    }
+  ],
+  "specialItems": [
+    {
+      "name": "PARTICLE CANNON ENHANCEMENT",
+      "cost": 3100,
+      "description": "Enhances Zarya's Particle Cannon with improved damage and energy retention.",
+      "iconPath": "res/items/zarya_cannon.png",
+      "stats": {
+        "weaponPower": 18,
+        "attackSpeed": 7
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "PARTICLE BARRIER AMPLIFIER",
+      "cost": 3600,
+      "description": "Strengthens Zarya's Particle Barrier with increased absorption and duration.",
+      "iconPath": "res/items/zarya_barrier.png",
+      "stats": {
+        "shield": 75,
+        "cooldownReduction": 12
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "PROJECTED BARRIER BOOSTER",
+      "cost": 3900,
+      "description": "Improves Zarya's Projected Barrier with longer duration and increased energy gain.",
+      "iconPath": "res/items/zarya_projected.png",
+      "stats": {
+        "abilityPower": 15,
+        "cooldownReduction": 10
+      },
+      "sharedItem": false
+    }
+  ],
+  "powers": [
+    {
+      "title": "MAXIMUM CHARGE",
+      "description": "Zarya's maximum energy charge increases to 125 and decays 30% slower."
+    }
+  ]
+} 

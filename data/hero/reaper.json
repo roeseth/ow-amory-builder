@@ -1,0 +1,76 @@
+{
+  "name": "Reaper",
+  "role": "Damage",
+  "portraitPath": "res/portraits/reaper.png",
+  "health": 250,
+  "armor": 0,
+  "shield": 0,
+  "moveSpeed": 5.5,
+  "meleeDamage": 30,
+  "weapons": [
+    {
+      "name": "Placeholder Weapon",
+      "type": "damage",
+      "damageValue": 70,
+      "criticalHitMultiplier": 2.0,
+      "attackSpeed": 1.5,
+      "ammo": 6,
+      "reloadSpeed": 1.5,
+      "lifeSteal": 0
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Placeholder Ability",
+      "type": "damage",
+      "damageValue": 100,
+      "healingValue": 0,
+      "duration": 3,
+      "cooldown": 8,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    }
+  ],
+  "specialItems": [
+    {
+      "name": "HELLFIRE SHOTGUNS UPGRADE",
+      "cost": 3000,
+      "description": "Enhances Reaper's Hellfire Shotguns with improved damage and life steal.",
+      "iconPath": "res/items/reaper_shotguns.png",
+      "stats": {
+        "weaponPower": 15,
+        "weaponLifesteal": 10
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "WRAITH FORM EXTENSION",
+      "cost": 3300,
+      "description": "Improves Reaper's Wraith Form with increased duration and movement speed.",
+      "iconPath": "res/items/reaper_wraith.png",
+      "stats": {
+        "moveSpeed": 15,
+        "cooldownReduction": 12
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "SHADOW STEP ENHANCER",
+      "cost": 3500,
+      "description": "Enhances Reaper's Shadow Step with reduced cast time and cooldown.",
+      "iconPath": "res/items/reaper_shadow.png",
+      "stats": {
+        "cooldownReduction": 20,
+        "moveSpeed": 8
+      },
+      "sharedItem": false
+    }
+  ],
+  "powers": [
+    {
+      "title": "SOUL HARVEST",
+      "description": "Reaper's life steal from damage is increased by 20% and eliminations restore 50 health."
+    }
+  ]
+} 

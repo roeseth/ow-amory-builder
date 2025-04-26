@@ -1,0 +1,77 @@
+{
+  "name": "Juno",
+  "role": "Support",
+  "portraitPath": "res/portraits/juno.png",
+  "health": 200,
+  "armor": 0,
+  "shield": 0,
+  "moveSpeed": 5.5,
+  "meleeDamage": 30,
+  "weapons": [
+    {
+      "name": "Placeholder Weapon",
+      "type": "healing",
+      "damageValue": 70,
+      "healingValue": 70,
+      "criticalHitMultiplier": 1.0,
+      "attackSpeed": 1.5,
+      "ammo": 12,
+      "reloadSpeed": 1.5,
+      "lifeSteal": 0
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Placeholder Ability",
+      "type": "healing",
+      "damageValue": 0,
+      "healingValue": 100,
+      "duration": 3,
+      "cooldown": 8,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    }
+  ],
+  "specialItems": [
+    {
+      "name": "HEALING STAFF ENHANCEMENT",
+      "cost": 2800,
+      "description": "Enhances Juno's Healing Staff with improved healing output.",
+      "iconPath": "res/items/juno_staff.png",
+      "stats": {
+        "abilityPower": 18,
+        "cooldownReduction": 10
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "REJUVENATION PULSE AMPLIFIER",
+      "cost": 3300,
+      "description": "Improves Juno's Rejuvenation Pulse with increased healing and range.",
+      "iconPath": "res/items/juno_pulse.png",
+      "stats": {
+        "abilityPower": 15,
+        "cooldownReduction": 12
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "PROTECTION FIELD BOOSTER",
+      "cost": 3700,
+      "description": "Enhances Juno's Protection Field with increased damage reduction and duration.",
+      "iconPath": "res/items/juno_field.png",
+      "stats": {
+        "health": 75,
+        "shield": 50
+      },
+      "sharedItem": false
+    }
+  ],
+  "powers": [
+    {
+      "title": "REVITALIZING PRESENCE",
+      "description": "Juno's healing abilities provide a 15% healing boost that persists for 3 seconds after the initial heal."
+    }
+  ]
+} 

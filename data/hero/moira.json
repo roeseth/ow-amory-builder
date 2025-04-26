@@ -1,0 +1,77 @@
+{
+  "name": "Moira",
+  "role": "Support",
+  "portraitPath": "res/portraits/moira.png",
+  "health": 200,
+  "armor": 0,
+  "shield": 0,
+  "moveSpeed": 5.5,
+  "meleeDamage": 30,
+  "weapons": [
+    {
+      "name": "Placeholder Weapon",
+      "type": "damage",
+      "damageValue": 50,
+      "healingValue": 0,
+      "criticalHitMultiplier": 1.0,
+      "attackSpeed": 1,
+      "ammo": 0,
+      "reloadSpeed": 0,
+      "lifeSteal": 20
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Placeholder Ability",
+      "type": "healing",
+      "damageValue": 0,
+      "healingValue": 70,
+      "duration": 0,
+      "cooldown": 0,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    }
+  ],
+  "specialItems": [
+    {
+      "name": "BIOTIC GRASP ENHANCEMENT",
+      "cost": 3000,
+      "description": "Enhances Moira's Biotic Grasp with improved damage, healing, and resource generation.",
+      "iconPath": "res/items/moira_grasp.png",
+      "stats": {
+        "abilityPower": 15,
+        "weaponPower": 10
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "BIOTIC ORB AMPLIFIER",
+      "cost": 3400,
+      "description": "Improves Moira's Biotic Orbs with increased damage, healing, and duration.",
+      "iconPath": "res/items/moira_orb.png",
+      "stats": {
+        "abilityPower": 18,
+        "cooldownReduction": 12
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "FADE OPTIMIZER",
+      "cost": 3200,
+      "description": "Enhances Moira's Fade with increased distance, duration, and reduced cooldown.",
+      "iconPath": "res/items/moira_fade.png",
+      "stats": {
+        "moveSpeed": 15,
+        "cooldownReduction": 15
+      },
+      "sharedItem": false
+    }
+  ],
+  "powers": [
+    {
+      "title": "CELLULAR REGENERATION",
+      "description": "Moira's healing resource regenerates 25% faster and Biotic Grasp healing lingers for 2 additional seconds."
+    }
+  ]
+} 

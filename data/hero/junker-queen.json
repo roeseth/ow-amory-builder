@@ -1,0 +1,76 @@
+{
+  "name": "Junker Queen",
+  "role": "Tank",
+  "portraitPath": "res/portraits/junker-queen.png",
+  "health": 425,
+  "armor": 125,
+  "shield": 0,
+  "moveSpeed": 5.5,
+  "meleeDamage": 30,
+  "weapons": [
+    {
+      "name": "Placeholder Weapon",
+      "type": "damage",
+      "damageValue": 70,
+      "criticalHitMultiplier": 2.0,
+      "attackSpeed": 1.5,
+      "ammo": 6,
+      "reloadSpeed": 1.5,
+      "lifeSteal": 0
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Placeholder Ability",
+      "type": "damage",
+      "damageValue": 100,
+      "healingValue": 0,
+      "duration": 3,
+      "cooldown": 8,
+      "criticalHitMultiplier": 1.0,
+      "lifeStealPercentage": 0,
+      "moveSpeedModifier": 0
+    }
+  ],
+  "specialItems": [
+    {
+      "name": "SCATTERGUN ENHANCEMENT",
+      "cost": 3000,
+      "description": "Enhances Junker Queen's Scattergun with improved reload speed and damage.",
+      "iconPath": "res/items/junker_scattergun.png",
+      "stats": {
+        "weaponPower": 15,
+        "reloadSpeed": 10
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "JAGGED BLADE UPGRADE",
+      "cost": 3500,
+      "description": "Improves the Jagged Blade with additional damage and bleeding effects.",
+      "iconPath": "res/items/junker_blade.png",
+      "stats": {
+        "abilityPower": 15,
+        "cooldownReduction": 12
+      },
+      "sharedItem": false
+    },
+    {
+      "name": "ADRENALINE BOOSTER",
+      "cost": 4000,
+      "description": "Increases healing received from dealing damage to wounded enemies.",
+      "iconPath": "res/items/junker_adrenaline.png",
+      "stats": {
+        "health": 75,
+        "lifeSteal": 15
+      },
+      "sharedItem": false
+    }
+  ],
+  "powers": [
+    {
+      "title": "BATTLE CRY",
+      "description": "Commanding Shout provides 25% more health and increases its duration by 2 seconds."
+    }
+  ]
+} 

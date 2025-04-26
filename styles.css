@@ -5,6 +5,9 @@
     font-style: normal;
 }
 
+/* Import Roboto font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
 :root {
     /* Color palette */
     --bg-dark: #0a1525;
@@ -26,8 +29,6 @@
     --gradient-rare-end: #0a4080;
     --gradient-epic-start: #aa2aff;
     --gradient-epic-end: #5a0a80;
-    --gradient-red-start: #ff2a2a;
-    --gradient-red-end: #800a0a;
     --gradient-orange-start: #ff8a5c;
     --gradient-orange-end: #ff4d00;
     
@@ -46,7 +47,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto', sans-serif;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
 }
@@ -106,8 +107,8 @@ body {
 }
 
 .portrait {
-    width: 60px;
-    height: 60px;
+    width: 72px;
+    height: 72px;
     margin-right: 15px;
     border: 2px solid #3a5a9a;
     border-radius: 5px;
@@ -129,13 +130,13 @@ body {
 }
 
 .title {
-    font-size: 54px;
+    font-size: 48px;
     font-weight: bold;
     color: #8a9bbd;
     text-transform: uppercase;
     letter-spacing: 2px;
     text-shadow: 0 0 10px rgba(138, 155, 189, 0.5);
-    font-family: 'BigNoodleToo', 'Arial', sans-serif;
+    font-family: 'BigNoodleToo', 'Roboto', sans-serif;
     font-style: italic;
     margin-bottom: -24px;
     -webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 90%);
@@ -143,12 +144,12 @@ body {
 }
 
 .hero {
-    font-size: 36px;
+    font-size: 54px;
     font-weight: bold;
     color: #ffffff;
     text-transform: uppercase;
     letter-spacing: 2px;
-    font-family: 'BigNoodleToo', 'Arial', sans-serif;
+    font-family: 'BigNoodleToo', 'Roboto', sans-serif;
     font-style: italic;
     position: relative;
     z-index: 10;
@@ -182,12 +183,14 @@ body {
 
 .build-cost {
     font-size: 20px;
-    font-weight: bold;
+    font-weight: 900;
     color: #8a9bbd;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 15px;
+    letter-spacing: 1px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .diamond-icon {
@@ -258,13 +261,12 @@ body {
 
 .section-title {
     font-size: 13px;
-    font-weight: bold;
+    font-weight: 900;
     color: #8a9bbd;
     margin: 0 8px;
     text-align: center;
-    font-family: 'BigNoodleToo', 'Arial', sans-serif;
-    font-style: italic;
-    transform: skewX(-10deg);
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 1px;
 }
 
 .power-slots, .item-slots {
@@ -580,11 +582,12 @@ body {
 
 .tab {
     padding: 15px 20px;
-    font-weight: bold;
+    font-weight: 900;
     cursor: pointer;
     transition: all 0.3s ease;
     border-radius: 3px;
     margin: 2px 3px;
+    letter-spacing: 1px;
 }
 
 .tab:hover:not(.active) {
@@ -710,11 +713,13 @@ body {
 }
 
 .power-title {
-    font-weight: bold;
+    font-weight: 900;
     font-size: 14px;
     padding-left: 10px;
     color: var(--text-primary);
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 1px;
 }
 
 .power-description {
@@ -748,10 +753,11 @@ body {
 
 .column-header {
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 900;
     text-align: center;
     margin-bottom: 20px;
     color: #ffffff;
+    letter-spacing: 1px;
 }
 
 .items {
@@ -814,11 +820,6 @@ body {
 
 .epic-item {
     background: radial-gradient(circle, var(--gradient-epic-start) 0%, var(--gradient-epic-end) 100%);
-    border: 1px solid var(--border-secondary);
-}
-
-.red-item {
-    background: radial-gradient(circle, var(--gradient-red-start) 0%, var(--gradient-red-end) 100%);
     border: 1px solid var(--border-secondary);
 }
 
@@ -1019,8 +1020,7 @@ body {
 
 .item-slot .common-item,
 .item-slot .rare-item,
-.item-slot .epic-item,
-.item-slot .red-item {
+.item-slot .epic-item {
     background-repeat: no-repeat;
     border: 1px solid var(--border-secondary);
 }
@@ -1035,10 +1035,6 @@ body {
 
 .item-slot .epic-item {
     background: radial-gradient(circle, var(--gradient-epic-start) 0%, var(--gradient-epic-end) 100%);
-}
-
-.item-slot .red-item {
-    background: radial-gradient(circle, var(--gradient-red-start) 0%, var(--gradient-red-end) 100%);
 }
 
 .power-card.equipped {
@@ -1174,11 +1170,6 @@ body {
     border: 2px solid var(--gradient-epic-start);
 }
 
-.item-slot .red-item .item-image,
-.item-slot .red-item .item-icon {
-    border: 2px solid var(--gradient-red-start);
-}
-
 /* Make sure there's only one instance of these common target slot highlighting styles */
 .target-slot .empty-slot,
 .target-slot .item,
@@ -1302,7 +1293,7 @@ body {
 
 .round-tab {
     padding: 0 10px;
-    font-weight: bold;
+    font-weight: 900;
     cursor: pointer;
     transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
     border-radius: 3px;
@@ -1312,7 +1303,7 @@ body {
     justify-content: center;
     color: var(--subtle-text);
     font-size: 10px;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     white-space: nowrap;
     flex: 1;
     min-width: 50px;
@@ -1691,7 +1682,7 @@ body {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255, 255, 255, 0.2);
     padding: 12px;
     pointer-events: none; /* Ensure it doesn't interfere with mouse events */
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 14px;
     line-height: 1.4;
     transition: none !important;
@@ -1738,10 +1729,6 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
-}
-
-.tooltip-header.red-item {
-    color: #ff6b6b;
 }
 
 .tooltip-stats {
@@ -1802,9 +1789,4 @@ body {
 .item-slot .epic-item .item-image,
 .item-slot .epic-item .item-icon {
     border: 2px solid var(--gradient-epic-start);
-}
-
-.item-slot .red-item .item-image,
-.item-slot .red-item .item-icon {
-    border: 2px solid var(--gradient-red-start);
 }
