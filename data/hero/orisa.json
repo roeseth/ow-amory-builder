@@ -2,6 +2,7 @@
   "name": "Orisa",
   "role": "Tank",
   "portraitPath": "res/portraits/orisa.png",
+  "powerIcon": "res/power/orisa.png",
   "health": 275,
   "armor": 275,
   "shield": 0,

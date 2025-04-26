@@ -2,6 +2,7 @@
   "name": "Ashe",
   "role": "Damage",
   "portraitPath": "res/portraits/ashe.png",
+  "powerIcon": "res/power/ashe.png",
   "health": 200,
   "armor": 0,
   "shield": 0,

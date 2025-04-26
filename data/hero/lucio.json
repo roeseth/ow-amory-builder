@@ -2,6 +2,7 @@
   "name": "Lucio",
   "role": "Support",
   "portraitPath": "res/portraits/lucio.png",
+  "powerIcon": "res/power/lucio.png",
   "health": 200,
   "armor": 0,
   "shield": 0,

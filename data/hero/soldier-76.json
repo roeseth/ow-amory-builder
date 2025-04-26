@@ -2,6 +2,7 @@
   "name": "Soldier 76",
   "role": "Damage",
   "portraitPath": "res/portraits/soldier-76.png",
+  "powerIcon": "res/power/soldier-76.png",
   "health": 200,
   "armor": 0,
   "shield": 0,

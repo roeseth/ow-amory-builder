@@ -2,6 +2,7 @@
   "name": "Juno",
   "role": "Support",
   "portraitPath": "res/portraits/juno.png",
+  "powerIcon": "res/power/juno.png",
   "health": 200,
   "armor": 0,
   "shield": 0,

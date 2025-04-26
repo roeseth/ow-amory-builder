@@ -2,6 +2,7 @@
   "name": "Mei",
   "role": "Damage",
   "portraitPath": "res/portraits/mei.png",
+  "powerIcon": "res/power/mei.png",
   "health": 250,
   "armor": 0,
   "shield": 0,

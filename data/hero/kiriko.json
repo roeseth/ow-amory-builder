@@ -2,6 +2,7 @@
   "name": "Kiriko",
   "role": "Support",
   "portraitPath": "res/portraits/kiriko.png",
+  "powerIcon": "res/power/kiriko.png",
   "health": 200,
   "armor": 0,
   "shield": 0,

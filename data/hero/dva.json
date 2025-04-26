@@ -1,7 +1,8 @@
 {
   "name": "D.VA",
   "role": "Tank",
-  "portraitPath": "res/portraits/dva.jpg",
+  "portraitPath": "res/portraits/dva.png",
+  "powerIcon": "res/power/dva.png",
   "health": 225,
   "armor": 325,
   "shield": 0,

@@ -2,6 +2,7 @@
   "name": "Reinhardt",
   "role": "Tank",
   "portraitPath": "res/portraits/reinhardt.png",
+  "powerIcon": "res/power/reinhardt.png",
   "health": 300,
   "armor": 325,
   "shield": 0,

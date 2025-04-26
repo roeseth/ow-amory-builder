@@ -2,6 +2,7 @@
   "name": "Reaper",
   "role": "Damage",
   "portraitPath": "res/portraits/reaper.png",
+  "powerIcon": "res/power/reaper.png",
   "health": 250,
   "armor": 0,
   "shield": 0,

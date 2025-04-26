@@ -2,6 +2,7 @@
   "name": "Genji",
   "role": "Damage",
   "portraitPath": "res/portraits/genji.png",
+  "powerIcon": "res/power/genji.png",
   "health": 200,
   "armor": 0,
   "shield": 0,

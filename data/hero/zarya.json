@@ -2,6 +2,7 @@
   "name": "Zarya",
   "role": "Tank",
   "portraitPath": "res/portraits/zarya.png",
+  "powerIcon": "res/power/zarya.png",
   "health": 250,
   "armor": 0,
   "shield": 225,

@@ -2,6 +2,7 @@
   "name": "Mercy",
   "role": "Support",
   "portraitPath": "res/portraits/mercy.png",
+  "powerIcon": "res/power/mercy.png",
   "health": 200,
   "armor": 0,
   "shield": 0,

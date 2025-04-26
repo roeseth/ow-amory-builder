@@ -2,6 +2,7 @@
   "name": "Ana",
   "role": "Support",
   "portraitPath": "res/portraits/ana.png",
+  "powerIcon": "res/power/ana.png",
   "health": 200,
   "armor": 0,
   "shield": 0,

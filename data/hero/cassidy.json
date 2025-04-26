@@ -2,6 +2,7 @@
   "name": "Cassidy",
   "role": "Damage",
   "portraitPath": "res/portraits/cassidy.png",
+  "powerIcon": "res/power/cassidy.png",
   "health": 225,
   "armor": 0,
   "shield": 0,

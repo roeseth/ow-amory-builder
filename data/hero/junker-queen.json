@@ -2,6 +2,7 @@
   "name": "Junker Queen",
   "role": "Tank",
   "portraitPath": "res/portraits/junker-queen.png",
+  "powerIcon": "res/power/junker-queen.png",
   "health": 425,
   "armor": 125,
   "shield": 0,
