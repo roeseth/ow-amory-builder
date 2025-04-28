@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D.Va Build Panel</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="script.js"></script>
 </head>
 <body>
@@ -20,13 +19,72 @@
                     <div class="hero">D.VA</div>
                 </div>
             </div>
+            <div class="hero-roster">
+                <div class="hero-grid">
+                    <div class="hero-row">
+                        <div class="hero-icon" data-hero="dva">
+                            <img src="res/portraits/dva.png" alt="D.Va">
+                        </div>
+                        <div class="hero-icon" data-hero="reinhardt">
+                            <img src="res/portraits/reinhardt.png" alt="Reinhardt">
+                        </div>
+                        <div class="hero-icon" data-hero="zarya">
+                            <img src="res/portraits/zarya.png" alt="Zarya">
+                        </div>
+                        <div class="hero-icon" data-hero="orisa">
+                            <img src="res/portraits/orisa.png" alt="Orisa">
+                        </div>
+                        <div class="hero-icon" data-hero="junker-queen">
+                            <img src="res/portraits/junker-queen.png" alt="Junker Queen">
+                        </div>
+                        <div class="hero-icon" data-hero="soldier-76">
+                            <img src="res/portraits/soldier-76.png" alt="Soldier 76">
+                        </div>
+                        <div class="hero-icon" data-hero="reaper">
+                            <img src="res/portraits/reaper.png" alt="Reaper">
+                        </div>
+                        <div class="hero-icon" data-hero="mei">
+                            <img src="res/portraits/mei.png" alt="Mei">
+                        </div>
+                    </div>
+                    <div class="hero-row">
+                        <div class="hero-icon" data-hero="genji">
+                            <img src="res/portraits/genji.png" alt="Genji">
+                        </div>
+                        <div class="hero-icon" data-hero="ashe">
+                            <img src="res/portraits/ashe.png" alt="Ashe">
+                        </div>
+                        <div class="hero-icon" data-hero="cassidy">
+                            <img src="res/portraits/cassidy.png" alt="Cassidy">
+                        </div>
+                        <div class="hero-icon" data-hero="mercy">
+                            <img src="res/portraits/mercy.png" alt="Mercy">
+                        </div>
+                        <div class="hero-icon" data-hero="ana">
+                            <img src="res/portraits/ana.png" alt="Ana">
+                        </div>
+                        <div class="hero-icon" data-hero="moira">
+                            <img src="res/portraits/moira.png" alt="Moira">
+                        </div>
+                        <div class="hero-icon" data-hero="lucio">
+                            <img src="res/portraits/lucio.png" alt="Lucio">
+                        </div>
+                        <div class="hero-icon" data-hero="kiriko">
+                            <img src="res/portraits/kiriko.png" alt="Kiriko">
+                        </div>
+                        <div class="hero-icon" data-hero="juno">
+                            <img src="res/portraits/juno.png" alt="Juno">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="main-content">
             <div class="left-panel">
                 <div class="build-cost">
                     <span>CASH:</span>
-                    <span class="diamond-icon"><i class="fas fa-gem"></i></span>
+                    <span class="diamond-icon"></span>
                     <span class="cost">1,000</span>
                 </div>
 
@@ -62,9 +120,7 @@
                 <div class="items-section">
                     <div class="item-slots">
                         <div class="item-slot">
-                            <div class="item common-item">
-                                <div class="item-icon"></div>
-                            </div>
+                            <div class="empty-slot"></div>
                         </div>
                         <div class="item-slot">
                             <div class="empty-slot"></div>
@@ -91,7 +147,7 @@
                             <div class="stat-value total-life-value">0</div>
                         </div>
                         <div class="stat-bar-wrapper">
-                            <div class="stat-icon"><i class="fas fa-heart"></i></div>
+                            <div class="stat-icon"><img src="res/ui/icon_life.svg" alt="Life" class="stat-icon-img"></div>
                             <div class="stat-track total-life-track">
                                 <!-- Segments will be created by JS -->
                             </div>
@@ -102,65 +158,65 @@
                     <div class="stats-columns">
                         <!-- Left column -->
                         <div class="stats-column">
-                            <div class="stat-group">
+                            <div class="stat-group" data-stat-id="weapon-power">
                                 <div class="stat-header">
                                     <div class="stat-name">Weapon Power</div>
                                     <div class="stat-value">0</div>
                                 </div>
                                 <div class="stat-bar-wrapper">
-                                    <div class="stat-icon">⚔️</div>
+                                    <div class="stat-icon"><img src="res/ui/icon_weapon_power.svg" alt="Weapon Power" class="stat-icon-img"></div>
                                     <div class="stat-track">
                                         <!-- Segments will be created by JS -->
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="stat-group">
+                            <div class="stat-group" data-stat-id="ability-power">
                                 <div class="stat-header">
                                     <div class="stat-name">Ability Power</div>
                                     <div class="stat-value">0</div>
                                 </div>
                                 <div class="stat-bar-wrapper">
-                                    <div class="stat-icon">✨</div>
+                                    <div class="stat-icon"><img src="res/ui/icon_ability_power.svg" alt="Ability Power" class="stat-icon-img"></div>
                                     <div class="stat-track">
                                         <!-- Segments will be created by JS -->
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="stat-group">
+                            <div class="stat-group" data-stat-id="attack-speed">
                                 <div class="stat-header">
                                     <div class="stat-name">Attack Speed</div>
                                     <div class="stat-value">0</div>
                                 </div>
                                 <div class="stat-bar-wrapper">
-                                    <div class="stat-icon">⚡</div>
+                                    <div class="stat-icon"><img src="res/ui/icon_attack_speed.svg" alt="Attack Speed" class="stat-icon-img"></div>
                                     <div class="stat-track">
                                         <!-- Segments will be created by JS -->
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="stat-group">
+                            <div class="stat-group" data-stat-id="cooldown-reduction">
                                 <div class="stat-header">
                                     <div class="stat-name">Cooldown Reduction</div>
                                     <div class="stat-value">0</div>
                                 </div>
                                 <div class="stat-bar-wrapper">
-                                    <div class="stat-icon">⏱️</div>
+                                    <div class="stat-icon"><img src="res/ui/icon_cooldown_reduction.svg" alt="Cooldown Reduction" class="stat-icon-img"></div>
                                     <div class="stat-track">
                                         <!-- Segments will be created by JS -->
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="stat-group">
+                            <div class="stat-group" data-stat-id="max-ammo">
                                 <div class="stat-header">
                                     <div class="stat-name">Max Ammo</div>
                                     <div class="stat-value">0</div>
                                 </div>
                                 <div class="stat-bar-wrapper">
-                                    <div class="stat-icon">🔫</div>
+                                    <div class="stat-icon"><img src="res/ui/icon_max_ammo.svg" alt="Max Ammo" class="stat-icon-img"></div>
                                     <div class="stat-track">
                                         <!-- Segments will be created by JS -->
                                     </div>
@@ -170,78 +226,78 @@
                         
                         <!-- Right column -->
                         <div class="stats-column">
-                            <div class="stat-group">
+                            <div class="stat-group" data-stat-id="weapon-lifesteal">
                                 <div class="stat-header">
                                     <div class="stat-name">Weapon Lifesteal</div>
                                     <div class="stat-value">0</div>
                                 </div>
                                 <div class="stat-bar-wrapper">
-                                    <div class="stat-icon">💉</div>
+                                    <div class="stat-icon"><img src="res/ui/icon_weapon_lifesteal.svg" alt="Weapon Lifesteal" class="stat-icon-img"></div>
                                     <div class="stat-track">
                                         <!-- Segments will be created by JS -->
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="stat-group">
-                                <div class="stat-header">
-                                    <div class="stat-name">Critical Damage</div>
-                                    <div class="stat-value">0</div>
-                                </div>
-                                <div class="stat-bar-wrapper">
-                                    <div class="stat-icon">💢</div>
-                                    <div class="stat-track">
-                                        <!-- Segments will be created by JS -->
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="stat-group">
+                            <div class="stat-group" data-stat-id="ability-lifesteal">
                                 <div class="stat-header">
                                     <div class="stat-name">Ability Lifesteal</div>
                                     <div class="stat-value">0</div>
                                 </div>
                                 <div class="stat-bar-wrapper">
-                                    <div class="stat-icon">🌀</div>
+                                    <div class="stat-icon"><img src="res/ui/icon_ability_lifesteal.svg" alt="Ability Lifesteal" class="stat-icon-img"></div>
                                     <div class="stat-track">
                                         <!-- Segments will be created by JS -->
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="stat-group">
+                            <div class="stat-group" data-stat-id="move-speed">
                                 <div class="stat-header">
                                     <div class="stat-name">Move Speed</div>
                                     <div class="stat-value">0</div>
                                 </div>
                                 <div class="stat-bar-wrapper">
-                                    <div class="stat-icon">🏃</div>
+                                    <div class="stat-icon"><img src="res/ui/icon_move_speed.svg" alt="Move Speed" class="stat-icon-img"></div>
                                     <div class="stat-track">
                                         <!-- Segments will be created by JS -->
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="stat-group">
+                            <div class="stat-group" data-stat-id="critical-damage">
+                                <div class="stat-header">
+                                    <div class="stat-name">Critical Damage</div>
+                                    <div class="stat-value">0</div>
+                                </div>
+                                <div class="stat-bar-wrapper">
+                                    <div class="stat-icon"><img src="res/ui/icon_critical_damage.svg" alt="Critical Damage" class="stat-icon-img"></div>
+                                    <div class="stat-track">
+                                        <!-- Segments will be created by JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-group" data-stat-id="reload-speed">
                                 <div class="stat-header">
                                     <div class="stat-name">Reload Speed</div>
                                     <div class="stat-value">0</div>
                                 </div>
                                 <div class="stat-bar-wrapper">
-                                    <div class="stat-icon">🔄</div>
+                                    <div class="stat-icon"><img src="res/ui/icon_reload_spped.svg" alt="Reload Speed" class="stat-icon-img"></div>
                                     <div class="stat-track">
                                         <!-- Segments will be created by JS -->
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="stat-group">
+                            <div class="stat-group" data-stat-id="melee-damage">
                                 <div class="stat-header">
                                     <div class="stat-name">Melee Damage</div>
                                     <div class="stat-value">0</div>
                                 </div>
                                 <div class="stat-bar-wrapper">
-                                    <div class="stat-icon">👊</div>
+                                    <div class="stat-icon"><img src="res/ui/icon_melee_damage.svg" alt="Melee Damage" class="stat-icon-img"></div>
                                     <div class="stat-track">
                                         <!-- Segments will be created by JS -->
                                     </div>
@@ -267,7 +323,7 @@
                         </div>
                     </div>
                     <div class="reset-container">
-                        <button id="reset-button" class="reset-tab">RESET</button>
+                        <button id="reset-button" class="reset-tab">RESET HERO</button>
                     </div>
                 </div>
 
@@ -277,6 +333,7 @@
                         <div class="tab" data-tab="ability">ABILITY</div>
                         <div class="tab" data-tab="survival">SURVIVAL</div>
                         <div class="tab" data-tab="power">POWER</div>
+                        <div class="tab" data-tab="advanced">ADVANCED</div>
                     </div>
                 </div>
 
@@ -286,135 +343,21 @@
                     <div class="item-column">
                         <div class="column-header">COMMON</div>
                         <div class="items">
-                            <div class="item-row">
-                                <div class="item common-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 1,000</div>
-                                </div>
-                                <div class="item common-item owned">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost">Owned</div>
-                                </div>
-                                <div class="item common-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 1,000</div>
-                                </div>
-                            </div>
-                            <div class="item-row">
-                                <div class="item common-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 1,500</div>
-                                </div>
-                                <div class="item common-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 1,500</div>
-                                </div>
-                                <div class="empty-item"></div>
-                            </div>
+                            <!-- Items will be populated by JavaScript -->
                         </div>
                     </div>
 
                     <div class="item-column">
                         <div class="column-header">RARE</div>
                         <div class="items">
-                            <div class="item-row">
-                                <div class="item rare-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 3,750</div>
-                                </div>
-                                <div class="item rare-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 4,000</div>
-                                </div>
-                                <div class="item rare-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 4,000</div>
-                                </div>
-                            </div>
-                            <div class="item-row">
-                                <div class="item rare-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 4,000</div>
-                                </div>
-                                <div class="item rare-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 4,500</div>
-                                </div>
-                                <div class="item rare-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 5,000</div>
-                                </div>
-                            </div>
-                            <div class="item-row">
-                                <div class="item rare-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 5,500</div>
-                                </div>
-                                <div class="empty-item"></div>
-                                <div class="empty-item"></div>
-                            </div>
+                            <!-- Items will be populated by JavaScript -->
                         </div>
                     </div>
 
                     <div class="item-column">
                         <div class="column-header">EPIC</div>
                         <div class="items">
-                            <div class="item-row">
-                                <div class="item epic-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 9,000</div>
-                                </div>
-                                <div class="item epic-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 9,500</div>
-                                </div>
-                                <div class="item epic-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 9,500</div>
-                                </div>
-                            </div>
-                            <div class="item-row">
-                                <div class="item epic-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 10,000</div>
-                                </div>
-                                <div class="item epic-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 10,000</div>
-                                </div>
-                                <div class="item epic-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 11,000</div>
-                                </div>
-                            </div>
-                            <div class="item-row">
-                                <div class="item epic-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 11,000</div>
-                                </div>
-                                <div class="item epic-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 11,000</div>
-                                </div>
-                                <div class="item epic-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 11,000</div>
-                                </div>
-                            </div>
-                            <div class="item-row">
-                                <div class="item epic-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 13,000</div>
-                                </div>
-                                <div class="item epic-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 13,500</div>
-                                </div>
-                                <div class="item red-item">
-                                    <div class="item-icon"></div>
-                                    <div class="item-cost"><i class="fas fa-gem"></i> 10,000</div>
-                                </div>
-                            </div>
+                            <!-- Items will be populated by JavaScript -->
                         </div>
                     </div>
                 </div>
@@ -425,60 +368,21 @@
                         <div class="item-column">
                             <div class="column-header">COMMON</div>
                             <div class="items">
-                                <div class="item-row">
-                                    <div class="item common-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 1,200</div>
-                                    </div>
-                                    <div class="item common-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 1,300</div>
-                                    </div>
-                                    <div class="item common-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 1,400</div>
-                                    </div>
-                                </div>
+                                <!-- Items will be populated by JavaScript -->
                             </div>
                         </div>
                         
                         <div class="item-column">
                             <div class="column-header">RARE</div>
                             <div class="items">
-                                <div class="item-row">
-                                    <div class="item rare-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 4,200</div>
-                                    </div>
-                                    <div class="item rare-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 4,300</div>
-                                    </div>
-                                    <div class="item rare-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 4,400</div>
-                                    </div>
-                                </div>
+                                <!-- Items will be populated by JavaScript -->
                             </div>
                         </div>
                         
                         <div class="item-column">
                             <div class="column-header">EPIC</div>
                             <div class="items">
-                                <div class="item-row">
-                                    <div class="item epic-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 9,200</div>
-                                    </div>
-                                    <div class="item epic-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 9,300</div>
-                                    </div>
-                                    <div class="item epic-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 9,400</div>
-                                    </div>
-                                </div>
+                                <!-- Items will be populated by JavaScript -->
                             </div>
                         </div>
                     </div>
@@ -489,60 +393,21 @@
                         <div class="item-column">
                             <div class="column-header">COMMON</div>
                             <div class="items">
-                                <div class="item-row">
-                                    <div class="item common-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 1,600</div>
-                                    </div>
-                                    <div class="item common-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 1,700</div>
-                                    </div>
-                                    <div class="item common-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 1,800</div>
-                                    </div>
-                                </div>
+                                <!-- Items will be populated by JavaScript -->
                             </div>
                         </div>
                         
                         <div class="item-column">
                             <div class="column-header">RARE</div>
                             <div class="items">
-                                <div class="item-row">
-                                    <div class="item rare-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 4,600</div>
-                                    </div>
-                                    <div class="item rare-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 4,700</div>
-                                    </div>
-                                    <div class="item rare-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 4,800</div>
-                                    </div>
-                                </div>
+                                <!-- Items will be populated by JavaScript -->
                             </div>
                         </div>
                         
                         <div class="item-column">
                             <div class="column-header">EPIC</div>
                             <div class="items">
-                                <div class="item-row">
-                                    <div class="item epic-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 9,600</div>
-                                    </div>
-                                    <div class="item epic-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 9,700</div>
-                                    </div>
-                                    <div class="item epic-item">
-                                        <div class="item-icon"></div>
-                                        <div class="item-cost"><i class="fas fa-gem"></i> 9,800</div>
-                                    </div>
-                                </div>
+                                <!-- Items will be populated by JavaScript -->
                             </div>
                         </div>
                     </div>
@@ -551,6 +416,126 @@
                 <div class="tab-pane" id="power-tab">
                     <div class="power-grid">
                         <!-- Powers will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="tab-pane" id="advanced-tab">
+                    <div class="advanced-options">
+                        <div class="advanced-section">
+                            <div class="section-header">
+                                <div class="section-title">ECONOMY OPTIONS</div>
+                            </div>
+                            <div class="option-row">
+                                <div class="option-label">Economy Mode:</div>
+                                <div class="option-control">
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="economy-mode-toggle">
+                                        <label for="economy-mode-toggle" class="toggle-label"></label>
+                                        <span class="toggle-text" id="toggle-text">Unlimited (Build Cost)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="economy-simulation-options">
+                                <div class="preset-toggle-row">
+                                    <div class="preset-toggle-switch">
+                                        <input type="checkbox" id="custom-toggle">
+                                        <label for="custom-toggle" class="toggle-label"></label>
+                                        <span class="toggle-text">Custom Values</span>
+                                    </div>
+                                    <div class="button-group">
+                                        <button id="reset-presets" class="preset-button">RESET</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="preset-table-header">
+                                    <div class="round-column">Round</div>
+                                    <div class="preset-column">Low</div>
+                                    <div class="preset-column">Normal</div>
+                                    <div class="preset-column">High</div>
+                                    <div class="custom-column">Custom</div>
+                                </div>
+                                
+                                <div class="economy-presets">
+                                    <div class="economy-preset-row" data-round="1">
+                                        <div class="round-column">Round 1</div>
+                                        <div class="preset-column low" data-value="4000">4,000</div>
+                                        <div class="preset-column normal selected" data-value="5000">5,000</div>
+                                        <div class="preset-column high" data-value="6000">6,000</div>
+                                        <div class="custom-column">
+                                            <input type="range" id="economy-slider-1" class="economy-slider" min="1000" max="10000" step="100" value="5000" disabled>
+                                            <span class="slider-value" id="slider-value-1">5000</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="economy-preset-row" data-round="2">
+                                        <div class="round-column">Round 2</div>
+                                        <div class="preset-column low" data-value="4500">4,500</div>
+                                        <div class="preset-column normal selected" data-value="5500">5,500</div>
+                                        <div class="preset-column high" data-value="6500">6,500</div>
+                                        <div class="custom-column">
+                                            <input type="range" id="economy-slider-2" class="economy-slider" min="1000" max="10000" step="100" value="5500" disabled>
+                                            <span class="slider-value" id="slider-value-2">5500</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="economy-preset-row" data-round="3">
+                                        <div class="round-column">Round 3</div>
+                                        <div class="preset-column low" data-value="5000">5,000</div>
+                                        <div class="preset-column normal selected" data-value="6000">6,000</div>
+                                        <div class="preset-column high" data-value="7000">7,000</div>
+                                        <div class="custom-column">
+                                            <input type="range" id="economy-slider-3" class="economy-slider" min="1000" max="10000" step="100" value="6000" disabled>
+                                            <span class="slider-value" id="slider-value-3">6000</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="economy-preset-row" data-round="4">
+                                        <div class="round-column">Round 4</div>
+                                        <div class="preset-column low" data-value="5500">5,500</div>
+                                        <div class="preset-column normal selected" data-value="6500">6,500</div>
+                                        <div class="preset-column high" data-value="7500">7,500</div>
+                                        <div class="custom-column">
+                                            <input type="range" id="economy-slider-4" class="economy-slider" min="1000" max="10000" step="100" value="6500" disabled>
+                                            <span class="slider-value" id="slider-value-4">6500</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="economy-preset-row" data-round="5">
+                                        <div class="round-column">Round 5</div>
+                                        <div class="preset-column low" data-value="6000">6,000</div>
+                                        <div class="preset-column normal selected" data-value="7000">7,000</div>
+                                        <div class="preset-column high" data-value="8000">8,000</div>
+                                        <div class="custom-column">
+                                            <input type="range" id="economy-slider-5" class="economy-slider" min="1000" max="10000" step="100" value="7000" disabled>
+                                            <span class="slider-value" id="slider-value-5">7000</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="economy-preset-row" data-round="6">
+                                        <div class="round-column">Round 6</div>
+                                        <div class="preset-column low" data-value="6500">6,500</div>
+                                        <div class="preset-column normal selected" data-value="7500">7,500</div>
+                                        <div class="preset-column high" data-value="8500">8,500</div>
+                                        <div class="custom-column">
+                                            <input type="range" id="economy-slider-6" class="economy-slider" min="1000" max="10000" step="100" value="7500" disabled>
+                                            <span class="slider-value" id="slider-value-6">7500</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="economy-preset-row" data-round="7">
+                                        <div class="round-column">Round 7</div>
+                                        <div class="preset-column low" data-value="7000">7,000</div>
+                                        <div class="preset-column normal selected" data-value="8000">8,000</div>
+                                        <div class="preset-column high" data-value="9000">9,000</div>
+                                        <div class="custom-column">
+                                            <input type="range" id="economy-slider-7" class="economy-slider" min="1000" max="10000" step="100" value="8000" disabled>
+                                            <span class="slider-value" id="slider-value-7">8000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

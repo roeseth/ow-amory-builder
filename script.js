@@ -1,57 +1,268 @@
+// Global Constants
+const MAX_ITEMS = 6;
+const MAX_POWERS = 4;
+const ROUND_SLOTS = [1, 3, 5, 7];
+const ROUND_TO_SLOT_MAP = {
+    1: 0,  // first slot is for round 1
+    3: 1,  // second slot is for round 3 
+    5: 2,  // third slot is for round 5
+    7: 3   // fourth slot is for round 7
+};
+
+// Default values
+const DEFAULT_ECONOMY_VALUES = {
+    low: {
+        1: 3000,
+        2: 3500,
+        3: 4000,
+        4: 4500,
+        5: 5000,
+        6: 5500,
+        7: 6000
+    },
+    normal: {
+        1: 5000,
+        2: 5500,
+        3: 6000,
+        4: 6500,
+        5: 7000,
+        6: 7500,
+        7: 8000
+    },
+    high: {
+        1: 7000,
+        2: 7500,
+        3: 8000,
+        4: 8500,
+        5: 9000,
+        6: 9500,
+        7: 10000
+    }
+};
+
+// Default build data structure
+const DEFAULT_BUILD_DATA = {
+    equippedItemsByRound: {
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: [],
+        6: [],
+        7: []
+    },
+    equippedPowers: {
+        1: null,
+        3: null,
+        5: null,
+        7: null
+    },
+};
+
+const DEFAULT_HERO_DATA = {
+    items: { weapon: {}, ability: {}, survival: {} },
+    powers: [],
+    hero: null // Add hero data field
+};
+
 // Global variable for tooltip
 let tooltip;
 let isHoveringItem = false;  // Track if we're hovering over an item
-let config; // Config object loaded from JSON
 
-document.addEventListener('DOMContentLoaded', async function() {
-    // Reset localStorage to ensure we start fresh with new data structure
-    resetLocalStorage();
-    
+// State Storage which are persistable
+const builds = {
+    heroes: {},
+    economySettings: {
+        simulationMode: false, // false = unlimited, true = simulation
+        economyPresets: {}, // Stores selected preset for each round (1-7)
+        customValues: {     // Stores custom values for each preset for each round
+            low: {},        // Structure: { 1: value, 2: value, ... }
+            normal: {},     // Structure: { 1: value, 2: value, ... }
+            high: {}        // Structure: { 1: value, 2: value, ... }
+        }
+    }
+};
+
+// State tracked in the flight
+let currentHero = '';
+let currentRound = 1;
+let cashByRound = {};
+let costByRound = {};
+let stats = {
+    // Life stats will be loaded from hero JSON file
+    life: {
+        health: 0,
+        armor: 0,
+        shield: 0
+    },
+    // All other stats are modifiers (percentage increases)
+    weaponPower: 0,
+    abilityPower: 0,
+    attackSpeed: 0,
+    cooldownReduction: 0,
+    maxAmmo: 0,
+    weaponLifesteal: 0,
+    abilityLifesteal: 0,
+    moveSpeed: 0,
+    reloadSpeed: 0,
+    meleeDamage: 0,
+    criticalDamage: 0
+}
+let config = {}; // Stores the loaded config data
+// Global cash variable removed - cash is now tracked per hero in builds.heroes[heroId]
+
+function isDisabledRound() {
+    return currentRound % 2 === 0;
+}
+
+// Set current hero
+function setCurrentHero(heroId) {
+    currentHero = heroId;
+    // Initialize hero state if it doesn't exist
+    getHeroBuild(heroId);
+}
+
+// Get current hero state
+function getCurrentHeroBuild() {
+    return getHeroBuild(currentHero);
+}
+
+// Get hero state for a specific hero, initialize if needed
+function getHeroBuild(heroId) {
+    // Initialize a new hero state if needed
+    if (!builds.heroes[heroId]) {
+        builds.heroes[heroId] = JSON.parse(JSON.stringify(DEFAULT_BUILD_DATA)); // Deep copy
+    }
+    return builds.heroes[heroId];
+}
+
+// Reset hero build
+function resetHeroBuild(heroId) {
+    builds.heroes[heroId] = JSON.parse(JSON.stringify(DEFAULT_BUILD_DATA));
+    // No need for purchasedItems array in the new structure
+    builds.heroes[heroId].cashByRound = {}; // Initialize empty cashByRound object
+}
+
+function updateCost(round, cost) {
+    costByRound[round] = cost;
+}
+
+function updateCash(round, cash) {
+    cashByRound[round] = cash;
+}
+
+// Get global economy settings
+function getEconomySettings() {
+    return builds.economySettings;
+}
+
+function isEconomyModeSimulation() {
+    return builds.economySettings.simulationMode;
+}
+
+// Update economy mode (unlimited vs simulation)
+function setEconomyModeUnlimited() {
+    builds.economySettings.simulationMode = false;
+}
+
+function setEconomyModeSimulation() {
+    builds.economySettings.simulationMode = true;
+}
+
+// Update economy preset for a specific round
+function setEconomyPreset(round, preset) {
+    builds.economySettings.economyPresets[round] = preset;
+}
+
+// Update economy value for a specific round and preset
+function setEconomyValue(round, preset, value) {
+    // Ensure customValues structure exists
+    if (!builds.economySettings.customValues[preset]) {
+        builds.economySettings.customValues[preset] = {};
+    }
+
+    // Update the value for this specific preset and round
+    builds.economySettings.customValues[preset][round] = value;
+}
+
+// Get economy preset value for a round
+function getEconomyPresetValue(round, presetName) {
+    // Check if we have a custom value for this preset and round
+    if (builds.economySettings.customValues &&
+        builds.economySettings.customValues[presetName] &&
+        builds.economySettings.customValues[presetName][round] !== undefined) {
+        return builds.economySettings.customValues[presetName][round];
+    }
+
+    // Fall back to default value
+    return DEFAULT_ECONOMY_VALUES[presetName][round];
+}
+
+function getCurrentRoundBudget() {
+    // Get the currently selected preset for this round
+    const selectedPreset = builds.economySettings.economyPresets[currentRound] || 'normal';
+
+    // Get the value for this preset (custom or default)
+    return getEconomyPresetValue(currentRound, selectedPreset);
+}
+
+// Reset all economy presets to default normal values
+function resetEconomyPresets() {
+    for (let round = 1; round <= 7; round++) {
+        builds.economySettings.economyPresets[round] = 'normal';
+
+        // Reset all custom values to defaults
+        builds.economySettings.customValues.low[round] = DEFAULT_ECONOMY_VALUES.low[round];
+        builds.economySettings.customValues.normal[round] = DEFAULT_ECONOMY_VALUES.normal[round];
+        builds.economySettings.customValues.high[round] = DEFAULT_ECONOMY_VALUES.high[round];
+    }
+}
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', async function () {
+    // Initialize economy structure if needed
+    if (!builds.economySettings.customValues) {
+        builds.economySettings.customValues = {
+            low: {},
+            normal: {},
+            high: {}
+        };
+    }
+
+    // Initialize default values for all presets and rounds
+    resetEconomyPresets();
+
+    // Set initial hero ID (used by subsequent functions)
+    setCurrentHero('dva'); // Sets currentHero and ensures builds.heroes['dva'] exists
+
     // Load config from shared_items.json and hero-specific data
     try {
         // Initialize config structure
-        config = { 
-            items: { weapon: {}, ability: {}, survival: {} }, 
-            powers: [],
-            hero: {} // Add hero data field
-        };
-        
+        config = JSON.parse(JSON.stringify(DEFAULT_HERO_DATA));
+
         // Load shared items first
         const sharedResponse = await fetch('data/shared_items.json');
         if (!sharedResponse.ok) {
             throw new Error(`HTTP error! status: ${sharedResponse.status}`);
         }
         const sharedData = await sharedResponse.json();
-        
+
         // Load hero-specific data
-        const heroResponse = await fetch('data/hero/dva.json');
+        const heroResponse = await fetch(`data/hero/${currentHero}.json`);
         if (!heroResponse.ok) {
             throw new Error(`HTTP error! status: ${heroResponse.status}`);
         }
         const heroData = await heroResponse.json();
-        
-        // Store hero data
-        config.hero = {
-            name: heroData.name,
-            health: heroData.health || 0,
-            armor: heroData.armor || 0, 
-            shield: heroData.shield || 0,
-            portraitPath: heroData.portraitPath || ''
-        };
-        
+
+        // Store hero data metadata
+        config.hero = heroData;
+
         console.log("Loaded hero data:", config.hero);
-        
-        // Immediately update the default build data with correct life values
-        defaultBuildData.stats.life.health = config.hero.health || 0;
-        defaultBuildData.stats.life.armor = config.hero.armor || 0;
-        defaultBuildData.stats.life.shield = config.hero.shield || 0;
-        
-        console.log("Updated default build data with hero life stats:", defaultBuildData.stats.life);
-        
+
         // Merge shared items with hero-specific items
         // Start with shared items
         Object.assign(config.items, sharedData.items);
-        
+
         // Add hero-specific items
         if (heroData.items) {
             for (const category in heroData.items) {
@@ -65,104 +276,246 @@ document.addEventListener('DOMContentLoaded', async function() {
                 }
             }
         }
-        
+
         // Add powers from hero data
         if (heroData.powers) {
             config.powers = heroData.powers;
         }
-        
+
         console.log('Config loaded successfully');
-        
-        // Create tooltip element to display item information
+
+        // --- Initialize UI Elements and Listeners (Setup Phase) ---
+
+        // Create tooltip element (needs to exist before potential use)
         tooltip = document.createElement('div');
         tooltip.classList.add('item-tooltip');
         tooltip.style.display = 'none';
         document.body.appendChild(tooltip);
-        
-        // Update hero name and portrait in the UI
-        updateHeroUI();
-        
-        // Initialize tabs
+
+        // Initialize tabs (event listeners)
         initTabs();
-        
-        // Initialize build data
-        initBuildData();
-        
-        // Initialize round selector
+
+        // Initialize round selector (event listeners)
         initRoundSelector();
-        
-        // Initialize reset button
+
+        // Initialize reset button (event listeners)
         initResetButton();
-        
-        // Populate items and powers from config
-        populateItems();
-        populatePowers();
-        
-        // Update build display
-        updateBuildDisplay();
-        updatePowerDisplay();
-        updateRoundDisplay();
-        
-        // Update stats display initially
-        updateStatsDisplay();
-        
-        // Add new function to initialize hover effects properly
-        initPowerHoverEffects();
+
+        // Initialize hero roster (event listeners)
+        initHeroRoster();
+
+        // Initialize advanced options (event listeners)
+        initAdvancedOptionsListeners(); // Renamed and focused on listeners
+
+        // --- Update UI Based on Initial State (Render Phase) ---
+        updateUI(); // Single call to render the initial state
+
     } catch (error) {
-        console.error('Error loading config:', error);
-        alert('Failed to load configuration data. Please refresh the page.');
+        console.error('Error during initialization:', error);
+        showMessage('Failed to initialize application. Please refresh the page.', 'error');
     }
 });
+
+// Central function to update the entire UI based on current state
+function updateUI() {
+    console.log("--- Updating Full UI ---");
+    updateHeroUI(); // Update hero name/portrait based on config.hero
+    calculateCurrentStats(); // Reset stats and apply effects from equipped items/powers
+    updateRoundDisplay(); // Update visual cues on power slots based on currentRound
+    populateItems(); // Populate item lists based on config and current build state (handles 'owned')
+    populatePowers(); // Populate power list based on config and current build state (handles 'equipped', disabled states)
+    updateBuildDisplay(); // Render equipped items for the current round
+    updatePowerDisplay(); // Render equipped powers and attach hover/click listeners
+    updateStatsDisplay(); // Recalculate and display all stats based on the 'stats' object
+    updateCashDisplay(); // Update build cost / remaining cash display based on economy mode and round cost
+    updateAdvancedOptionsUI(); // Refresh economy panel visuals based on 'builds.economySettings'
+    // Note: initPowerHoverEffects is now integrated into updatePowerDisplay
+    console.log("--- Full UI Update Complete ---");
+}
+
+// Hero roster initialization
+function initHeroRoster() {
+    console.log("Current hero:", currentHero);
+    const heroIcons = document.querySelectorAll('.hero-icon');
+
+    // Set the current hero as active
+    const currentHeroElement = document.querySelector(`.hero-icon[data-hero="${currentHero}"]`);
+    if (currentHeroElement) {
+        currentHeroElement.classList.add('active');
+    }
+
+    heroIcons.forEach(icon => {
+        icon.addEventListener('click', async function () {
+            const heroId = this.dataset.hero;
+
+            // Skip if already selected
+            if (this.classList.contains('active')) {
+                return;
+            }
+
+            // Show loading state
+            document.body.style.cursor = 'wait';
+            this.style.opacity = '0.5';
+
+            try {
+                // Remove active class from all icons
+                heroIcons.forEach(icon => icon.classList.remove('active'));
+
+                // Add active class to clicked icon
+                this.classList.add('active');
+
+                // Switch to the selected hero
+                await loadHero(heroId);
+
+                // Reset cursor
+                document.body.style.cursor = 'default';
+                this.style.opacity = '1';
+
+                // Show success message
+                showMessage(`Switched to ${getHeroName(heroId)}`);
+            } catch (error) {
+                console.error('Error switching hero:', error);
+                document.body.style.cursor = 'default';
+                this.style.opacity = '1';
+                showMessage('Error loading hero data');
+            }
+        });
+    });
+}
+
+// Helper function to get the hero name from the hero ID
+function getHeroName(heroId) {
+    // Convert from kebab-case to proper case
+    const name = heroId.split('-').map(part =>
+        part.charAt(0).toUpperCase() + part.slice(1)
+    ).join(' ');
+
+    // Special case for D.Va
+    return name === 'Dva' ? 'D.Va' : name;
+}
+
+// Function to load hero data and update the UI
+async function loadHero(heroName) {
+    if (!heroName) return;
+
+    try {
+        // Show loading indicator
+        document.body.style.cursor = 'wait';
+
+        // --- State Update ---
+        // Fetch hero data
+        const response = await fetch(`data/hero/${heroName}.json`);
+        if (!response.ok) {
+            throw new Error(`Failed to load hero data for ${heroName}`);
+        }
+        const data = await response.json();
+
+        // Validate hero data structure
+        const hasValidData = data && typeof data === 'object' && data.hero && (data.powers || Array.isArray(data.powers));
+        if (!hasValidData) {
+            showMessage(`Warning: ${getHeroName(heroName)} has incomplete data structure`, 'warning');
+        }
+
+        // Set current hero state
+        setCurrentHero(heroName); // Updates currentHero and initializes build state if needed
+
+        // Reset and update config with new hero data
+        // Initialize config structure (re-initialize to clear old hero specifics)
+        config = JSON.parse(JSON.stringify(DEFAULT_HERO_DATA));
+
+        // Load shared items again (as config was reset)
+        const sharedResponse = await fetch('data/shared_items.json');
+        if (!sharedResponse.ok) throw new Error(`HTTP error! status: ${sharedResponse.status}`);
+        const sharedData = await sharedResponse.json();
+        Object.assign(config.items, sharedData.items);
+
+        // Store new hero data metadata
+        config.hero = data;
+
+        // Merge hero-specific items
+        if (data.items) {
+            for (const category in data.items) {
+                for (const rarity in data.items[category]) {
+                    if (!config.items[category]) config.items[category] = {}; // Ensure category exists
+                    if (!config.items[category][rarity]) config.items[category][rarity] = [];
+                    config.items[category][rarity] = config.items[category][rarity].concat(data.items[category][rarity]);
+                }
+            }
+        }
+
+        // Add powers from hero data
+        if (data.powers) {
+            config.powers = data.powers;
+        } else {
+            showMessage(`Warning: No powers found for ${getHeroName(heroName)}`, 'warning');
+            config.powers = []; // Ensure powers is an empty array if none found
+        }
+
+        // Check if items data is valid after merge
+        const hasValidItems = config.items && typeof config.items === 'object' && (config.items.weapon || config.items.ability || config.items.survival);
+        if (!hasValidItems) {
+            showMessage(`Warning: No items found for ${getHeroName(heroName)}`, 'warning');
+        }
+
+        // --- UI Update ---
+        updateUI(); // Update the entire UI based on the new state
+
+        // Reset cursor
+        document.body.style.cursor = 'default';
+        return true;
+
+    } catch (error) {
+        console.error("Error loading hero:", error);
+        document.body.style.cursor = 'default';
+        showMessage(`Error loading hero ${getHeroName(heroName)}: ${error.message}`, 'error');
+        // Attempt to revert to the previous hero if possible? Or maybe just leave UI in error state.
+        return false;
+    } finally {
+        // Ensure cursor is always reset
+        document.body.style.cursor = 'default';
+    }
+}
 
 // Function to update hero name and portrait in UI
 function updateHeroUI() {
     if (config && config.hero) {
-        console.log("Updating hero UI with:", config.hero);
-        
+        // console.log("Updating hero UI with:", config.hero); // Reduce console noise
+
         // Update hero name
         const heroNameElement = document.querySelector('.hero');
         if (heroNameElement && config.hero.name) {
             heroNameElement.textContent = config.hero.name;
-            
+
             // Update document title with hero name
             document.title = `${config.hero.name} Build Panel`;
         }
-        
+
         // Update hero portrait if available
-        const portraitContainer = document.querySelector('.portrait');
         const portraitElement = document.querySelector('.portrait-placeholder');
-        
+
         if (portraitElement && config.hero.portraitPath) {
-            console.log("Setting portrait image to:", config.hero.portraitPath);
-            
+            // console.log("Setting portrait image to:", config.hero.portraitPath);
+
             // Remove the placeholder gradient
             portraitElement.style.background = "none";
-            
+
             // Set image properties
             portraitElement.style.backgroundImage = `url(${config.hero.portraitPath})`;
             portraitElement.style.backgroundSize = 'cover';
             portraitElement.style.backgroundPosition = 'center center';
             portraitElement.style.border = "none";
-            
+
             // Add a small delay to allow the browser to process the style changes
             setTimeout(() => {
-                // Ensure the container is visible
-                if (portraitContainer) {
-                    portraitContainer.style.overflow = "hidden";
-                    portraitContainer.style.display = "flex";
-                    portraitContainer.style.alignItems = "center";
-                    portraitContainer.style.justifyContent = "center";
-                }
-                
                 // Verify the image is loaded
-                console.log("Current background image:", portraitElement.style.backgroundImage);
+                // console.log("Current background image:", portraitElement.style.backgroundImage);
             }, 100);
-            
+
             // Log image loading with an actual Image object
             const img = new Image();
             img.onload = () => {
-                console.log("Portrait image loaded successfully:", config.hero.portraitPath);
-                
+                // console.log("Portrait image loaded successfully:", config.hero.portraitPath);
+
                 // Force a repaint
                 portraitElement.style.opacity = "0.99";
                 setTimeout(() => {
@@ -170,209 +523,126 @@ function updateHeroUI() {
                 }, 50);
             };
             img.onerror = (err) => {
-                console.error("Error loading portrait image:", err);
+                // console.error("Error loading portrait image:", err);
                 // Fallback to a generic placeholder if image fails to load
                 portraitElement.style.background = "linear-gradient(135deg, #ff4d8c, #ff8a5c)";
             };
             img.src = config.hero.portraitPath;
         } else {
-            console.warn("Could not set portrait: ", 
-                portraitElement ? "Missing portraitPath" : "Missing portrait element", 
+            console.warn("Could not set portrait: ",
+                portraitElement ? "Missing portraitPath" : "Missing portrait element",
                 config.hero ? config.hero.portraitPath : "No hero data");
         }
     } else {
-        console.warn("Hero data not available for UI update");
+        // console.warn("Hero data not available for UI update");
     }
 }
 
-// Default build data structure
-const defaultBuildData = {
-    cashByRound: {
-        1: 5000,
-        2: 5000,
-        3: 5000,
-        4: 5000,
-        5: 5000,
-        6: 5000,
-        7: 5000
-    },
-    equippedItemsByRound: {
-        1: [],
-        2: [],
-        3: [],
-        4: [],
-        5: [],
-        6: [],
-        7: []
-    },
-    equippedPowers: [],
-    maxItems: 6,
-    maxPowers: 4,
-    currentRound: 1,
-    stats: {
-        // Life stats will be loaded from hero JSON file
-        life: {
-            health: 0,
-            armor: 0,
-            shield: 0
-        },
-        // All other stats are modifiers (percentage increases)
-        weaponPower: 0,
-        abilityPower: 0,
-        attackSpeed: 0,
-        cooldownReduction: 0,
-        maxAmmo: 0,
-        weaponLifesteal: 0,
-        abilityLifesteal: 0,
-        moveSpeed: 0,
-        reloadSpeed: 0,
-        meleeDamage: 0,
-        criticalDamage: 0
-    }
-};
-
-// Global variable to store build data
-let buildData = { ...defaultBuildData };
-
-// Initialize build data from localStorage or default
-function initBuildData() {
-    const savedData = localStorage.getItem('buildData');
-    
+// Reset base stats - Sets life from hero config and zeroes out modifiers
+function resetBaseStats() {
     // Make sure we apply hero data first if config is loaded
+    // console.log("Hero life data from config:", config.hero); // Remove this line as it's no longer needed
+
+    // Reset all modifier stats to 0 before potentially applying base hero stats
+    stats.weaponPower = 0;
+    stats.abilityPower = 0;
+    stats.attackSpeed = 0;
+    stats.cooldownReduction = 0;
+    stats.maxAmmo = 0;
+    stats.weaponLifesteal = 0;
+    stats.abilityLifesteal = 0;
+    stats.moveSpeed = 0;
+    stats.reloadSpeed = 0;
+    stats.meleeDamage = 0;
+    stats.criticalDamage = 0;
+
+    // Reload hero base life data from config
     if (config && config.hero) {
-        console.log("Hero life data from config:", config.hero);
-        // Update default build data with hero stats before potentially loading from localStorage
-        defaultBuildData.stats.life = {
+        stats.life = {
             health: config.hero.health || 0,
             armor: config.hero.armor || 0,
             shield: config.hero.shield || 0
         };
-        console.log("Updated default build data:", defaultBuildData.stats.life);
     }
-    
-    if (savedData) {
-        const parsedData = JSON.parse(savedData);
-        
-        // Handle migration from old data structure if needed
-        if (!parsedData.equippedItemsByRound && Array.isArray(parsedData.equippedItems)) {
-            // Migrate old data to new structure
-            parsedData.equippedItemsByRound = {
-                1: parsedData.equippedItems || [],
-                2: [],
-                3: [],
-                4: [],
-                5: [],
-                6: [],
-                7: []
-            };
-            delete parsedData.equippedItems;
+}
+
+// Calculate current stats based on hero, equipped items, and powers for the current round
+function calculateCurrentStats() {
+    // 1. Reset stats to base hero values
+    resetBaseStats();
+
+    // 2. Apply stats from equipped items for the current round
+    const heroBuild = getCurrentHeroBuild();
+    const currentRoundItems = heroBuild.equippedItemsByRound[currentRound] || [];
+
+    currentRoundItems.forEach(itemRef => {
+        const itemData = findItemById(itemRef.id);
+        if (itemData) {
+            applyItemStatsModification(itemData, true); // Apply stats (add=true)
+        } else {
+            console.warn(`Data not found for equipped item ID: ${itemRef.id} in calculateCurrentStats`);
         }
-        
-        // Migrate currency to cashByRound if needed
-        if (parsedData.currency !== undefined && !parsedData.cashByRound) {
-            parsedData.cashByRound = {
-                1: parsedData.currency,
-                2: parsedData.currency,
-                3: parsedData.currency,
-                4: parsedData.currency,
-                5: parsedData.currency,
-                6: parsedData.currency,
-                7: parsedData.currency
-            };
-            delete parsedData.currency;
-        }
-        
-        // Ensure stats object exists
-        if (!parsedData.stats) {
-            parsedData.stats = defaultBuildData.stats;
-        }
-        
-        buildData = parsedData;
-        
-        // Always override life stats with hero data
-        if (config && config.hero) {
-            buildData.stats.life = {
-                health: config.hero.health || 0,
-                armor: config.hero.armor || 0,
-                shield: config.hero.shield || 0
-            };
-            console.log("Overriding saved data with hero life data:", buildData.stats.life);
-        }
-    } else {
-        // Use default data
-        buildData = JSON.parse(JSON.stringify(defaultBuildData));
-        console.log("Using default build data with life:", buildData.stats.life);
-    }
-    
-    // Ensure all rounds exist in the structure
-    for (let i = 1; i <= 7; i++) {
-        if (!buildData.equippedItemsByRound[i]) {
-            buildData.equippedItemsByRound[i] = [];
-        }
-        if (buildData.cashByRound === undefined) {
-            buildData.cashByRound = {};
-        }
-        if (!buildData.cashByRound[i]) {
-            buildData.cashByRound[i] = 5000;
+    });
+
+    // 3. Apply stats from equipped powers (if any)
+    // NOTE: Power cards don't have stats yet. This code will be enabled when stats are added to powers.
+    // When implementing, remember to handle both object and array formats of equippedPowers:
+    /*
+    if (heroBuild.equippedPowers) {
+        // If equippedPowers is still an object with round keys
+        if (!Array.isArray(heroBuild.equippedPowers)) {
+            // Process each power in the object format
+            Object.entries(heroBuild.equippedPowers).forEach(([round, power]) => {
+                if (power) {
+                    const powerData = findPowerById(power.id);
+                    if (powerData && powerData.stats) {
+                        applyItemStatsModification(powerData, true);
+                    }
+                }
+            });
+        } else {
+            // If already converted to array, process normally
+            heroBuild.equippedPowers.forEach(power => {
+                const powerData = findPowerById(power.id);
+                if (powerData && powerData.stats) {
+                    applyItemStatsModification(powerData, true);
+                }
+            });
         }
     }
-    
-    // Force a clear of localStorage to ensure we start fresh
-    localStorage.removeItem('buildData');
-    
-    // Update cash and stats display
-    updateCashDisplay();
-    updateStatsDisplay();
-    
-    // Save the data with the updated life values
-    saveBuildData();
-    
-    console.log("Final buildData.stats.life:", buildData.stats.life);
+    */
+
+    // console.log("Calculated Stats:", JSON.parse(JSON.stringify(stats))); // Deep copy for logging
 }
 
 // Initialize round selector
 function initRoundSelector() {
     const roundTabs = document.querySelectorAll('.round-tab:not(.copy-button)');
-    
+
     // Set the initial active round
     roundTabs.forEach(tab => {
         const round = parseInt(tab.getAttribute('data-round'));
-        
-        if (round === buildData.currentRound) {
+
+        if (round === currentRound) {
             tab.classList.add('active');
         } else {
             tab.classList.remove('active');
         }
-        
+
         // Add click event listener
-        tab.addEventListener('click', function() {
+        tab.addEventListener('click', function () {
             // Set the current round
-            buildData.currentRound = round;
-            
+            currentRound = round;
+
             // Update active tab
             roundTabs.forEach(t => t.classList.remove('active'));
             this.classList.add('active');
-            
-            // Update UI for the new round
-            updateRoundDisplay();
-            
-            // Repopulate items for the current round
-            populateItems();
-            
-            // Repopulate powers for the current round (to update disabled state)
-            populatePowers();
-            
-            // Update cash display for the new round
-            updateCashDisplay();
-            
-            // Refresh power hover effects
-            initPowerHoverEffects();
-            
-            // Save changes
-            saveBuildData();
+
+            // Update the UI based on the new round state
+            updateUI(); // Call the central UI update function
         });
     });
-    
+
     // Initialize the copy to next round button
     initCopyToNextRoundButton();
 }
@@ -381,25 +651,29 @@ function initRoundSelector() {
 function initCopyToNextRoundButton() {
     const copyButton = document.getElementById('copy-next-round');
     if (!copyButton) return;
-    
-    copyButton.addEventListener('click', function() {
-        // Get the current round
-        const currentRound = buildData.currentRound;
-        
+
+    copyButton.addEventListener('click', function () {
+        // Get the current round from the global state
+        const roundNow = currentRound;
+
         // Check if we're already at the last round
-        if (currentRound >= 7) {
+        if (roundNow >= 7) {
             showMessage("Already at the last round!");
             return;
         }
-        
-        // Copy items from current round to next round
-        const nextRound = currentRound + 1;
-        buildData.equippedItemsByRound[nextRound] = [...buildData.equippedItemsByRound[currentRound]];
-        
-        // Update the current round to the next one
-        buildData.currentRound = nextRound;
-        
-        // Update the active tab
+
+        // --- State Update ---
+        const nextRound = roundNow + 1;
+        const heroBuild = getCurrentHeroBuild();
+        // Deep copy items from current round to next round
+        heroBuild.equippedItemsByRound[nextRound] = JSON.parse(JSON.stringify(heroBuild.equippedItemsByRound[roundNow] || []));
+        // Powers are not copied round-to-round
+
+        // Update the current round state
+        currentRound = nextRound;
+
+        // --- UI Update ---
+        // Update the active round tab styling
         const roundTabs = document.querySelectorAll('.round-tab:not(.copy-button)');
         roundTabs.forEach(tab => {
             const round = parseInt(tab.getAttribute('data-round'));
@@ -409,27 +683,12 @@ function initCopyToNextRoundButton() {
                 tab.classList.remove('active');
             }
         });
-        
-        // Update UI for the new round
-        updateRoundDisplay();
-        
-        // Repopulate items for the new round
-        populateItems();
-        
-        // Repopulate powers for the new round
-        populatePowers();
-        
-        // Update cash display for the new round
-        updateCashDisplay();
-        
-        // Refresh power hover effects
-        initPowerHoverEffects();
-        
-        // Save changes
-        saveBuildData();
-        
+
+        // Update the entire UI for the new round
+        updateUI();
+
         // Show a confirmation message
-        showMessage(`Copied items to Round ${nextRound}!`);
+        showMessage(`Copied items from Round ${roundNow} to Round ${nextRound}!`);
     });
 }
 
@@ -437,8 +696,7 @@ function initCopyToNextRoundButton() {
 function updateRoundDisplay() {
     // Get all power slots
     const powerSlots = document.querySelectorAll('.power-slots .power-slot');
-    const roundSlots = [1, 3, 5, 7]; // The rounds that have slots
-    
+
     // First, remove all special classes from all slots
     powerSlots.forEach(slot => {
         slot.classList.remove('active-round');
@@ -446,83 +704,129 @@ function updateRoundDisplay() {
         slot.classList.remove('current-round');
         slot.classList.remove('unlocked');
     });
-    
+
     // Determine which rounds are unlocked based on current round
     for (let i = 0; i < powerSlots.length; i++) {
-        const roundNumber = roundSlots[i];
-        if (buildData.currentRound >= roundNumber) {
+        const roundNumber = ROUND_SLOTS[i];
+        if (currentRound >= roundNumber) {
             powerSlots[i].classList.add('unlocked');
         }
     }
-    
+
     // Determine the currently active round slot index, but only for rounds that can select powers
     let activeSlotIndex = -1;
-    if (buildData.currentRound === 1) {
-        activeSlotIndex = 0; // First slot (Round 1)
-    } else if (buildData.currentRound === 3) {
-        activeSlotIndex = 1; // Second slot (Round 3)
-    } else if (buildData.currentRound === 5) {
-        activeSlotIndex = 2; // Third slot (Round 5)
-    } else if (buildData.currentRound === 7) {
-        activeSlotIndex = 3; // Fourth slot (Round 7)
-    } else if (buildData.currentRound === 2) {
-        // In round 2, we've already obtained round 1 power, but can't yet select round 3
-        activeSlotIndex = -1;
-    } else if (buildData.currentRound === 4) {
-        // In round 4, we've already obtained round 3 power, but can't yet select round 5
-        activeSlotIndex = -1;
-    } else if (buildData.currentRound === 6) {
-        // In round 6, we've already obtained round 5 power, but can't yet select round 7
+    // For rounds 1, 3, 5, 7, set the active slot index based on the round
+    if (currentRound % 2 === 1) { // Odd rounds
+        activeSlotIndex = ROUND_TO_SLOT_MAP[currentRound];
+    } else {
+        // Even rounds (2, 4, 6) don't have power selection
         activeSlotIndex = -1;
     }
-    
+
     // Highlight only the active slot for the current round
     if (activeSlotIndex >= 0 && activeSlotIndex < powerSlots.length) {
         powerSlots[activeSlotIndex].classList.add('active-round');
         powerSlots[activeSlotIndex].classList.add('current-round');
     }
-    
-    // Update the build display to show items for the current round
-    updateBuildDisplay();
-    
-    // Update cash display for the current round
-    updateCashDisplay();
 }
 
-// Save build data to localStorage
-function saveBuildData() {
-    localStorage.setItem('buildData', JSON.stringify(buildData));
-}
+// Function to switch to a different hero
+async function switchHero(heroId) {
+    // Skip if already selected
+    const selectedHero = document.querySelector(`.hero-icon[data-hero="${heroId}"]`);
+    if (!selectedHero || selectedHero.classList.contains('active')) {
+        return;
+    }
 
-// Update cash display
-function updateCashDisplay() {
-    const costElement = document.querySelector('.build-cost .cost');
-    if (buildData && buildData.cashByRound && buildData.cashByRound[buildData.currentRound] !== undefined) {
-        costElement.textContent = buildData.cashByRound[buildData.currentRound].toLocaleString();
-    } else {
-        costElement.textContent = '5,000'; // Default value
+    // Update current hero in global state
+    setCurrentHero(heroId);
+
+    // Get all hero icons
+    const heroIcons = document.querySelectorAll('.hero-icon');
+
+    // Show loading state
+    document.body.style.cursor = 'wait';
+    selectedHero.style.opacity = '0.5';
+
+    try {
+        // Remove active class from all icons
+        heroIcons.forEach(icon => icon.classList.remove('active'));
+
+        // Add active class to clicked icon
+        selectedHero.classList.add('active');
+
+        // Try to load the new hero data
+        const heroLoadSuccess = await loadHero(heroId);
+
+        if (!heroLoadSuccess) {
+            throw new Error(`Could not load hero data for ${getHeroName(heroId)}`);
+        }
+
+        try {
+            // Update the entire UI for the current hero state
+            updateUI(); // This will call all the necessary UI updates
+        } catch (updateError) {
+            console.error('Error updating UI:', updateError);
+            showMessage('Failed to update UI for the new hero state', 'error');
+        }
+
+        // Reset cursor
+        document.body.style.cursor = 'default';
+        selectedHero.style.opacity = '1';
+
+        // Show success message
+        showMessage(`Switched to ${getHeroName(heroId)}`);
+    } catch (error) {
+        console.error('Error switching hero:', error);
+        document.body.style.cursor = 'default';
+        selectedHero.style.opacity = '1';
+
+        // Reset active state
+        const currentHero = document.querySelector(`.hero-icon[data-hero="${currentHero}"]`);
+        if (currentHero) {
+            currentHero.classList.add('active');
+        }
+
+        // No need to revert in localStorage since we're using global state
+
+        // Show error message
+        showMessage(`Error switching to ${getHeroName(heroId)}: ${error.message}`, 'error');
     }
 }
+
+// Function to reset current hero build
+function resetCurrentHeroBuild() {
+    const heroId = currentHero;
+
+    // Reset hero state in the state manager
+    resetHeroBuild(heroId); // Resets the build data in the 'builds' object
+
+    // Update UI based on reset state
+    updateUI(); // Single call to refresh the entire UI
+
+    showMessage('Current hero build reset to defaults');
+}
+
 
 // Tab switching functionality
 function initTabs() {
     const tabs = document.querySelectorAll('.tab');
-    
+
     tabs.forEach(tab => {
-        tab.addEventListener('click', function() {
+        tab.addEventListener('click', function () {
             // Remove active class from all tabs
             tabs.forEach(t => t.classList.remove('active'));
-            
+
             // Add active class to clicked tab
             this.classList.add('active');
-            
+
             // Get the tab name
             const tabName = this.getAttribute('data-tab');
-            
+
             // Hide all tab panes
             const tabPanes = document.querySelectorAll('.tab-pane');
             tabPanes.forEach(pane => pane.classList.remove('active'));
-            
+
             // Show the selected tab pane
             document.getElementById(`${tabName}-tab`).classList.add('active');
         });
@@ -531,35 +835,73 @@ function initTabs() {
 
 // Populate items from config
 function populateItems() {
+    const heroBuild = getCurrentHeroBuild();
+    // Check if we have valid items data
+    if (!config || !config.items) {
+        console.warn('No items data available to populate');
+        return;
+    }
+
     // For each tab (weapon, ability, survival)
     ['weapon', 'ability', 'survival'].forEach(tabName => {
+        // Skip if this category doesn't exist in config
+        if (!config.items[tabName]) {
+            console.warn(`No ${tabName} items found in config`);
+            return;
+        }
+
         // For each rarity (common, rare, epic)
         ['common', 'rare', 'epic'].forEach(rarity => {
+            // Skip if this rarity doesn't exist for this category
+            if (!config.items[tabName][rarity] || !Array.isArray(config.items[tabName][rarity])) {
+                console.warn(`No ${rarity} ${tabName} items found in config`);
+                return;
+            }
+
             const items = config.items[tabName][rarity];
             const container = document.querySelector(`#${tabName}-tab .item-column:nth-child(${getRarityIndex(rarity)}) .items`);
-            
+
+            // Skip if container not found
+            if (!container) {
+                console.warn(`Container for ${tabName}-${rarity} items not found`);
+                return;
+            }
+
             // Clear existing items
             container.innerHTML = '';
-            
+
+            // Skip if no items
+            if (items.length === 0) {
+                const emptyNotice = document.createElement('div');
+                emptyNotice.className = 'empty-items-notice';
+                emptyNotice.textContent = `No ${rarity} ${tabName} items available`;
+                container.appendChild(emptyNotice);
+                return;
+            }
+
             // Group items into rows of 3
             for (let i = 0; i < items.length; i += 3) {
                 const row = document.createElement('div');
                 row.className = 'item-row';
-                
+
                 // Add up to 3 items per row
                 for (let j = 0; j < 3; j++) {
                     if (i + j < items.length) {
                         const item = items[i + j];
+
+                        // Skip invalid item data
+                        if (!item) continue;
+
                         const itemIndex = i + j;
                         item.id = `${tabName}-${rarity}-${itemIndex}`;
                         item.type = tabName;
                         item.rarity = rarity;
-                        
-                        // Check if item is already owned/equipped in the current round
-                        const currentRoundItems = buildData.equippedItemsByRound[buildData.currentRound] || [];
-                        const isOwned = currentRoundItems.some(equippedItem => 
-                            equippedItem.id === item.id);
-                        
+
+                        // Check if item is already owned/equipped in the current round's state
+                        const currentRoundItems = heroBuild.equippedItemsByRound[currentRound] || [];
+                        const isOwned = currentRoundItems.some(equippedItem => equippedItem.id === item.id);
+
+                        // Pass the isOwned state to createItemElement
                         row.appendChild(createItemElement(item, rarity, isOwned));
                     } else {
                         // Add empty item if needed to fill the row
@@ -568,7 +910,7 @@ function populateItems() {
                         row.appendChild(emptyItem);
                     }
                 }
-                
+
                 container.appendChild(row);
             }
         });
@@ -590,72 +932,75 @@ function createItemElement(item, rarity, isOwned = false) {
     const itemElement = document.createElement('div');
     itemElement.className = `item ${getRarityClass(rarity)}`;
     itemElement.dataset.itemId = item.id;
-    
+
+    // Set owned state based on the passed parameter
     if (isOwned) {
         itemElement.classList.add('owned');
     }
-    
+
     const iconElement = document.createElement('div');
     iconElement.className = 'item-icon';
-    
+
     // Set background image if iconPath is provided
     if (item.iconPath) {
         iconElement.style.backgroundImage = `url(${item.iconPath})`;
         // If we have an icon, make the background more transparent
         iconElement.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
     }
-    
+
     const costElement = document.createElement('div');
     costElement.className = 'item-cost';
-    
+
+    // Set cost text based on the passed owned state
     if (isOwned) {
         costElement.textContent = 'Owned';
     } else {
         const gemIcon = document.createElement('i');
-        gemIcon.className = 'fas fa-gem';
-        
+        gemIcon.className = 'currency-icon';
+
         costElement.appendChild(gemIcon);
-        costElement.appendChild(document.createTextNode(` ${item.cost.toLocaleString()}`));
+        costElement.appendChild(document.createTextNode(`${item.cost.toLocaleString()}`));
     }
-    
+
     itemElement.appendChild(iconElement);
     itemElement.appendChild(costElement);
-    
+
     // Make items clickable
-    itemElement.addEventListener('click', function() {
+    itemElement.addEventListener('click', function () {
         const itemId = this.dataset.itemId;
-        const itemData = findItemById(itemId);
-        
+
+        // No direct DOM manipulation here, just call the state update functions
         if (this.classList.contains('owned')) {
-            // Item is already owned, unequip it
-            unequipItem(itemId, this, costElement, itemData);
+            // Item is currently owned (based on class), call unequip
+            unequipItem(itemId);
         } else {
             // Try to purchase and equip the item
-            purchaseAndEquipItem(itemId, this, costElement, itemData);
+            purchaseAndEquipItem(itemId);
         }
     });
-    
+
     // Add tooltip functionality
     itemElement.addEventListener('mouseenter', (event) => {
         // Show the tooltip
-        showTooltip(item, event);
-        
-        // Explicitly check if the item is owned by checking the DOM element
+        const itemData = findItemById(item.id); // Get full item data for tooltip
+        if (itemData) showTooltip(itemData, event);
+
+        // Explicitly check if the item is owned by checking the DOM element class
         const isCurrentlyOwned = itemElement.classList.contains('owned');
-        console.log('Item hover:', item.id, 'isOwned param:', isOwned, 'DOM check:', isCurrentlyOwned);
-        
+        console.log('Item hover:', item.id, 'Initial isOwned:', isOwned, 'DOM check:', isCurrentlyOwned);
+
         // Highlight the appropriate slot based on whether the item is owned
-        highlightTargetSlot(item, isCurrentlyOwned);
+        if (itemData) highlightTargetSlot(itemData, isCurrentlyOwned);
     });
-    
+
     itemElement.addEventListener('mouseleave', () => {
         // Hide the tooltip
         hideTooltip();
-        
+
         // Remove highlighting
         removeSlotHighlight();
     });
-    
+
     return itemElement;
 }
 
@@ -666,133 +1011,159 @@ function findItemById(itemId) {
 }
 
 // Purchase and equip an item
-function purchaseAndEquipItem(itemId, itemElement, costElement, itemData) {
-    // Check if we have enough currency
-    if (buildData.cashByRound[buildData.currentRound] < itemData.cost) {
-        // Show insufficient funds message
-        showMessage('Insufficient funds!');
+function purchaseAndEquipItem(itemId) {
+    const heroBuild = getCurrentHeroBuild();
+    const itemData = findItemById(itemId);
+
+    // --- Validation ---
+    if (!itemData) {
+        showMessage('Item data not found', 'error');
         return;
     }
-    
+
+    // Check if we have enough currency in simulation mode
+    if (isEconomyModeSimulation()) {
+        // Get current budget for this round
+        const currentBudget = getCurrentRoundBudget();
+
+        // Calculate current cost of all items in this round
+        const currentCost = calculateRoundBuildCost(currentRound);
+
+        // Calculate remaining cash
+        const currentCash = currentBudget - currentCost;
+
+        // Strict check: Prevent purchase if cash is insufficient
+        if (currentCash < itemData.cost) {
+            showMessage(`Insufficient funds! Need ${itemData.cost.toLocaleString()}, have ${currentCash.toLocaleString()}`, 'error');
+            return;
+        }
+    }
+
     // Check if we have room for more items
-    if (buildData.equippedItemsByRound[buildData.currentRound].length >= buildData.maxItems) {
-        showMessage('Item slots full! Unequip an item first.');
+    if ((heroBuild.equippedItemsByRound[currentRound] || []).length >= MAX_ITEMS) { // Ensure array exists
+        showMessage('Item slots full! Unequip an item first.', 'error');
         return;
     }
-    
-    // Deduct cost
-    buildData.cashByRound[buildData.currentRound] -= itemData.cost;
-    
-    // Add to equipped items
-    buildData.equippedItemsByRound[buildData.currentRound].push({
+
+    // --- State Update ---
+
+    // Deduct cost in simulation mode
+    if (isEconomyModeSimulation()) {
+        // Ensure cash for the round exists before decrementing
+        if (heroBuild.cashByRound[currentRound] === undefined) {
+            heroBuild.cashByRound[currentRound] = getCurrentRoundBudget() - calculateRoundBuildCost(currentRound);
+        }
+        heroBuild.cashByRound[currentRound] -= itemData.cost;
+    }
+
+    // Ensure the equipped items array exists for the current round
+    if (!heroBuild.equippedItemsByRound[currentRound]) {
+        heroBuild.equippedItemsByRound[currentRound] = [];
+    }
+
+    // Add to equipped items state
+    heroBuild.equippedItemsByRound[currentRound].push({
         id: itemId,
         type: itemData.type,
         rarity: itemData.rarity,
         cost: itemData.cost
     });
-    
-    // Update UI
-    itemElement.classList.add('owned');
-    costElement.textContent = 'Owned';
-    
+
     // Update stats for the newly equipped item
-    updateItemStats(itemData, true);
-    
-    // Remove any slot highlighting that might be active
-    removeSlotHighlight();
-    
-    // Update build display
-    updateBuildDisplay();
-    updateCashDisplay();
-    
-    // Save changes
-    saveBuildData();
+    applyItemStatsModification(itemData, true);
+
+    // --- UI Update ---
+    updateUI(); // Refresh the entire UI to reflect the state change
+
+    showMessage(`${itemData.name} purchased!`, 'success');
 }
 
 // Unequip an item
-function unequipItem(itemId, itemElement, costElement, itemData) {
+function unequipItem(itemId) {
+    const heroBuild = getCurrentHeroBuild();
+    const itemData = findItemById(itemId);
+
+    if (!itemData) {
+        console.error("Item data not found for unequip:", itemId);
+        showMessage('Error: Item data not found.', 'error');
+        return;
+    }
+
     // Remove from equipped items
-    buildData.equippedItemsByRound[buildData.currentRound] = buildData.equippedItemsByRound[buildData.currentRound].filter(item => item.id !== itemId);
-    
-    // Refund cost
-    buildData.cashByRound[buildData.currentRound] += itemData.cost;
-    
-    // Update UI
-    itemElement.classList.remove('owned');
-    itemElement.classList.remove('highlight-original');
-    
-    const gemIcon = document.createElement('i');
-    gemIcon.className = 'fas fa-gem';
-    
-    costElement.innerHTML = '';
-    costElement.appendChild(gemIcon);
-    costElement.appendChild(document.createTextNode(` ${itemData.cost.toLocaleString()}`));
-    
+    const initialLength = (heroBuild.equippedItemsByRound[currentRound] || []).length;
+    heroBuild.equippedItemsByRound[currentRound] = heroBuild.equippedItemsByRound[currentRound].filter(item => item.id !== itemId);
+    const itemRemoved = (heroBuild.equippedItemsByRound[currentRound] || []).length < initialLength;
+
+    // Refund cost in simulation mode
+    if (itemRemoved && isEconomyModeSimulation()) {
+        // Ensure cash for the round exists before incrementing
+        if (heroBuild.cashByRound[currentRound] === undefined) {
+            heroBuild.cashByRound[currentRound] = getCurrentRoundBudget(); // Initialize with budget if missing
+        }
+        heroBuild.cashByRound[currentRound] += itemData.cost;
+    }
+
     // Update stats for the unequipped item
-    updateItemStats(itemData, false);
-    
-    // Remove any highlighting that might be active
-    removeSlotHighlight();
-    removeOriginalItemHighlight();
-    
-    // Update build display
-    updateBuildDisplay();
-    updateCashDisplay();
-    
-    // Save changes
-    saveBuildData();
+    if (itemRemoved) {
+        applyItemStatsModification(itemData, false);
+    } else {
+        console.warn("Attempted to unequip item not found in state:", itemId);
+    }
+
+    // --- UI Update ---
+    updateUI(); // Refresh the entire UI to reflect the state change
+
+    if (itemRemoved) {
+        showMessage(`${itemData.name} unequipped!`);
+    }
 }
 
 // Update the build display in the left panel
 function updateBuildDisplay() {
+    const heroBuild = getCurrentHeroBuild();
     const itemSlots = document.querySelectorAll('.item-slots .item-slot');
-    
-    // Clear all item slots
+
+    console.log(`Updating build display for round ${currentRound}`);
+    console.log('Current round items:', heroBuild.equippedItemsByRound[currentRound]);
+
+    // Clear all item slots first
     itemSlots.forEach(slot => {
         slot.innerHTML = '<div class="empty-slot"></div>';
     });
-    
+
     // Get items for the current round
-    const currentRoundItems = buildData.equippedItemsByRound[buildData.currentRound] || [];
-    
+    const currentRoundItems = heroBuild.equippedItemsByRound[currentRound] || [];
+
     // Add equipped items to slots
     currentRoundItems.forEach((item, index) => {
         if (index < itemSlots.length) {
             const slot = itemSlots[index];
+            // Make sure to clear the slot before adding content
             slot.innerHTML = '';
-            
+
             const itemElement = document.createElement('div');
             itemElement.className = `item ${getRarityClass(item.rarity)}`;
-            
+
             // Get the full item data to get the iconPath
             const fullItem = findItemById(item.id);
-            
+
             const iconElement = document.createElement('div');
             iconElement.className = 'item-icon';
-            iconElement.style.width = '100%';
-            iconElement.style.height = '100%';
-            
+
             if (fullItem && fullItem.iconPath) {
                 iconElement.style.backgroundImage = `url(${fullItem.iconPath})`;
                 iconElement.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
             }
-            
+
             itemElement.appendChild(iconElement);
             slot.appendChild(itemElement);
-            
+
             // Add click handler to unequip
-            itemElement.addEventListener('click', function() {
-                const foundItem = findItemById(item.id);
-                
-                // Find the original item and update its state
-                const originalItem = document.querySelector(`.item[data-item-id="${item.id}"]`);
-                
-                if (originalItem) {
-                    const costElement = originalItem.querySelector('.item-cost');
-                    unequipItem(item.id, originalItem, costElement, foundItem);
-                }
+            itemElement.addEventListener('click', function () {
+                // Call the unequip function which handles state and UI update
+                unequipItem(item.id);
             });
-            
+
             // Add tooltip and original item highlight functionality
             itemElement.addEventListener('mouseenter', (event) => {
                 showTooltip(fullItem, event);
@@ -817,81 +1188,154 @@ function getRarityClass(rarity) {
 }
 
 // Show temporary message
-function showMessage(text) {
-    const messageElement = document.createElement('div');
-    messageElement.className = 'message';
-    messageElement.textContent = text;
+function showMessage(text, type = 'info') {
+    // Get or create message container
+    let messageContainer = document.querySelector('.message-container');
     
-    document.body.appendChild(messageElement);
+    // If container doesn't exist, create it
+    if (!messageContainer) {
+        messageContainer = document.createElement('div');
+        messageContainer.className = 'message-container';
+        document.body.appendChild(messageContainer);
+    }
+
+    // Clear existing messages
+    const existingMessages = messageContainer.querySelectorAll('.message');
+    existingMessages.forEach(msg => {
+        messageContainer.removeChild(msg);
+    });
+
+    // Create new message element
+    const message = document.createElement('div');
+    message.className = `message message-${type}`;
+    message.textContent = text;
+
+    // No need for inline styling - all styling is now in CSS
+
+    // Add to container
+    messageContainer.appendChild(message);
     
+    // Add show class to make it visible
+    requestAnimationFrame(() => {
+        message.classList.add('show');
+    });
+
+    // Auto-remove after 3 seconds
     setTimeout(() => {
-        messageElement.classList.add('show');
-    }, 10);
-    
-    setTimeout(() => {
-        messageElement.classList.remove('show');
+        // First remove the show class to animate out
+        message.classList.remove('show');
+        
+        // Then remove from DOM after animation completes
         setTimeout(() => {
-            document.body.removeChild(messageElement);
-        }, 300);
-    }, 2000);
+            if (messageContainer.contains(message)) {
+                messageContainer.removeChild(message);
+            }
+        }, 300); // Match the CSS transition time
+    }, 3000);
 }
 
-// Populate powers from config
+// Populate powers for the current hero
 function populatePowers() {
+    const heroBuild = getCurrentHeroBuild();
     const powerGrid = document.querySelector('#power-tab .power-grid');
-    
+
+    // Check if we have valid power grid and powers data
+    if (!powerGrid || !config || !config.powers || !Array.isArray(config.powers)) {
+        console.warn('Cannot populate powers: missing power grid or powers data');
+        return;
+    }
+
     // Clear existing powers
     powerGrid.innerHTML = '';
-    
-    // Determine if we're in a round that doesn't allow power selection
-    const isDisabledRound = buildData.currentRound === 2 || buildData.currentRound === 4 || buildData.currentRound === 6;
-    
-    // Get the current round's assigned group (1, 3, 5, or 7)
-    const currentRoundGroup = getAssignedRound(buildData.currentRound);
-    
-    // Check if this round already has an equipped power
-    const isRoundPowerEquipped = buildData.equippedPowers.some(power => power.round === currentRoundGroup);
-    
-    // Group powers into rows of 4
+
+    // If no powers available, show message
+    if (config.powers.length === 0) {
+        const emptyMessage = document.createElement('div');
+        emptyMessage.className = 'empty-powers-message';
+        emptyMessage.textContent = 'No powers available for this hero';
+        powerGrid.appendChild(emptyMessage);
+        return;
+    }
+
+    // Determine round for current power
+    const assignedRound = getAssignedRound(currentRound);
+
+    // Check if a power is already equipped for this round
+    // Convert equippedPowers to array if it's still an object
+    if (!Array.isArray(heroBuild.equippedPowers)) {
+        // Initialize as array from object entries
+        const equippedPowersArray = [];
+        // If it's an object with round keys (1, 3, 5, 7)
+        if (heroBuild.equippedPowers && typeof heroBuild.equippedPowers === 'object') {
+            Object.entries(heroBuild.equippedPowers).forEach(([round, power]) => {
+                if (power) {
+                    // Add the round property to the power object
+                    power.round = parseInt(round);
+                    equippedPowersArray.push(power);
+                }
+            });
+        }
+        heroBuild.equippedPowers = equippedPowersArray;
+    }
+
+    const isRoundPowerEquipped = heroBuild.equippedPowers.some(power => power.round === assignedRound);
+
+    // Create rows of 4 powers
     for (let i = 0; i < config.powers.length; i += 4) {
         const row = document.createElement('div');
         row.className = 'power-row';
-        
+
         // Add up to 4 powers per row
         for (let j = 0; j < 4; j++) {
             if (i + j < config.powers.length) {
                 const power = config.powers[i + j];
-                power.id = `power-${i + j}`;
-                
-                // Ensure power has an icon property (D.Va powers might not have icons)
-                if (!power.icon) {
-                    power.icon = 'res/items/power_default.png';
+
+                // Skip invalid power data
+                if (!power || !power.title) {
+                    console.warn('Invalid power data', power);
+                    continue;
                 }
-                
+
+                power.id = `power-${i + j}`;
+
+                // Use hero's powerIcon if available, otherwise use default
+                if (!power.iconPath) {
+                    if (config.hero && config.hero.powerIcon) {
+                        power.iconPath = config.hero.powerIcon;
+                    } else {
+                        power.iconPath = 'res/items/shared/power_default.png';
+                    }
+                }
+
                 // Check if power is already equipped
-                const isEquipped = buildData && 
-                                   buildData.equippedPowers && 
-                                   buildData.equippedPowers.some(equippedPower => 
-                                       equippedPower.id === power.id);
-                
+                const isEquipped = heroBuild &&
+                    heroBuild.equippedPowers &&
+                    heroBuild.equippedPowers.some(equippedPower =>
+                        equippedPower.id === power.id);
+
                 // Create the power element and add it to the row
                 const powerElement = createPowerElement(power, isEquipped);
-                
+
                 // If we're in a disabled round and the power is not equipped, add a disabled class
-                if (isDisabledRound && !isEquipped) {
+                if (isDisabledRound() && !isEquipped) {
                     powerElement.classList.add('disabled');
                     powerElement.title = "Powers can only be selected in rounds 1, 3, 5, and 7";
                 }
                 // If we're in a round where a power is already equipped, disable other powers
-                else if (!isDisabledRound && isRoundPowerEquipped && !isEquipped) {
+                else if (!isDisabledRound() && isRoundPowerEquipped && !isEquipped) {
                     powerElement.classList.add('disabled');
                     powerElement.title = "You've already equipped a power for this round";
                 }
-                
+
                 row.appendChild(powerElement);
+            } else {
+                // Add empty placeholder to maintain grid
+                const emptyPower = document.createElement('div');
+                emptyPower.className = 'power-card empty';
+                row.appendChild(emptyPower);
             }
         }
-        
+
         powerGrid.appendChild(row);
     }
 }
@@ -901,44 +1345,57 @@ function createPowerElement(power, isEquipped = false) {
     const powerCard = document.createElement('div');
     powerCard.className = 'power-card';
     powerCard.dataset.powerId = power.id;
-    
+
     if (isEquipped) {
         powerCard.classList.add('equipped');
     }
-    
+
     const powerHeader = document.createElement('div');
     powerHeader.className = 'power-header';
-    
-    const powerIcon = document.createElement('div');
-    powerIcon.className = 'power-icon';
-    // Add background image to the power icon - handle missing icon property
-    if (power.icon) {
-        powerIcon.style.backgroundImage = `url(${power.icon})`;
+
+    // Use an img element for the icon
+    const powerIconImg = document.createElement('img');
+    powerIconImg.className = 'power-icon-img'; // Use a different class if needed for styling
+
+    // Use hero-specific power icon path
+    if (power.iconPath) {
+        // Use the iconPath from the power object if available
+        powerIconImg.src = power.iconPath;
+    } else if (config.hero && config.hero.powerIcon) {
+        // Fall back to hero's default power icon
+        powerIconImg.src = config.hero.powerIcon;
     } else {
-        // Default icon or placeholder
-        powerIcon.style.backgroundImage = `url(res/items/power_default.png)`;
-        // If no icon, use a subtle background color
-        powerIcon.style.backgroundColor = 'rgba(58, 90, 154, 0.8)';
+        // Last resort fallback
+        powerIconImg.src = 'res/items/shared/power_default.png';
     }
-    
+
+    powerIconImg.alt = power.title; // Use title for alt text
+    powerIconImg.onerror = () => { // Fallback if the image fails to load
+        if (config.hero && config.hero.powerIcon) {
+            powerIconImg.src = config.hero.powerIcon;
+        } else {
+            powerIconImg.src = 'res/items/shared/power_default.png';
+        }
+    };
+
     const powerTitle = document.createElement('div');
     powerTitle.className = 'power-title';
     powerTitle.textContent = power.title;
-    
+
     const powerDescription = document.createElement('div');
     powerDescription.className = 'power-description';
     powerDescription.textContent = power.description;
-    
-    powerHeader.appendChild(powerIcon);
+
+    powerHeader.appendChild(powerIconImg); // Append the img element
     powerHeader.appendChild(powerTitle);
-    
+
     powerCard.appendChild(powerHeader);
     powerCard.appendChild(powerDescription);
-    
+
     // Make powers clickable
-    powerCard.addEventListener('click', function() {
+    powerCard.addEventListener('click', function () {
         const powerId = this.dataset.powerId;
-        
+
         if (this.classList.contains('equipped')) {
             // Power is already equipped, unequip it
             unequipPower(powerId, this);
@@ -947,382 +1404,294 @@ function createPowerElement(power, isEquipped = false) {
             equipPower(powerId, this);
         }
     });
-    
-    // Add only target slot highlighting without tooltips
+
+    // Add hover events for highlighting
     powerCard.addEventListener('mouseenter', (event) => {
         highlightTargetPowerSlot(power, isEquipped);
     });
+
     powerCard.addEventListener('mouseleave', () => {
         removePowerSlotHighlight();
     });
-    
+
     return powerCard;
 }
 
 // Find power by ID
 function findPowerById(powerId) {
-    const index = parseInt(powerId.split('-')[1]);
-    return config.powers[index];
+    if (!powerId || !config || !config.powers || !Array.isArray(config.powers)) {
+        console.warn('Cannot find power by ID: missing data');
+        return null;
+    }
+
+    try {
+        const index = parseInt(powerId.split('-')[1]);
+        if (isNaN(index) || index < 0 || index >= config.powers.length) {
+            console.warn(`Invalid power index: ${index}`);
+            return null;
+        }
+        return config.powers[index];
+    } catch (error) {
+        console.error('Error finding power by ID:', error);
+        return null;
+    }
 }
 
-// Update the power slots display
+// Update the power display in the power slots area
 function updatePowerDisplay() {
+    console.log("Updating power display");
+    const heroBuild = getCurrentHeroBuild();
+
     // Clear all power slots first
     const powerSlots = document.querySelectorAll('.power-slots .power-slot');
+
+    if (!powerSlots || powerSlots.length === 0) {
+        console.warn('Power slots not found');
+        return;
+    }
+
+    // First, remove all event listeners and reset all slots
     powerSlots.forEach(slot => {
-        // Remove any existing power icons
-        const existingIcon = slot.querySelector('.power-icon');
-        if (existingIcon) {
-            existingIcon.remove();
+        // Clone the slot to remove all event listeners
+        const newSlot = slot.cloneNode(true);
+        slot.parentNode.replaceChild(newSlot, slot);
+
+        // Get the empty slot and power icon in the new slot
+        const emptySlot = newSlot.querySelector('.empty-slot');
+        const powerIcon = newSlot.querySelector('.power-icon');
+
+        // Remove any existing power icon
+        if (powerIcon) {
+            powerIcon.remove();
         }
-        
-        // Make the empty slot visible again
-        const emptySlot = slot.querySelector('.empty-slot');
+
+        // Show the empty slot
         if (emptySlot) {
             emptySlot.style.display = 'flex';
-        }
-    });
-    
-    // Map out which rounds have active slots
-    const roundSlots = [1, 3, 5, 7]; // The rounds that have slots
-    
-    // First, mark all slots according to their round status
-    powerSlots.forEach((slot, index) => {
-        const slotRound = getSlotRound(slot);
-        
-        // Remove any existing status classes
-        slot.classList.remove('active-round', 'current-round', 'between-rounds');
-        
-        // Check if this is the current round's slot
-        if (slotRound === buildData.currentRound) {
-            slot.classList.add('current-round');
-            slot.classList.add('active-round');
-        }
-        // Check if this is an active round (one that has a power equipped)
-        else if (buildData.equippedPowers.some(p => p.round === slotRound)) {
-            slot.classList.add('active-round');
-        }
-        
-        // Check if this is a between-rounds slot
-        const isDisabledRound = buildData.currentRound === 2 || 
-                               buildData.currentRound === 4 || 
-                               buildData.currentRound === 6;
-        
-        if (isDisabledRound) {
-            // Find the next available round
-            let nextRound = buildData.currentRound + 1;
-            const nextSlotIndex = roundSlots.indexOf(nextRound);
-            
-            if (nextSlotIndex !== -1 && nextSlotIndex === index) {
-                slot.classList.add('between-rounds');
-                slot.classList.add('active-round');
+        } else {
+            // If empty slot is missing, recreate it
+            const newEmptySlot = document.createElement('div');
+            newEmptySlot.className = 'empty-slot';
+
+            // Insert before slot label
+            const slotLabel = newSlot.querySelector('.slot-label');
+            if (slotLabel) {
+                newSlot.insertBefore(newEmptySlot, slotLabel);
+            } else {
+                newSlot.appendChild(newEmptySlot);
             }
         }
+
+        // Also remove any power-specific styles from the slot itself
+        newSlot.classList.remove('power-equipped');
     });
-    
+
+    // Check if we have valid build data
+    if (!heroBuild || !heroBuild.equippedPowers || !Array.isArray(heroBuild.equippedPowers)) {
+        console.warn('No equipped powers data available');
+        return;
+    }
+
+    console.log("Equipped powers:", heroBuild.equippedPowers);
+
+    // Get fresh slots after cloning
+    const freshPowerSlots = document.querySelectorAll('.power-slots .power-slot');
+
     // Add equipped powers to slots
-    buildData.equippedPowers.forEach(power => {
-        const slotIndex = roundSlots.indexOf(power.round);
-        
-        if (slotIndex !== -1 && slotIndex < powerSlots.length) {
-            const slot = powerSlots[slotIndex];
+    heroBuild.equippedPowers.forEach(power => {
+        if (!power || !power.id || !power.round) {
+            console.warn('Invalid equipped power data', power);
+            return;
+        }
+
+        const slotIndex = ROUND_SLOTS.indexOf(power.round);
+
+        if (slotIndex !== -1 && slotIndex < freshPowerSlots.length) {
+            const slot = freshPowerSlots[slotIndex];
             const emptySlot = slot.querySelector('.empty-slot');
-            
+
             if (emptySlot) {
                 // Hide the empty slot instead of removing it
                 emptySlot.style.display = 'none';
-                
+
                 // Create a power icon for the slot
                 const fullPower = findPowerById(power.id);
-                
+
                 if (fullPower) {
                     const powerIcon = document.createElement('div');
                     powerIcon.className = 'power-icon';
+                    // Make sure we set the correct data attribute
                     powerIcon.setAttribute('data-power-id', power.id);
-                    
-                    // Handle missing icon in power data
-                    if (fullPower.icon) {
-                        powerIcon.style.backgroundImage = `url(${fullPower.icon})`;
+                    powerIcon.style.cursor = 'pointer'; // Make it look clickable
+
+                    // Handle icon - use proper path hierarchy
+                    if (fullPower.iconPath) {
+                        // Use the power's specific icon path
+                        powerIcon.style.backgroundImage = `url(${fullPower.iconPath})`;
+                    } else if (config.hero && config.hero.powerIcon) {
+                        // Fall back to hero's default power icon
+                        powerIcon.style.backgroundImage = `url(${config.hero.powerIcon})`;
                     } else {
-                        // Default icon or placeholder
-                        powerIcon.style.backgroundImage = `url(res/items/power_default.png)`;
+                        // Last resort fallback
+                        powerIcon.style.backgroundImage = `url(res/items/shared/power_default.png)`;
                         // If no icon, use a subtle background color
                         powerIcon.style.backgroundColor = 'rgba(58, 90, 154, 0.8)';
                     }
-                    
-                    // Add tooltip and highlight functionality
-                    powerIcon.addEventListener('mouseenter', (event) => {
-                        highlightOriginalPower(power.id);
-                        // Also highlight the target power slot
-                        const fullPower = findPowerById(power.id);
-                        if (fullPower) {
-                            highlightTargetPowerSlot(fullPower, true);
+
+                    // Add power info to title tooltip
+                    powerIcon.title = fullPower.title + " (Click to unequip)";
+
+                    // Add the power icon to the slot
+                    slot.insertBefore(powerIcon, slot.querySelector('.slot-label'));
+
+                    // Mark slot as having a power equipped
+                    slot.classList.add('power-equipped');
+                    slot.setAttribute('data-power-id', power.id);
+                    slot.style.cursor = 'pointer';
+                    slot.title = "Click to unequip " + fullPower.title;
+
+                    // Make the entire slot clickable
+                    slot.addEventListener('click', function (event) {
+                        event.stopPropagation(); // Prevent event bubbling
+                        const powerId = this.getAttribute('data-power-id');
+                        if (powerId) {
+                            console.log("%c POWER SLOT CLICKED: " + powerId, "color: red; font-size: 16px; font-weight: bold;");
+
+                            // Show a message to confirm click was detected
+                            showMessage(`Unequipping power: ${fullPower.title}`);
+
+                            // Direct call to unequipPower with the power ID
+                            unequipPower(powerId);
+
+                            // Update display after unequipping
+                            updatePowerDisplay();
                         }
                     });
-                    
-                    powerIcon.addEventListener('mouseleave', () => {
+
+                    // Add tooltip and highlight functionality (keep for hover effects)
+                    powerIcon.addEventListener('mouseenter', (event) => {
+                        event.stopPropagation(); // Prevent event bubbling to slot
+                        highlightOriginalPower(power.id);
+                    });
+
+                    powerIcon.addEventListener('mouseleave', (event) => {
+                        event.stopPropagation(); // Prevent event bubbling to slot
                         removeOriginalPowerHighlight();
-                        removePowerSlotHighlight();
                     });
-                    
-                    // Add click handler to unequip the power
-                    powerIcon.addEventListener('click', function() {
-                        unequipPower(power.id);
+
+                    // Also add special highlight effect to slot
+                    slot.addEventListener('mouseenter', (event) => {
+                        highlightOriginalPower(power.id);
                     });
-                    
-                    // Add to slot but preserve the slot-label
-                    slot.insertBefore(powerIcon, slot.querySelector('.slot-label'));
+
+                    slot.addEventListener('mouseleave', (event) => {
+                        removeOriginalPowerHighlight();
+                    });
+                } else {
+                    console.warn(`Power with ID ${power.id} not found in config`);
                 }
             }
         }
     });
-    
-    // Helper function to get the round associated with a slot
-    function getSlotRound(slot) {
-        const index = Array.from(powerSlots).indexOf(slot);
-        return roundSlots[index];
+
+    // Update the power count
+    const powerCount = document.querySelector('.build-count.power-count');
+    if (powerCount) {
+        powerCount.textContent = `${heroBuild.equippedPowers.length}/${MAX_POWERS}`;
     }
-    
-    // Make sure to reinitialize hover effects after updating power display
-    initPowerHoverEffects();
+
+    // Make sure to reinitialize power hover effects
+    setTimeout(initPowerHoverEffects, 0);
 }
 
 // Equip a power
 function equipPower(powerId, powerElement) {
+    // Get the current hero build
+    const heroBuild = getCurrentHeroBuild();
+
+    console.log("equipPower called with powerId:", powerId);
+    console.log("Current hero build:", heroBuild);
+    console.log("Current equipped powers:", heroBuild.equippedPowers);
+
     // Check if we're in a round that shouldn't allow power selection (2, 4, 6)
-    if (buildData.currentRound === 2 || buildData.currentRound === 4 || buildData.currentRound === 6) {
-        showMessage(`Powers can only be selected in rounds 1, 3, 5, and 7!`);
+    if (isDisabledRound()) {
+        showMessage('Powers can only be selected in rounds 1, 3, 5, and 7.', 'error');
         return;
     }
 
+    // Check if we already have the max number of powers
+    if (heroBuild.equippedPowers.length >= MAX_POWERS) {
+        showMessage('You already have the maximum number of powers equipped.', 'error');
+        return;
+    }
+
+    // Check if we already have a power for this round
+    const assignedRound = getAssignedRound(currentRound);
+    if (heroBuild.equippedPowers.some(p => p.round === assignedRound)) {
+        showMessage(`You already have a power equipped for round ${assignedRound}.`, 'error');
+        return;
+    }
+
+    // Find the power data
     const powerData = findPowerById(powerId);
-    
-    // Check if we have space for more powers
-    if (buildData.equippedPowers.length >= buildData.maxPowers) {
-        showMessage('Power slots full! Unequip a power first.');
+    if (!powerData) {
+        console.error('Power not found:', powerId);
         return;
     }
-    
-    // Determine the corresponding round for the current round
-    let assignedRound;
-    if (buildData.currentRound <= 2) {
-        assignedRound = 1;
-    } else if (buildData.currentRound <= 4) {
-        assignedRound = 3;
-    } else if (buildData.currentRound <= 6) {
-        assignedRound = 5;
-    } else {
-        assignedRound = 7;
-    }
-    
-    // Check if this round slot is already taken
-    const isSlotTaken = buildData.equippedPowers.some(power => power.round === assignedRound);
-    
-    // If the slot is already taken, just return
-    if (isSlotTaken) {
-        return;
-    }
-    
-    // Add to equipped powers with round info
-    buildData.equippedPowers.push({
+
+    console.log("Adding power to equipped powers:", powerData.title, "for round", assignedRound);
+
+    // Add to equipped powers
+    heroBuild.equippedPowers.push({
         id: powerId,
-        title: powerData.title,
-        description: powerData.description,
         round: assignedRound
     });
-    
+
+    console.log("Updated equipped powers:", heroBuild.equippedPowers);
+
     // Update UI
-    powerElement.classList.add('equipped');
-    
-    // Disable all other powers for the current round
-    const powerCards = document.querySelectorAll('.power-card:not([data-power-id="' + powerId + '"])');
-    powerCards.forEach(card => {
-        if (!card.classList.contains('equipped')) {
-            card.classList.add('disabled');
-            card.title = "You've already equipped a power for this round";
-        }
-    });
-    
-    // Update only the specific power slot
-    const roundToSlotMap = {
-        1: 0,  // first slot is for round 1
-        3: 1,  // second slot is for round 3 
-        5: 2,  // third slot is for round 5
-        7: 3   // fourth slot is for round 7
-    };
-    
-    const slotIndex = roundToSlotMap[assignedRound];
-    if (slotIndex !== undefined) {
-        const powerSlots = document.querySelectorAll('.power-slots .power-slot');
-        if (slotIndex < powerSlots.length) {
-            const slot = powerSlots[slotIndex];
-            
-            // Get the empty slot
-            const emptySlot = slot.querySelector('.empty-slot');
-            if (emptySlot) {
-                // Create a power icon
-                const powerIcon = document.createElement('div');
-                powerIcon.className = 'power-icon';
-                powerIcon.dataset.powerId = powerId;
-                
-                // Add tooltip
-                powerIcon.title = powerData.title;
-                
-                // Set background image for the power icon
-                if (powerData.icon) {
-                    powerIcon.style.backgroundImage = `url(${powerData.icon})`;
-                } else {
-                    // Default icon or placeholder
-                    powerIcon.style.backgroundImage = `url(res/items/power_default.png)`;
-                    // If no icon, use a subtle background color
-                    powerIcon.style.backgroundColor = 'rgba(58, 90, 154, 0.8)';
-                }
-                
-                // Hide the empty slot instead of replacing it
-                emptySlot.style.display = 'none';
-                
-                // Add power icon before the slot label
-                slot.insertBefore(powerIcon, slot.querySelector('.slot-label'));
-                
-                // Add click handler to unequip
-                powerIcon.addEventListener('click', function() {
-                    const powerId = this.dataset.powerId;
-                    
-                    // Find the original power card and update its state
-                    const originalPower = document.querySelector(`.power-card[data-power-id="${powerId}"]`);
-                    
-                    if (originalPower) {
-                        unequipPower(powerId, originalPower);
-                    }
-                });
-                
-                // Add tooltip and highlight functionality
-                powerIcon.addEventListener('mouseenter', (event) => {
-                    highlightOriginalPower(powerId);
-                    // Also highlight the target power slot
-                    const fullPower = findPowerById(powerId);
-                    if (fullPower) {
-                        highlightTargetPowerSlot(fullPower, true);
-                    }
-                });
-                powerIcon.addEventListener('mouseleave', () => {
-                    removeOriginalPowerHighlight();
-                    removePowerSlotHighlight();
-                });
-            }
-        }
+    if (powerElement) {
+        powerElement.classList.add('equipped');
     }
-    
-    // Save changes
-    saveBuildData();
-    
+
+    // Remove any slot highlighting that might be active
+    removePowerSlotHighlight();
+
+    // Update power display - this will handle all the UI updates
+    updatePowerDisplay();
+
+    // Show success message
+    showMessage(`${powerData.title} equipped for round ${assignedRound}`);
+
     // Reinitialize power hover effects to ensure they work correctly
     initPowerHoverEffects();
 }
 
 // Unequip a power
-function unequipPower(powerId, powerElement) {
-    // Find the power to unequip
-    const powerIndex = buildData.equippedPowers.findIndex(power => power.id === powerId);
-    
+function unequipPower(powerId, powerElement = null) { // powerElement is optional now
+    console.log("UNEQUIP POWER called with powerId:", powerId);
+    const heroBuild = getCurrentHeroBuild();
+
+    // Find the power to unequip in the state
+    const powerIndex = heroBuild.equippedPowers.findIndex(power => power.id === powerId);
+
     if (powerIndex !== -1) {
-        try {
-            // Get the round from the power before removing it
-            const powerRound = buildData.equippedPowers[powerIndex].round;
-            
-            // Remove from equipped powers
-            buildData.equippedPowers.splice(powerIndex, 1);
-            
-            // Update UI
-            if (powerElement) {
-                powerElement.classList.remove('equipped');
-                powerElement.classList.remove('highlight-original-power');
-            }
-            
-            // Re-enable all powers if we're in the same round that the power was unequipped from
-            const currentRoundGroup = getAssignedRound(buildData.currentRound);
-            if (powerRound === currentRoundGroup) {
-                // Only re-enable powers if we're in a power selection round (1, 3, 5, 7)
-                if (buildData.currentRound === 1 || buildData.currentRound === 3 || 
-                    buildData.currentRound === 5 || buildData.currentRound === 7) {
-                    const powerCards = document.querySelectorAll('.power-card.disabled');
-                    powerCards.forEach(card => {
-                        card.classList.remove('disabled');
-                        card.removeAttribute('title');
-                    });
-                }
-            }
-            
-            // Find and update just the specific power slot that was unequipped
-            if (powerRound) {
-                const roundToSlotMap = {
-                    1: 0,  // first slot is for round 1
-                    3: 1,  // second slot is for round 3 
-                    5: 2,  // third slot is for round 5
-                    7: 3   // fourth slot is for round 7
-                };
-                
-                const slotIndex = roundToSlotMap[powerRound];
-                if (slotIndex !== undefined) {
-                    const powerSlots = document.querySelectorAll('.power-slots .power-slot');
-                    if (slotIndex < powerSlots.length) {
-                        const slot = powerSlots[slotIndex];
-                        
-                        // Remove the power icon
-                        const powerIcon = slot.querySelector('.power-icon');
-                        if (powerIcon) {
-                            powerIcon.remove();
-                        }
-                        
-                        // Show the empty slot instead of recreating it
-                        const emptySlot = slot.querySelector('.empty-slot');
-                        if (emptySlot) {
-                            emptySlot.style.display = 'flex';
-                        } else {
-                            // If the empty slot is missing (should not happen), recreate it
-                            const newEmptySlot = document.createElement('div');
-                            newEmptySlot.className = 'empty-slot';
-                            newEmptySlot.style.display = 'flex';
-                            slot.insertBefore(newEmptySlot, slot.querySelector('.slot-label'));
-                        }
-                        
-                        // Ensure the unlocked class is maintained
-                        if (powerRound <= buildData.currentRound) {
-                            slot.classList.add('unlocked');
-                        }
-                    }
-                }
-            }
-            
-            // Remove any highlighting that might be active
-            removeOriginalPowerHighlight();
-            removePowerSlotHighlight();
-            
-            // Save changes
-            saveBuildData();
-            
-            // Give a small delay for DOM updates to complete
-            setTimeout(() => {
-                // Reset power cards state to ensure clean state
-                const powerCards = document.querySelectorAll('.power-card');
-                powerCards.forEach(card => {
-                    card.classList.remove('highlight-original-power');
-                });
-                
-                // Clear all highlighting
-                removeOriginalPowerHighlight();
-                removePowerSlotHighlight();
-                removeOriginalItemHighlight();
-                removeSlotHighlight();
-                
-                // Reinitialize hover effects to ensure everything works properly
-                initPowerHoverEffects();
-            }, 50);
-            
-        } catch (error) {
-            console.error("Error unequipping power:", error);
-            showMessage("Error unequipping power");
+        // --- State Update ---
+        heroBuild.equippedPowers.splice(powerIndex, 1); // Remove the power
+
+        // --- UI Update ---
+        // Update the entire UI based on the new state
+        updateUI(); // This handles updating the power slots and power cards
+
+        // Show success message
+        const fullPower = findPowerById(powerId);
+        if (fullPower) {
+            showMessage(`Unequipped power: ${fullPower.title}`);
         }
+
+    } else {
+        console.error("Power not found in equipped powers:", powerId);
+        showMessage("Power not found", "error");
     }
 }
 
@@ -1345,79 +1714,38 @@ function initResetButton() {
     const resetModal = document.getElementById('reset-modal');
     const cancelReset = document.getElementById('cancel-reset');
     const confirmReset = document.getElementById('confirm-reset');
-    
+
     // Show the modal when reset button is clicked
-    resetButton.addEventListener('click', function() {
+    resetButton.addEventListener('click', function () {
         resetModal.classList.add('active');
     });
-    
+
     // Hide the modal when cancel is clicked
-    cancelReset.addEventListener('click', function() {
+    cancelReset.addEventListener('click', function () {
         resetModal.classList.remove('active');
     });
-    
+
     // Handle reset confirmation
-    confirmReset.addEventListener('click', function() {
+    confirmReset.addEventListener('click', function () {
         // Hide the modal
         resetModal.classList.remove('active');
-        
-        // Start with clean default build data
-        buildData = JSON.parse(JSON.stringify(defaultBuildData)); // Deep copy default data
-        
-        // Always ensure hero life stats are applied
-        if (config && config.hero) {
-            buildData.stats.life = {
-                health: config.hero.health || 0,
-                armor: config.hero.armor || 0,
-                shield: config.hero.shield || 0
-            };
-            console.log("Reset: Applied hero life stats to build data:", buildData.stats.life);
-        }
-        
-        // Reset localStorage completely
-        resetLocalStorage();
-        
-        // Reset the power cards in the power tab
-        const powerCards = document.querySelectorAll('.power-card');
-        powerCards.forEach(card => {
-            card.classList.remove('equipped');
-            card.classList.remove('highlight-original-power');
-        });
-        
-        // Clear any lingering highlights
-        removeOriginalPowerHighlight();
-        removePowerSlotHighlight();
-        removeOriginalItemHighlight();
-        removeSlotHighlight();
-        
-        // Update UI
-        updateRoundDisplay();
-        updateCashDisplay();
-        updateBuildDisplay();
-        updatePowerDisplay(); // This will call initPowerHoverEffects internally
-        updateStatsDisplay(); // Update stats display
-        populateItems();
-        populatePowers();
-        
-        // Explicitly reinitialize hover effects
-        initPowerHoverEffects();
-        
-        // Save changes to localStorage
-        saveBuildData();
-        
+
+        // Reset build data state for the current hero
+        resetCurrentHeroBuild(); // Calls resetHeroBuild(currentHero) and then updateUI()
+
         // Show success message
-        showMessage('All data has been reset to defaults');
+        showMessage('All data has been reset to defaults'); // Message shown in resetCurrentHeroBuild
     });
-    
+
     // Close modal when clicking outside
-    resetModal.addEventListener('click', function(e) {
+    resetModal.addEventListener('click', function (e) {
         if (e.target === resetModal) {
             resetModal.classList.remove('active');
         }
     });
-    
+
     // Close modal with ESC key
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && resetModal.classList.contains('active')) {
             resetModal.classList.remove('active');
         }
@@ -1425,190 +1753,184 @@ function initResetButton() {
 }
 
 // Update all stats displays
+// This function does not calculate the stats, it just displays the stats object
 function updateStatsDisplay() {
-    console.log("updateStatsDisplay - Life data:", buildData.stats.life);
-    
+    console.log("updateStatsDisplay - Life data:", stats.life);
+
     // Calculate total life (health + armor + shield)
-    const health = parseInt(buildData.stats.life.health) || 0;
-    const armor = parseInt(buildData.stats.life.armor) || 0;
-    const shield = parseInt(buildData.stats.life.shield) || 0;
+    const health = stats.life.health || 0;
+    const armor = stats.life.armor || 0;
+    const shield = stats.life.shield || 0;
     const totalLife = health + armor + shield;
-    
+
     console.log("Displaying life values - Health:", health, "Armor:", armor, "Shield:", shield, "Total:", totalLife);
-    
+
     // Update the life value in the header
     const lifeValue = document.querySelector('.total-life-value');
     if (lifeValue) {
-        lifeValue.textContent = totalLife;
+        lifeValue.textContent = totalLife.toLocaleString(); // Format number
     }
-    
+
     // Get the progress track element for the life bar
-    const progressTrack = document.querySelector('.total-life-track');
-    if (progressTrack) {
-        // Clear existing segments
-        progressTrack.innerHTML = '';
-        
-        // Each segment represents 25 life
-        const lifePerSegment = 25;
-        
-        // Calculate the number of total segments to show (always display at least 10 segments for visual consistency)
-        const minSegments = 10;
-        const actualSegments = Math.ceil(totalLife / lifePerSegment);
-        const totalSegments = Math.max(minSegments, actualSegments);
-        
-        // Calculate how much life we have to distribute
-        let remainingHealth = health;
-        let remainingArmor = armor;
-        let remainingShield = shield;
-        
-        // Create all segments
-        for (let i = 0; i < totalSegments; i++) {
-            const segment = document.createElement('div');
-            segment.className = 'stat-segment';
-            
-            // Calculate how much life is available for this segment
-            const availableLife = Math.min(lifePerSegment, remainingHealth + remainingArmor + remainingShield);
-            
-            if (availableLife <= 0) {
-                // Empty segment (beyond our current life)
-                segment.classList.add('empty');
-            } else {
-                // Fill this segment according to the life components
-                let filledSpace = 0;
-                
-                // First fill with health if available
-                if (remainingHealth > 0) {
-                    const healthInSegment = Math.min(remainingHealth, lifePerSegment - filledSpace);
-                    const healthPercentage = (healthInSegment / lifePerSegment) * 100;
-                    
-                    if (healthPercentage === 100) {
-                        // Full health segment
-                        segment.classList.add('health');
-                    } else {
-                        // Partial health fill
-                        const healthFill = document.createElement('div');
-                        healthFill.className = 'segment-fill health';
-                        healthFill.style.width = `${healthPercentage}%`;
-                        segment.appendChild(healthFill);
-                    }
-                    
-                    remainingHealth -= healthInSegment;
-                    filledSpace += healthInSegment;
-                }
-                
-                // Then fill with armor if there's space
-                if (filledSpace < lifePerSegment && remainingArmor > 0) {
-                    const armorInSegment = Math.min(remainingArmor, lifePerSegment - filledSpace);
-                    const armorPercentage = (armorInSegment / lifePerSegment) * 100;
-                    
-                    if (filledSpace === 0 && armorPercentage === 100) {
-                        // Full armor segment
-                        segment.classList.add('armor');
-                    } else {
-                        // Partial armor fill
-                        const armorFill = document.createElement('div');
-                        armorFill.className = 'segment-fill armor';
-                        armorFill.style.width = `${armorPercentage}%`;
-                        armorFill.style.left = `${(filledSpace / lifePerSegment) * 100}%`;
-                        segment.appendChild(armorFill);
-                    }
-                    
-                    remainingArmor -= armorInSegment;
-                    filledSpace += armorInSegment;
-                }
-                
-                // Finally fill with shield if there's space
-                if (filledSpace < lifePerSegment && remainingShield > 0) {
-                    const shieldInSegment = Math.min(remainingShield, lifePerSegment - filledSpace);
-                    const shieldPercentage = (shieldInSegment / lifePerSegment) * 100;
-                    
-                    if (filledSpace === 0 && shieldPercentage === 100) {
-                        // Full shield segment
-                        segment.classList.add('shield');
-                    } else {
-                        // Partial shield fill
-                        const shieldFill = document.createElement('div');
-                        shieldFill.className = 'segment-fill shield';
-                        shieldFill.style.width = `${shieldPercentage}%`;
-                        shieldFill.style.left = `${(filledSpace / lifePerSegment) * 100}%`;
-                        segment.appendChild(shieldFill);
-                    }
-                    
-                    remainingShield -= shieldInSegment;
-                }
-            }
-            
-            progressTrack.appendChild(segment);
-        }
-        
-        // Make sure the stat-bar-wrapper has the dummy div for spacing
-        const barWrapper = progressTrack.closest('.stat-bar-wrapper');
-        if (barWrapper) {
-            // Check if we need to add the dummy space div
-            if (!barWrapper.querySelector('.stat-icon-space')) {
-                const dummySpace = document.createElement('div');
-                dummySpace.className = 'stat-icon-space';
-                
-                // Insert it before the track
-                barWrapper.insertBefore(dummySpace, progressTrack);
-            }
-        }
+    const lifeTrack = document.querySelector('.total-life-track');
+    // Clear existing segments
+    lifeTrack.innerHTML = '';
+
+    // Render the life bar using the helper function
+    if (lifeTrack) {
+        renderLifeBar(health, armor, shield, lifeTrack);
     }
-    
-    // Update individual stat bars (these will NOT be segmented)
-    updateStatBar('weapon-power', buildData.stats.weaponPower || 0);
-    updateStatBar('ability-power', buildData.stats.abilityPower || 0);
-    updateStatBar('attack-speed', buildData.stats.attackSpeed || 0);
-    updateStatBar('cooldown-reduction', buildData.stats.cooldownReduction || 0);
-    updateStatBar('max-ammo', buildData.stats.maxAmmo || 0);
-    updateStatBar('weapon-lifesteal', buildData.stats.weaponLifesteal || 0);
-    updateStatBar('ability-lifesteal', buildData.stats.abilityLifesteal || 0);
-    updateStatBar('move-speed', buildData.stats.moveSpeed || 0);
-    updateStatBar('reload-speed', buildData.stats.reloadSpeed || 0);
-    updateStatBar('melee-damage', buildData.stats.meleeDamage || 0);
-    updateStatBar('critical-damage', buildData.stats.criticalDamage || 0);
+
+    // Ensure the life bar wrapper has the dummy div for spacing
+    const lifeBarWrapper = lifeTrack ? lifeTrack.closest('.stat-bar-wrapper') : null;
+    if (lifeBarWrapper && !lifeBarWrapper.querySelector('.stat-icon-space')) {
+        const dummySpace = document.createElement('div');
+        dummySpace.className = 'stat-icon-space';
+        lifeBarWrapper.insertBefore(dummySpace, lifeTrack);
+    }
+
+    // Update individual modifier stat bars
+    updateStatBar('weapon-power', stats.weaponPower || 0);
+    updateStatBar('ability-power', stats.abilityPower || 0);
+    updateStatBar('attack-speed', stats.attackSpeed || 0);
+    updateStatBar('cooldown-reduction', stats.cooldownReduction || 0);
+    updateStatBar('max-ammo', stats.maxAmmo || 0);
+    updateStatBar('weapon-lifesteal', stats.weaponLifesteal || 0);
+    updateStatBar('ability-lifesteal', stats.abilityLifesteal || 0);
+    updateStatBar('move-speed', stats.moveSpeed || 0);
+    updateStatBar('reload-speed', stats.reloadSpeed || 0);
+    updateStatBar('melee-damage', stats.meleeDamage || 0);
+    updateStatBar('critical-damage', stats.criticalDamage || 0);
+}
+
+// Helper function to render the segmented life bar
+function renderLifeBar(health, armor, shield, trackElement) {
+    trackElement.innerHTML = ''; // Clear existing segments
+
+    const totalLife = health + armor + shield;
+    if (totalLife <= 0) return; // Nothing to render
+
+    // Constants for rendering
+    const lifePerSegment = 25;
+    const minSegmentsToShow = 10; // Minimum visual width
+
+    // Calculate the number of segments needed
+    const actualSegments = Math.ceil(totalLife / lifePerSegment);
+    const totalSegmentsToRender = Math.max(minSegmentsToShow, actualSegments);
+
+    let remainingHealth = health;
+    let remainingArmor = armor;
+    let remainingShield = shield;
+
+    for (let i = 0; i < totalSegmentsToRender; i++) {
+        const segment = document.createElement('div');
+        segment.className = 'stat-segment';
+
+        const segmentStartLife = i * lifePerSegment;
+        const segmentEndLife = (i + 1) * lifePerSegment;
+
+        let currentFill = 0; // How much of the current segment is filled (0 to lifePerSegment)
+
+        // Fill with Health
+        if (remainingHealth > 0) {
+            const healthStart = health - remainingHealth;
+            const healthEnd = health;
+            const overlapStart = Math.max(segmentStartLife, healthStart);
+            const overlapEnd = Math.min(segmentEndLife, healthEnd);
+            const healthInSegment = Math.max(0, overlapEnd - overlapStart);
+
+            if (healthInSegment > 0) {
+                const fillDiv = document.createElement('div');
+                fillDiv.className = 'segment-fill health';
+                fillDiv.style.left = `${(currentFill / lifePerSegment) * 100}%`;
+                fillDiv.style.width = `${(healthInSegment / lifePerSegment) * 100}%`;
+                segment.appendChild(fillDiv);
+                currentFill += healthInSegment;
+                remainingHealth -= healthInSegment; // Track remaining health accurately
+            }
+        }
+
+        // Fill with Armor
+        if (remainingArmor > 0 && currentFill < lifePerSegment) {
+            const armorStart = health + armor - remainingArmor; // Start point of armor relative to total life
+            const armorEnd = health + armor;
+            const overlapStart = Math.max(segmentStartLife, armorStart);
+            const overlapEnd = Math.min(segmentEndLife, armorEnd);
+            const armorInSegment = Math.max(0, overlapEnd - overlapStart);
+
+            if (armorInSegment > 0) {
+                const fillDiv = document.createElement('div');
+                fillDiv.className = 'segment-fill armor';
+                fillDiv.style.left = `${(currentFill / lifePerSegment) * 100}%`;
+                fillDiv.style.width = `${(armorInSegment / lifePerSegment) * 100}%`;
+                segment.appendChild(fillDiv);
+                currentFill += armorInSegment;
+                remainingArmor -= armorInSegment;
+            }
+        }
+
+        // Fill with Shield
+        if (remainingShield > 0 && currentFill < lifePerSegment) {
+            const shieldStart = health + armor + shield - remainingShield; // Start point of shield
+            const shieldEnd = health + armor + shield;
+            const overlapStart = Math.max(segmentStartLife, shieldStart);
+            const overlapEnd = Math.min(segmentEndLife, shieldEnd);
+            const shieldInSegment = Math.max(0, overlapEnd - overlapStart);
+
+            if (shieldInSegment > 0) {
+                const fillDiv = document.createElement('div');
+                fillDiv.className = 'segment-fill shield';
+                fillDiv.style.left = `${(currentFill / lifePerSegment) * 100}%`;
+                fillDiv.style.width = `${(shieldInSegment / lifePerSegment) * 100}%`;
+                segment.appendChild(fillDiv);
+                currentFill += shieldInSegment;
+                remainingShield -= shieldInSegment;
+            }
+        }
+
+        // If segment is empty after filling (i.e., beyond total life), mark it
+        if (currentFill === 0 && segmentStartLife >= totalLife) {
+            segment.classList.add('empty');
+        } else if (currentFill < lifePerSegment && segmentEndLife > totalLife) {
+            // Partially filled segment at the end - style appropriately if needed
+            //segment.classList.add('partially-empty'); // Optional class
+        }
+
+        trackElement.appendChild(segment);
+    }
 }
 
 function updateStatBar(statId, value) {
-    // Get the track element by finding the stat-group with matching stat-name
-    let statTrack;
-    
-    // Find the stat track by looking for the stat group with the matching name
-    const statGroups = document.querySelectorAll('.stat-group');
-    for (const group of statGroups) {
-        const nameElement = group.querySelector('.stat-name');
-        if (nameElement) {
-            const name = nameElement.textContent.toLowerCase().replace(/\s+/g, '-');
-            if (name === statId) {
-                statTrack = group.querySelector('.stat-track');
-                break;
-            }
-        }
+    // Find the stat group using the data-stat-id attribute
+    const statGroup = document.querySelector(`.stat-group[data-stat-id='${statId}']`);
+
+    if (!statGroup) {
+        // console.warn(`Stat group not found for ID: ${statId}`);
+        return;
     }
-    
-    if (!statTrack) return;
-    
-    // Find the parent stat group that contains this track
-    const statGroup = statTrack.closest('.stat-group');
-    if (!statGroup) return;
-    
-    // Get the stat value element
+
+    // Get the track and value elements within this specific group
+    const statTrack = statGroup.querySelector('.stat-track');
     const statValue = statGroup.querySelector('.stat-value');
-    if (!statValue) return;
-    
+
+    if (!statTrack || !statValue) {
+        console.warn(`Missing track or value element in stat group: ${statId}`);
+        return;
+    }
+
     // Calculate percentage (maximum value is 100 for all stats except critical damage which is 200)
     let maxValue = 100;
     if (statId === 'critical-damage') {
         maxValue = 200;
     }
-    
+
     // Clear existing content
     statTrack.innerHTML = '';
-    
+
     // Create a simple fill bar for regular stats
     const fillBar = document.createElement('div');
     fillBar.className = 'stat-fill';
-    
+
     // Set different colors based on the stat type
     if (statId === 'weapon-power' || statId === 'critical-damage' || statId === 'melee-damage') {
         fillBar.style.backgroundColor = '#ff5722';
@@ -1619,14 +1941,14 @@ function updateStatBar(statId, value) {
     } else if (statId === 'move-speed' || statId === 'reload-speed') {
         fillBar.style.backgroundColor = '#4CAF50';
     }
-    
+
     // Calculate percentage and set width - ensure it's at least visible when not 0
     const percentage = value === 0 ? 0 : Math.min(100, Math.max(1, (value / maxValue) * 100));
     fillBar.style.width = `${percentage}%`;
-    
+
     // Add the fill bar to the track
     statTrack.appendChild(fillBar);
-    
+
     // Make sure the stat-bar-wrapper has the dummy div for spacing
     const barWrapper = statTrack.closest('.stat-bar-wrapper');
     if (barWrapper) {
@@ -1634,65 +1956,65 @@ function updateStatBar(statId, value) {
         if (!barWrapper.querySelector('.stat-icon-space')) {
             const dummySpace = document.createElement('div');
             dummySpace.className = 'stat-icon-space';
-            
+
             // Insert it before the track
             barWrapper.insertBefore(dummySpace, statTrack);
         }
     }
-    
+
     // Update the numeric value - show as percentage
     if (statId === 'life' || statId === 'total-life') {
-        statValue.textContent = value;
+        statValue.textContent = value.toLocaleString(); // Format number
     } else {
         statValue.textContent = value + '%';
     }
 }
 
-// Update item stats when purchased
-function updateItemStats(item, add = true) {
+// Update item stats when purchased or sold - RENAME for clarity
+function applyItemStatsModification(item, add = true) {
     if (!item || !item.stats) return;
-    
+
+    // Use the global stats object
+    const currentStats = stats;
+
     // Iterate through each stat in the item and apply the modification
     for (const [stat, value] of Object.entries(item.stats)) {
         if (stat === 'health' || stat === 'armor' || stat === 'shield') {
             // Life stats are base values, not modifiers
-            if (!buildData.stats.life[stat]) {
-                buildData.stats.life[stat] = 0;
+            if (!currentStats.life[stat]) {
+                currentStats.life[stat] = 0;
             }
-            buildData.stats.life[stat] += value * (add ? 1 : -1);
-            
+            currentStats.life[stat] += value * (add ? 1 : -1);
+
             // Ensure we never go below 0
-            if (buildData.stats.life[stat] < 0) {
-                buildData.stats.life[stat] = 0;
+            if (currentStats.life[stat] < 0) {
+                currentStats.life[stat] = 0;
             }
         } else {
             // All other stats are percentage modifiers
-            if (buildData.stats[stat] === undefined) {
-                buildData.stats[stat] = 0;
+            if (currentStats[stat] === undefined) {
+                currentStats[stat] = 0;
             }
-            buildData.stats[stat] += value * (add ? 1 : -1);
-            
+            currentStats[stat] += value * (add ? 1 : -1);
+
             // Ensure we never go below 0
-            if (buildData.stats[stat] < 0) {
-                buildData.stats[stat] = 0;
+            if (currentStats[stat] < 0) {
+                currentStats[stat] = 0;
             }
         }
     }
-    
+
     // Update the display
     updateStatsDisplay();
-    
-    // Save the updated build data
-    saveBuildData();
 }
 
 // Function to format stat values with % sign for percentage stats
 function formatStatValue(stat, value) {
     // Stats that should be displayed with percentage sign
-    const percentageStats = ['weaponPower', 'reloadSpeed', 'criticalDamage', 
-                           'attackSpeed', 'abilityPower', 'cooldownReduction',
-                           'moveSpeed', 'weaponLifesteal'];
-    
+    const percentageStats = ['weaponPower', 'reloadSpeed', 'criticalDamage',
+        'attackSpeed', 'abilityPower', 'cooldownReduction',
+        'moveSpeed', 'weaponLifesteal'];
+
     if (percentageStats.includes(stat)) {
         return `${value}%`;
     }
@@ -1715,22 +2037,22 @@ function getReadableStatName(stat) {
         'moveSpeed': 'Movement Speed',
         'weaponLifesteal': 'Weapon Lifesteal'
     };
-    
+
     return statNames[stat] || stat;
 }
 
 // Function to show tooltip
 function showTooltip(item, event) {
     if (!item) return;
-    
+
     // Set hovering flag
     isHoveringItem = true;
-    
+
     // Create tooltip content
     let tooltipContent = `
         <div class="tooltip-header">${item.name}</div>
     `;
-    
+
     // Add stats if they exist
     if (item.stats) {
         tooltipContent += '<div class="tooltip-stats">';
@@ -1742,37 +2064,37 @@ function showTooltip(item, event) {
         }
         tooltipContent += '</div>';
     }
-    
+
     // Add cost
-    tooltipContent += `<div class="tooltip-cost"><i class="fas fa-gem"></i> <span>${item.cost.toLocaleString()}</span></div>`;
-    
+    tooltipContent += `<div class="tooltip-cost"> <span>${item.cost.toLocaleString()}</span></div>`;
+
     // Update tooltip content and display it
     tooltip.innerHTML = tooltipContent;
     tooltip.style.display = 'block';
-    
+
     // Get element position and dimensions
     const itemRect = event.currentTarget.getBoundingClientRect();
-    
+
     // Position tooltip centered beneath the item
     tooltip.style.left = `${window.pageXOffset + itemRect.left + (itemRect.width / 2) - (tooltip.offsetWidth / 2)}px`;
     tooltip.style.top = `${window.pageYOffset + itemRect.bottom + 10}px`; // 10px below the item
-    
+
     // Reposition if tooltip goes off-screen
     setTimeout(() => { // Use setTimeout to calculate after the tooltip is rendered
         const tooltipRect = tooltip.getBoundingClientRect();
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-        
+
         // Prevent tooltip from going off the right edge
         if (tooltipRect.right > viewportWidth) {
             tooltip.style.left = `${window.pageXOffset + viewportWidth - tooltipRect.width - 10}px`;
         }
-        
+
         // Prevent tooltip from going off the left edge
         if (tooltipRect.left < 10) {
             tooltip.style.left = `${window.pageXOffset + 10}px`;
         }
-        
+
         // If tooltip would go off the bottom of the screen, position it above the item instead
         if (tooltipRect.bottom > viewportHeight) {
             tooltip.style.top = `${window.pageYOffset + itemRect.top - tooltipRect.height - 10}px`;
@@ -1784,7 +2106,7 @@ function showTooltip(item, event) {
 function hideTooltip() {
     // Clear hovering flag
     isHoveringItem = false;
-    
+
     // Delay hiding the tooltip slightly to make it more stable
     setTimeout(() => {
         // Only hide if we're still not hovering an item
@@ -1799,21 +2121,21 @@ function updateItemSlot(slot, item) {
     slot.innerHTML = '';
     slot.classList.remove('common-item', 'rare-item', 'epic-item', 'empty-slot');
     slot.classList.add('empty-slot');
-    
+
     if (item) {
         const itemImage = document.createElement('div');
         itemImage.classList.add('item-image');
-        
+
         // Set background image if iconPath is provided
         if (item.iconPath) {
             itemImage.style.backgroundImage = `url(${item.iconPath})`;
             // Make the background more transparent when an icon is present
             itemImage.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
         }
-        
+
         slot.appendChild(itemImage);
         slot.classList.remove('empty-slot');
-        
+
         // Add class based on item rarity
         if (item.cost >= 9000) {
             slot.classList.add('epic-item');
@@ -1822,7 +2144,7 @@ function updateItemSlot(slot, item) {
         } else {
             slot.classList.add('common-item');
         }
-        
+
         // Add event listeners for tooltip
         slot.addEventListener('mouseenter', (event) => showTooltip(item, event));
         slot.addEventListener('mouseleave', hideTooltip);
@@ -1875,38 +2197,39 @@ function loadItems() {
 
 // Function to highlight the target slot where an item would be equipped
 function highlightTargetSlot(item, isOwned = false) {
+    const heroBuild = getCurrentHeroBuild();
     // Get all item slots and current round items
     const itemSlots = document.querySelectorAll('.item-slots .item-slot');
-    const currentRoundItems = buildData.equippedItemsByRound[buildData.currentRound] || [];
-    
+    const currentRoundItems = heroBuild.equippedItemsByRound[currentRound] || [];
+
     if (isOwned) {
         console.log('Highlighting owned item:', item.name);
-        
+
         // For owned items, find by item name since that's the most reliable identifier
         let equippedItemIndex = -1;
-        
+
         for (let i = 0; i < currentRoundItems.length; i++) {
             const equippedItem = currentRoundItems[i];
             const fullEquippedItem = findItemById(equippedItem.id);
-            
+
             // Compare names since that's more reliable than ID which may change
             if (fullEquippedItem && fullEquippedItem.name === item.name) {
                 equippedItemIndex = i;
                 break;
             }
         }
-        
+
         console.log('Found equipped item at index:', equippedItemIndex);
-        
+
         if (equippedItemIndex !== -1 && equippedItemIndex < itemSlots.length) {
             // Highlight the slot where this item is currently equipped
             const targetSlot = itemSlots[equippedItemIndex];
-            
+
             console.log('Target slot found:', targetSlot);
-            
+
             // Add highlight class to the target slot
             targetSlot.classList.add('target-slot');
-            
+
             // Add the rarity class to show the right color
             if (item.cost >= 9000) {
                 targetSlot.classList.add('target-epic');
@@ -1921,17 +2244,17 @@ function highlightTargetSlot(item, isOwned = false) {
     } else {
         // For items not yet owned, highlight the next available slot
         // Check if we have space for more items
-        if (currentRoundItems.length >= buildData.maxItems) {
+        if (currentRoundItems.length >= MAX_ITEMS) {
             // No space, don't highlight anything
             return;
         }
-        
+
         if (currentRoundItems.length < itemSlots.length) {
             const targetSlot = itemSlots[currentRoundItems.length];
-            
+
             // Add highlight class to the target slot
             targetSlot.classList.add('target-slot');
-            
+
             // Add the rarity class to show the right color
             if (item.cost >= 9000) {
                 targetSlot.classList.add('target-epic');
@@ -1971,38 +2294,23 @@ function removeOriginalItemHighlight() {
 
 // Function to highlight the target power slot where a power would be equipped
 function highlightTargetPowerSlot(power, isEquipped = false) {
+    const heroBuild = getCurrentHeroBuild();
     // Get all power slots
     const powerSlots = document.querySelectorAll('.power-slots .power-slot');
-    const roundSlots = [1, 3, 5, 7]; // The rounds that have slots
-    
+
     // Determine which round this power would be assigned to
-    let targetRound;
-    if (buildData.currentRound <= 2) {
-        targetRound = 1;
-    } else if (buildData.currentRound <= 4) {
-        targetRound = 3;
-    } else if (buildData.currentRound <= 6) {
-        targetRound = 5;
-    } else {
-        targetRound = 7;
-    }
-    
+    let targetRound = getAssignedRound(currentRound);
+
     if (isEquipped) {
         // Find which slot this power is equipped in
-        const equippedPowerIndex = buildData.equippedPowers.findIndex(p => p.id === power.id);
+        const equippedPowerIndex = heroBuild.equippedPowers.findIndex(p => p.id === power.id);
         if (equippedPowerIndex !== -1) {
-            const equippedPower = buildData.equippedPowers[equippedPowerIndex];
+            const equippedPower = heroBuild.equippedPowers[equippedPowerIndex];
             const equippedRound = equippedPower.round;
-            
+
             // Map the round to the slot index
-            const roundToSlotMap = {
-                1: 0,  // first slot is for round 1
-                3: 1,  // second slot is for round 3 
-                5: 2,  // third slot is for round 5
-                7: 3   // fourth slot is for round 7
-            };
-            
-            const slotIndex = roundToSlotMap[equippedRound];
+
+            const slotIndex = ROUND_TO_SLOT_MAP[equippedRound];
             if (slotIndex !== undefined && slotIndex < powerSlots.length) {
                 // Highlight the slot with a consistent style
                 powerSlots[slotIndex].classList.add('target-power-slot');
@@ -2011,22 +2319,18 @@ function highlightTargetPowerSlot(power, isEquipped = false) {
     } else {
         // For powers not yet equipped, highlight the appropriate round slot
         // Check if we're in a round that shouldn't allow power selection
-        const isDisabledRound = buildData.currentRound === 2 || 
-                               buildData.currentRound === 4 || 
-                               buildData.currentRound === 6;
-        
-        if (isDisabledRound) {
+        if (isDisabledRound()) {
             // Don't highlight any slot in the disabled rounds
             return;
         }
-        
+
         // Find the slot index for the target round
-        const targetSlotIndex = roundSlots.indexOf(targetRound);
-        
+        const targetSlotIndex = ROUND_SLOTS.indexOf(targetRound);
+
         if (targetSlotIndex !== -1 && targetSlotIndex < powerSlots.length) {
             // Check if this slot already has a power equipped
-            const isSlotTaken = buildData.equippedPowers.some(p => p.round === targetRound);
-            
+            const isSlotTaken = heroBuild.equippedPowers.some(p => p.round === targetRound);
+
             if (!isSlotTaken) {
                 // Highlight the slot only if it's not already taken
                 powerSlots[targetSlotIndex].classList.add('target-power-slot');
@@ -2068,7 +2372,7 @@ function initPowerHoverEffects() {
         // Remove existing event listeners by cloning and replacing
         const newIcon = icon.cloneNode(true);
         const powerId = newIcon.getAttribute('data-power-id');
-        
+
         // Add proper event listeners
         newIcon.addEventListener('mouseenter', (event) => {
             highlightOriginalPower(powerId);
@@ -2078,16 +2382,16 @@ function initPowerHoverEffects() {
                 highlightTargetPowerSlot(fullPower, true);
             }
         });
-        
+
         newIcon.addEventListener('mouseleave', () => {
             removeOriginalPowerHighlight();
             removePowerSlotHighlight();
         });
-        
+
         // Replace the original icon
         icon.parentNode.replaceChild(newIcon, icon);
     });
-    
+
     // Also refresh for power cards
     const powerCards = document.querySelectorAll('.power-card');
     powerCards.forEach(card => {
@@ -2095,37 +2399,650 @@ function initPowerHoverEffects() {
         const newCard = card.cloneNode(true);
         const powerId = newCard.dataset.powerId;
         const isEquipped = newCard.classList.contains('equipped');
-        
+
         // Get the full power data - moved up to ensure we have this for event handlers
         const fullPower = findPowerById(powerId);
-        
+
         // Add proper listeners
         newCard.addEventListener('mouseenter', (event) => {
             if (fullPower) {
                 highlightTargetPowerSlot(fullPower, isEquipped);
             }
         });
-        
+
         newCard.addEventListener('mouseleave', () => {
             removePowerSlotHighlight();
         });
-        
+
         // Restore click handlers as well
-        newCard.addEventListener('click', function() {
+        newCard.addEventListener('click', function () {
             if (this.classList.contains('equipped')) {
                 unequipPower(powerId, this);
             } else {
                 equipPower(powerId, this);
             }
         });
-        
+
         // Replace the original card
         card.parentNode.replaceChild(newCard, card);
     });
 }
 
-// Function to reset localStorage and ensure we start fresh
-function resetLocalStorage() {
-    console.log("Resetting localStorage to start fresh");
-    localStorage.removeItem('buildData');
+// Helper to check if a stat should be displayed as percentage
+function isPercentageStat(statKey) {
+    const percentageStats = [
+        'cooldownReduction', 'moveSpeed', 'damageReduction',
+        'healingBoost', 'critChance', 'critDamage'
+    ];
+    return percentageStats.includes(statKey);
+}
+
+// Helper to format stat names for display
+function formatStatName(statKey) {
+    // Dictionary of stat display names
+    const statNames = {
+        'cooldownReduction': 'Cooldown Reduction',
+        'moveSpeed': 'Movement Speed',
+        'damageReduction': 'Damage Reduction',
+        'healingBoost': 'Healing Boost',
+        'critChance': 'Critical Hit Chance',
+        'critDamage': 'Critical Hit Damage'
+    };
+
+    return statNames[statKey] ||
+        statKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+}
+
+// Initialize advanced options
+function initAdvancedOptions() {
+    const economyToggle = document.getElementById('economy-mode-toggle');
+    const customToggle = document.getElementById('custom-toggle');
+    const sliders = document.querySelectorAll('.economy-slider');
+    const presetColumns = document.querySelectorAll('.preset-column');
+    const resetPresetsButton = document.getElementById('reset-presets'); // Make sure this ID exists
+
+    // --- Event Listener Setup ---
+
+    // Economy Mode Toggle Listener
+    if (economyToggle) {
+        economyToggle.addEventListener('change', () => {
+            const isSimulation = economyToggle.checked;
+            if (isSimulation) {
+                setEconomyModeSimulation();
+            } else {
+                setEconomyModeUnlimited();
+            }
+            // Update UI after changing state
+            updateAdvancedOptionsUI();
+        });
+    }
+
+    // Custom Mode Toggle Listener
+    if (customToggle) {
+        customToggle.addEventListener('change', () => {
+            // Assuming customMode state is managed within economySettings
+            const economySettings = getEconomySettings();
+            economySettings.customMode = customToggle.checked; // Update the state directly
+            showMessage(customToggle.checked ? 'Custom mode enabled' : 'Custom mode disabled');
+            // Update UI after changing state
+            updateAdvancedOptionsUI();
+        });
+    }
+
+    // Slider Input/Change Listeners
+    sliders.forEach((slider) => {
+        const round = parseInt(slider.id.split('-')[2]); // Extract round from ID like 'economy-slider-1'
+        const valueDisplay = document.getElementById(`slider-value-${round}`);
+        const row = slider.closest('.economy-preset-row');
+
+        slider.addEventListener('input', () => {
+            if (valueDisplay) {
+                valueDisplay.textContent = parseInt(slider.value).toLocaleString();
+            }
+            if (row) {
+                const selectedPreset = row.querySelector('.preset-column.selected');
+                if (selectedPreset) {
+                    selectedPreset.textContent = parseInt(slider.value).toLocaleString();
+                }
+            }
+        });
+
+        slider.addEventListener('change', () => {
+            const newValue = parseInt(slider.value);
+            if (row) {
+                const selectedPreset = row.querySelector('.preset-column.selected');
+                if (selectedPreset) {
+                    const presetName = selectedPreset.classList.contains('low') ? 'low' :
+                        selectedPreset.classList.contains('normal') ? 'normal' : 'high';
+                    // Update state
+                    setEconomyPreset(round, presetName); // Keep track of which preset the custom value belongs to
+                    setEconomyValue(round, presetName, newValue);
+                    // Update the button's dataset and text definitively
+                    selectedPreset.dataset.value = newValue;
+                    selectedPreset.textContent = newValue.toLocaleString();
+                } else {
+                    // If no preset is selected (shouldn't happen in custom mode?), maybe default to saving as 'normal'
+                    setEconomyPreset(round, 'normal'); // Or handle differently
+                    setEconomyValue(round, 'normal', newValue);
+                }
+            } else {
+                // Fallback if row not found?
+                setEconomyValue(round, 'normal', newValue);
+            }
+            // Update UI (mainly cash display)
+            updateAdvancedOptionsUI();
+        });
+    });
+
+    // Preset Button Click Listeners
+    presetColumns.forEach(preset => {
+        preset.addEventListener('click', () => {
+            // Only allow clicks if highlight-enabled (i.e., custom mode is on)
+            if (!preset.classList.contains('highlight-enabled')) {
+                return;
+            }
+
+            const row = preset.closest('.economy-preset-row');
+            if (!row) return;
+
+            const round = parseInt(row.dataset.round);
+            const presetName = preset.classList.contains('low') ? 'low' :
+                preset.classList.contains('normal') ? 'normal' : 'high';
+            const value = parseInt(preset.dataset.value); // Use the value stored on the button
+
+            // Update state
+            setEconomyPreset(round, presetName);
+            setEconomyValue(round, presetName, value); // Set the round's value to this preset's value
+
+            showMessage(`Round ${round} economy set to ${presetName}`);
+
+            // Update UI after changing state
+            updateAdvancedOptionsUI();
+        });
+    });
+
+    // Reset Presets Button Listener
+    if (resetPresetsButton) {
+        resetPresetsButton.addEventListener('click', () => {
+            resetEconomyPresets(); // Reset state to defaults
+            showMessage('Presets reset to default values');
+            // Update UI after changing state
+            updateAdvancedOptionsUI();
+        });
+    }
+
+    // --- Initial UI Update ---
+    // Call once after setting up listeners to reflect the loaded state
+    updateAdvancedOptionsUI();
+}
+
+// Function to update the UI elements in the Advanced Options / Economy panel
+// This function acts as a controller, calling specific UI update functions.
+function updateAdvancedOptionsUI() {
+    // Update Economy Settings UI
+    updateEconomySettingsUI();
+
+    // Update other advanced options UI (future)
+    // updateOtherAdvancedOptionsUI();
+
+    // Update elements potentially affected by any advanced option change
+    updateCashDisplay();
+}
+
+// Initializes the Advanced Options panel - Sets up event listeners ONCE.
+// This function acts as a controller, calling specific listener setup functions.
+function initAdvancedOptionsListeners() {
+    const economyToggle = document.getElementById('economy-mode-toggle');
+    const customToggle = document.getElementById('custom-toggle');
+    const sliders = document.querySelectorAll('.economy-slider');
+    const presetColumns = document.querySelectorAll('.preset-column');
+    const resetPresetsButton = document.getElementById('reset-presets'); // Make sure this ID exists
+
+    // --- Event Listener Setup ---
+
+    // Economy Mode Toggle Listener
+    if (economyToggle) {
+        economyToggle.addEventListener('change', () => {
+            const isSimulation = economyToggle.checked;
+            if (isSimulation) {
+                setEconomyModeSimulation();
+            } else {
+                setEconomyModeUnlimited();
+            }
+            // Update UI after changing state
+            updateAdvancedOptionsUI();
+        });
+    }
+
+    // Custom Mode Toggle Listener
+    if (customToggle) {
+        customToggle.addEventListener('change', () => {
+            // Assuming customMode state is managed within economySettings
+            const economySettings = getEconomySettings();
+            economySettings.customMode = customToggle.checked; // Update the state directly
+            showMessage(customToggle.checked ? 'Custom mode enabled' : 'Custom mode disabled');
+            // Update UI after changing state
+            updateAdvancedOptionsUI();
+        });
+    }
+
+    // Slider Input/Change Listeners
+    sliders.forEach((slider) => {
+        const round = parseInt(slider.id.split('-')[2]);
+        const valueDisplay = document.getElementById(`slider-value-${round}`);
+        const row = slider.closest('.economy-preset-row');
+
+        // Update display during sliding
+        slider.addEventListener('input', () => {
+            if (valueDisplay) {
+                valueDisplay.textContent = parseInt(slider.value).toLocaleString();
+            }
+            // Temporarily update the selected preset button's text while sliding
+            if (row) {
+                const selectedPreset = row.querySelector('.preset-column.selected');
+                if (selectedPreset) {
+                    selectedPreset.textContent = parseInt(slider.value).toLocaleString();
+                }
+            }
+        });
+
+        // Save value on change (when user releases slider)
+        slider.addEventListener('change', () => {
+            const newValue = parseInt(slider.value);
+            if (row) {
+                const selectedPreset = row.querySelector('.preset-column.selected');
+                if (selectedPreset) {
+                    const presetName = selectedPreset.classList.contains('low') ? 'low' :
+                        selectedPreset.classList.contains('normal') ? 'normal' : 'high';
+                    // Save the current preset selection 
+                    setEconomyPreset(round, presetName);
+
+                    // Save custom value for this specific preset
+                    setEconomyValue(round, presetName, newValue);
+
+                    // Update the button's dataset and text
+                    selectedPreset.dataset.value = newValue;
+                    selectedPreset.textContent = newValue.toLocaleString();
+
+                    // Update UI to reflect the changes
+                    updateAdvancedOptionsUI();
+                    // If in simulation mode, update cash display
+                    if (isEconomyModeSimulation() && parseInt(round) === currentRound) {
+                        updateCashDisplay();
+                    }
+                } else {
+                    // If no preset is selected, use normal as default
+                    setEconomyPreset(round, 'normal');
+                    setEconomyValue(round, 'normal', newValue);
+
+                    // Update UI  
+                    updateAdvancedOptionsUI();
+                    // If in simulation mode, update cash display
+                    if (isEconomyModeSimulation() && parseInt(round) === currentRound) {
+                        updateCashDisplay();
+                    }
+                }
+            } else {
+                // If somehow row not found, use currently selected preset  
+                const currentPreset = builds.economySettings.economyPresets[round] || 'normal';
+                setEconomyValue(round, currentPreset, newValue);
+
+                // Update UI  
+                updateAdvancedOptionsUI();
+                // If in simulation mode, update cash display
+                if (isEconomyModeSimulation() && parseInt(round) === currentRound) {
+                    updateCashDisplay();
+                }
+            }
+        });
+    });
+
+    // Preset Button Click Listeners
+    presetColumns.forEach(preset => {
+        preset.addEventListener('click', () => {
+            if (!preset.classList.contains('highlight-enabled')) {
+                return;
+            }
+            const row = preset.closest('.economy-preset-row');
+            if (!row) return;
+            const round = parseInt(row.dataset.round);
+            const presetName = preset.classList.contains('low') ? 'low' :
+                preset.classList.contains('normal') ? 'normal' : 'high';
+            // Get the value for this preset (custom or default)
+            const value = getEconomyPresetValue(round, presetName);
+
+            setEconomyPreset(round, presetName);
+            // No need to call setEconomyValue since we're just switching presets, not changing values
+            showMessage(`Round ${round} economy set to ${presetName}`);
+            updateAdvancedOptionsUI(); // Update the entire panel after state change
+        });
+    });
+
+    // Reset Presets Button Listener
+    if (resetPresetsButton) {
+        resetPresetsButton.addEventListener('click', () => {
+            resetEconomyPresets();
+            showMessage('Presets reset to default values');
+            updateAdvancedOptionsUI(); // Update the entire panel after state change
+        });
+    }
+}
+
+// Updates the UI elements specifically for the economy settings section
+function updateEconomySettingsUI() {
+    const economySettings = getEconomySettings();
+
+    const economyToggle = document.getElementById('economy-mode-toggle');
+    const toggleText = document.getElementById('toggle-text');
+    const economySimulationOptions = document.querySelector('.economy-simulation-options');
+    const customToggle = document.getElementById('custom-toggle');
+
+    // Update Economy Mode Toggle and Section Visibility
+    if (economyToggle && toggleText && economySimulationOptions) {
+        economyToggle.checked = economySettings.simulationMode;
+        toggleText.textContent = economyToggle.checked ? 'Simulation (Round Budget)' : 'Unlimited (Build Cost)';
+        economySimulationOptions.style.display = economyToggle.checked ? 'block' : 'none';
+    }
+
+    // Update Custom Mode Toggle and Related UI Elements
+    if (customToggle) {
+        const isCustomMode = economySettings.customMode || false;
+        customToggle.checked = isCustomMode;
+
+        document.querySelectorAll('.custom-column').forEach(column => {
+            column.classList.toggle('active', isCustomMode);
+        });
+
+        document.querySelectorAll('.economy-slider').forEach(slider => {
+            if (isCustomMode) {
+                slider.removeAttribute('disabled');
+                slider.style.opacity = '1';
+            } else {
+                slider.setAttribute('disabled', 'disabled');
+                slider.style.opacity = '0.5';
+            }
+        });
+
+        document.querySelectorAll('.preset-column').forEach(preset => {
+            preset.classList.toggle('highlight-enabled', isCustomMode);
+            if (!isCustomMode) {
+                preset.classList.remove('selected');
+            }
+        });
+    }
+
+    // Update Sliders and Preset Buttons for each round
+    for (let round = 1; round <= 7; round++) {
+        const slider = document.getElementById(`economy-slider-${round}`);
+        const valueDisplay = document.getElementById(`slider-value-${round}`);
+        const economyRow = document.querySelector(`.economy-preset-row[data-round="${round}"]`);
+
+        // Get the currently selected preset for this round
+        const roundPreset = economySettings.economyPresets[round] || 'normal';
+
+        // Get the value for this preset (custom or default)
+        const roundValue = getEconomyPresetValue(round, roundPreset);
+
+        if (slider && valueDisplay && roundValue !== undefined) {
+            slider.value = roundValue;
+            valueDisplay.textContent = roundValue.toLocaleString();
+        }
+
+        if (economyRow) {
+            const allPresets = economyRow.querySelectorAll('.preset-column');
+            allPresets.forEach(p => {
+                p.classList.remove('selected');
+                const presetName = p.classList.contains('low') ? 'low' :
+                    p.classList.contains('normal') ? 'normal' : 'high';
+
+                // Each preset button shows its own value (custom or default)
+                const presetValue = getEconomyPresetValue(round, presetName);
+                p.dataset.value = presetValue;
+                p.textContent = presetValue.toLocaleString();
+            });
+
+            const selectedPresetButton = economyRow.querySelector(`.preset-column.${roundPreset}`);
+            if (selectedPresetButton) {
+                selectedPresetButton.classList.add('selected');
+                selectedPresetButton.textContent = roundValue.toLocaleString();
+            }
+        }
+    }
+}
+
+// Update the cash label based on the economy mode
+function updateCashDisplay() {
+    const cashContainer = document.querySelector('.build-cost');
+    if (!cashContainer) return;
+
+    // Clear existing content
+    cashContainer.innerHTML = '';
+
+    // Create label span
+    const labelSpan = document.createElement('span');
+    labelSpan.className = 'cost-label';
+
+    // Create diamond icon
+    const diamondIcon = document.createElement('span');
+    diamondIcon.className = 'diamond-icon';
+
+    // Create cost span
+    const costSpan = document.createElement('span');
+    costSpan.className = 'cost';
+
+    if (!isEconomyModeSimulation()) {
+        // Unlimited mode
+        labelSpan.textContent = 'BUILD COST:';
+        costSpan.textContent = calculateRoundBuildCost(currentRound).toLocaleString();
+    } else {
+        // In simulation mode, show remaining/total budget
+        // Ensure we have accurate budget by checking global settings
+        const currentBudget = getCurrentRoundBudget();
+
+        // Recalculate remaining cash based on most current budget and cost
+        const totalCost = calculateRoundBuildCost(currentRound);
+        const remainingCash = currentBudget - totalCost;
+
+        // Ensure the cash display is accurate by updating the state
+        const heroBuild = getCurrentHeroBuild();
+        if (!heroBuild.cashByRound) {
+            heroBuild.cashByRound = {};
+        }
+
+        // Store the recalculated cash in the hero build state
+        updateCash(currentRound, remainingCash);
+
+        labelSpan.textContent = 'CASH:';
+
+        // Create remaining cash display
+        const remainingSpan = document.createElement('span');
+
+        // If cash is negative, show it in red
+        if (remainingCash < 0) {
+            remainingSpan.className = 'negative-cash';
+            remainingSpan.textContent = remainingCash.toLocaleString();
+            // Show a warning if cash is negative (shouldn't happen with proper checks)
+            console.warn(`Negative cash detected: ${remainingCash} for round ${currentRound}`);
+        } else {
+            remainingSpan.textContent = remainingCash.toLocaleString();
+        }
+
+        // Create separator
+        const separatorSpan = document.createElement('span');
+        separatorSpan.textContent = ' / ';
+
+        // Create interactive budget element
+        const budgetSpan = document.createElement('span');
+        budgetSpan.className = 'budget-selector';
+        budgetSpan.textContent = currentBudget.toLocaleString();
+
+        // Make budget clickable to show a dropdown
+        budgetSpan.addEventListener('click', function (e) {
+            e.stopPropagation();
+            showBudgetPresetMenu(e, currentRound);
+        });
+
+        // Append all parts to the cost span
+        costSpan.appendChild(remainingSpan);
+        costSpan.appendChild(separatorSpan);
+        costSpan.appendChild(budgetSpan);
+    }
+
+    cashContainer.appendChild(labelSpan);
+    cashContainer.appendChild(diamondIcon);
+    cashContainer.appendChild(costSpan);
+}
+
+// Helper function to show the budget preset menu
+function showBudgetPresetMenu(event, round) {
+    // Remove any existing menu first
+    const existingMenu = document.querySelector('.budget-preset-menu');
+    if (existingMenu) {
+        existingMenu.remove();
+    }
+
+    // Create the menu
+    const menu = document.createElement('div');
+    menu.className = 'budget-preset-menu';
+
+    // Get preset values from the slider values in the economy menu
+    const presets = getEconomyPresetValuesForRound(round);
+
+    // Create menu items
+    const presetNames = ['low', 'normal', 'high'];
+    presetNames.forEach(presetName => {
+        const menuItem = document.createElement('div');
+        menuItem.className = 'budget-preset-item';
+        menuItem.dataset.presetName = presetName;
+        menuItem.textContent = `${presetName.toUpperCase()}: ${presets[presetName].toLocaleString()}`;
+
+        // Select the preset when clicked
+        menuItem.addEventListener('click', function (e) {
+            e.stopPropagation();
+
+            // Apply the preset
+            applyBudgetPreset(round, presetName, presets[presetName]);
+
+            // Update the display
+            updateCashDisplay();
+
+            // Sync with economy menu UI
+            syncEconomyMenuUI(round, presetName);
+
+            // Remove the menu
+            menu.remove();
+
+            // Show message
+            showMessage(`Round ${round} economy set to ${presetName}`);
+        });
+
+        menu.appendChild(menuItem);
+    });
+
+    // Position the menu
+    menu.style.position = 'absolute';
+    menu.style.left = `${event.clientX}px`;
+    menu.style.top = `${event.clientY}px`;
+
+    // Add menu to the document
+    document.body.appendChild(menu);
+
+    // Close menu when clicking elsewhere
+    document.addEventListener('click', function closeMenu() {
+        menu.remove();
+        document.removeEventListener('click', closeMenu);
+    });
+}
+
+// Get the current economy preset values from the UI
+function getEconomyPresetValuesForRound(round) {
+    // Find the corresponding row in the economy settings
+    const economyRow = document.querySelector(`.economy-preset-row[data-round="${round}"]`);
+
+    if (!economyRow) {
+        // Fallback to default values if UI elements not found
+        return {
+            low: getEconomyPresetValue(round, 'low'),
+            normal: getEconomyPresetValue(round, 'normal'),
+            high: getEconomyPresetValue(round, 'high')
+        };
+    }
+
+    // Get values directly from the preset columns (which may have been customized)
+    const lowPreset = economyRow.querySelector('.preset-column.low');
+    const normalPreset = economyRow.querySelector('.preset-column.normal');
+    const highPreset = economyRow.querySelector('.preset-column.high');
+
+    return {
+        low: parseInt(lowPreset?.dataset.value || getEconomyPresetValue(round, 'low')),
+        normal: parseInt(normalPreset?.dataset.value || getEconomyPresetValue(round, 'normal')),
+        high: parseInt(highPreset?.dataset.value || getEconomyPresetValue(round, 'high'))
+    };
+}
+
+// Sync the economy menu UI with the selected preset
+function syncEconomyMenuUI(round, presetName) {
+    // Find the corresponding row in the economy settings
+    const economyRow = document.querySelector(`.economy-preset-row[data-round="${round}"]`);
+
+    if (!economyRow) return;
+
+    // Get all preset columns in this row
+    const presetColumns = economyRow.querySelectorAll('.preset-column');
+
+    // Remove selected class from all
+    presetColumns.forEach(col => col.classList.remove('selected'));
+
+    // Add selected class to the matching preset type
+    const selectedPreset = economyRow.querySelector(`.preset-column.${presetName}`);
+    if (selectedPreset) {
+        selectedPreset.classList.add('selected');
+
+        // Update the slider value if in custom mode
+        const slider = document.getElementById(`economy-slider-${round}`);
+        const sliderValue = document.getElementById(`slider-value-${round}`);
+
+        if (slider && sliderValue) {
+            // Get the current value for this preset
+            const presetValue = getEconomyPresetValue(round, presetName);
+            slider.value = presetValue;
+            sliderValue.textContent = presetValue.toLocaleString();
+
+            // Update displayed value (preset buttons just show the value number)
+            selectedPreset.textContent = presetValue.toLocaleString();
+
+            // Save to state manager
+            setEconomyPreset(round, presetName);
+            // No need to call setEconomyValue when just switching presets
+        }
+    }
+}
+
+// Apply a budget preset to a specific round
+function applyBudgetPreset(round, presetName, value) {
+    // --- State Update ---
+    setEconomyPreset(round, presetName);
+    // If we want to update the value for this preset, do so:
+    setEconomyValue(round, presetName, value);
+
+    // --- UI Update ---
+    // The main UI update will handle reflecting this change
+    updateUI(); // Update the full UI
+}
+
+// Calculate the cost of all items in a specific round
+function calculateRoundBuildCost(round) {
+    const heroBuild = getCurrentHeroBuild();
+    let totalCost = 0;
+
+    // Sum the cost of all equipped items in the specified round
+    const roundItems = heroBuild.equippedItemsByRound[round] || [];
+
+    for (const item of roundItems) {
+        totalCost += item.cost || 0;
+    }
+
+    updateCost(round, totalCost);
+
+    return totalCost;
 }

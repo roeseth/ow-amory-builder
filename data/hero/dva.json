@@ -8,148 +8,120 @@
   "shield": 0,
   "moveSpeed": 5.5,
   "meleeDamage": 30,
-  "weapons": [
-    {
-      "name": "Fusion Cannons",
-      "type": "damage",
-      "damageType": "direct",
-      "damageValue": 2,
-      "splashDamageToEnemy": 0,
-      "splashDamageToSelf": 0,
-      "criticalHitMultiplier": 2.0,
-      "attackSpeed": 6.67,
-      "ammo": 0,
-      "reloadSpeed": 0,
-      "lifeSteal": 0
-    },
-    {
-      "name": "Light Gun",
-      "type": "damage",
-      "damageType": "direct",
-      "damageValue": 14,
-      "splashDamageToEnemy": 0,
-      "splashDamageToSelf": 0,
-      "criticalHitMultiplier": 2.0,
-      "attackSpeed": 7,
-      "ammo": 20,
-      "reloadSpeed": 1.5,
-      "lifeSteal": 0
-    }
-  ],
-  "abilities": [
-    {
-      "name": "Defense Matrix",
-      "type": "utility",
-      "damageType": "none",
-      "damageValue": 0,
-      "splashDamageToEnemy": 0,
-      "splashDamageToSelf": 0,
-      "healingValue": 0,
-      "duration": 3,
-      "cooldown": 1,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    },
-    {
-      "name": "Boosters",
-      "type": "mobility",
-      "damageType": "direct",
-      "damageValue": 10,
-      "splashDamageToEnemy": 0,
-      "splashDamageToSelf": 0,
-      "healingValue": 0,
-      "duration": 2,
-      "cooldown": 3.5,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 118
-    },
-    {
-      "name": "Micro Missiles",
-      "type": "damage",
-      "damageType": "splash",
-      "damageValue": 126,
-      "splashDamageToEnemy": 35,
-      "splashDamageToSelf": 0,
-      "healingValue": 0,
-      "duration": 1.6,
-      "cooldown": 8,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    },
-    {
-      "name": "Self-Destruct",
-      "type": "damage",
-      "damageType": "splash",
-      "damageValue": 1000,
-      "splashDamageToEnemy": 500,
-      "splashDamageToSelf": 0,
-      "healingValue": 0,
-      "duration": 3,
-      "cooldown": 0,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    },
-    {
-      "name": "Call Mech",
-      "type": "utility",
-      "damageType": "splash",
-      "damageValue": 250,
-      "splashDamageToEnemy": 100,
-      "splashDamageToSelf": 0,
-      "healingValue": 0,
-      "duration": 1.5,
-      "cooldown": 0,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": -100
-    }
-  ],
   "items": {
     "weapon": {
       "epic": [
         {
-          "name": "QUANTUM FUSION CORE",
-          "cost": 9000,
-          "description": "Cutting-edge technology that dramatically enhances D.Va's fusion cannons with devastating damage.",
-          "iconPath": "res/items/dva_fusion_epic.png",
+          "name": "MULTI-TASK MOD",
+          "cost": 10000,
+          "description": "Increases Weapon Power by 10%. [Fusion Cannons] can now be fired while using [Defense Matrix].",
+          "iconPath": "res/items/dva/dva_multi_task_mod.png",
           "stats": {
-            "weaponPower": 25,
-            "attackSpeed": 15,
-            "criticalDamage": 20
+            "weaponPower": 10
           }
         }
       ]
     },
     "ability": {
+      "rare": [
+        {
+          "name": "DAE-HYUN'S DETONATOR",
+          "cost": 4000,
+          "description": "Provides 15% Ability Lifesteal. If your [Mech] detonates while mid-air, increase [Self-Destruct] explosion damage and range by 200%.",
+          "iconPath": "res/items/dva/dva_dae_hyuns_detonator.png",
+          "stats": { "abilityLifesteal": 15 }
+        },
+        {
+          "name": "MASTERMIND'S MITIGATOR",
+          "cost": 4000,
+          "description": "Every 300 damage you mitigate with [Defense Matrix] reduces [Micro Missiles] cooldown by 1s.",
+          "iconPath": "res/items/dva/dva_masterminds_mitigator.png",
+          "stats": {}
+        },
+        {
+          "name": "VESUVIUS PROTOCOL",
+          "cost": 4000,
+          "description": "Increases Ability Power by 10%. Using [Self-Destruct] drops lava nearby that deals 30 damage every 1s.",
+          "iconPath": "res/items/dva/dva_vesuvius_protocol.png",
+          "stats": { "abilityPower": 10 }
+        }
+      ],
       "epic": [
         {
-          "name": "HYPER MATRIX PROJECTOR",
-          "cost": 9500,
-          "description": "Revolutionary defense matrix technology that dramatically increases coverage area and absorption capacity.",
-          "iconPath": "res/items/dva_matrix_epic.png",
-          "stats": {
-            "abilityPower": 30,
-            "cooldownReduction": 20
-          }
+          "name": "BUSAN BLASTER",
+          "cost": 10000,
+          "description": "Increases Ability Power by 20%. [Light Gun] gains a secondary fire, which charges up to fire a explosive piercing shot that deals 80 damage.",
+          "iconPath": "res/items/dva/dva_busan_blaster.png",
+          "stats": { "abilityPower": 20 }
+        },
+        {
+          "name": "MACRO MISSILE",
+          "cost": 12000,
+          "description": "[Micro Missiles] deal 25% increased damage and have significantly increased knockback.",
+          "iconPath": "res/items/dva/dva_macro_missile.png",
+          "stats": {}
+        },
+        {
+          "name": "ONSLAUGHT ORDINANCE",
+          "cost": 12000,
+          "description": "Increases Ability Power by 15%. The quantity and duration of [Micro Missiles] is increased by 20%.",
+          "iconPath": "res/items/dva/dva_onslaught_ordinance.png",
+          "stats": { "abilityPower": 15 }
         }
       ]
     },
     "survival": {
+      "rare": [
+        {
+          "name": "GALVANIZED CORE",
+          "cost": 4000,
+          "description": "Increases Health by 25. Increases [Boosters] Duration by 25%.",
+          "iconPath": "res/items/dva/dva_galvanized_core.png",
+          "stats": { "health": 25 }
+        },
+        {
+          "name": "PLOT ARMOR",
+          "cost": 4000,
+          "description": "Increases Armor by 25. While [Defense Matrix] is active, gain 65% damage reduction against beams.",
+          "iconPath": "res/items/dva/dva_plot_armor.png",
+          "stats": { "armor": 25 }
+        },
+        {
+          "name": "SOLO SPEC",
+          "cost": 4000,
+          "description": "Increases Health by 25. When you mitigate damage with [Defense Matrix], gain Shields equal to 10% of the damage mitigated, up to 100. Resets when your [Mech] is destroyed.",
+          "iconPath": "res/items/dva/dva_solo_spec.png",
+          "stats": { "health": 25 }
+        }
+      ],
       "epic": [
         {
-          "name": "EXPERIMENTAL MEKA REACTOR",
-          "cost": 9800,
-          "description": "Cutting-edge power system that dramatically improves MEKA durability and recovery systems.",
-          "iconPath": "res/items/dva_reactor.png",
-          "stats": {
-            "armor": 100,
-            "health": 100,
-            "moveSpeed": 15
-          }
+          "name": "APM AMP",
+          "cost": 9000,
+          "description": "Increases Shields by 50. When you use [Boosters], other allies within 16m gain 25% Move Speed for 2s.",
+          "iconPath": "res/items/dva/dva_apm_amp.png",
+          "stats": { "shield": 50 }
+        },
+        {
+          "name": "CHIP-DAMAGE DIVERTER",
+          "cost": 10000,
+          "description": "Increases Health by 50. When you deal damage to Barriers while in your [Mech], gain Shields equal to 10% of the damage dealt, up to 200. Resets when your [Mech] is destroyed.",
+          "iconPath": "res/items/dva/dva_chip_damage_diverter.png",
+          "stats": { "health": 50 }
+        },
+        {
+          "name": "SINGIJEON'S PULSE PLATING",
+          "cost": 10000,
+          "description": "Increases Health by 50. Gain 5% of damage mitigated by [Defense Matrix] as Ultimate Charge.",
+          "iconPath": "res/items/dva/dva_singijeons_pulse_plating.png",
+          "stats": { "health": 50 }
+        },
+        {
+          "name": "NANO COLA™ NITROUS",
+          "cost": 11000,
+          "description": "Increases Health by 50. When you eject from your [Mech], gain 25% increased max Health and gain [Nano Boost] for 8s.",
+          "iconPath": "res/items/dva/dva_nano_cola_nitrous.png",
+          "stats": { "health": 50 }
         }
       ]
     }
@@ -157,51 +129,63 @@
   "powers": [
     {
       "title": "FOCUSED FUSION",
-      "description": "[Fusion Cannon]'s spread is reduced by 66% and damage falloff range is 20m farther."
+      "description": "[Fusion Cannon]'s spread is reduced by 66% and damage falloff range is 20m farther.",
+      "iconPath": "res/power/dva/dva_focused_fusion.png"
     },
     {
       "title": "LEGENDARY LOADOUT",
-      "description": "[Micro Missiles] are replaced with 6 Heavy Rockets, which deal 350% more explosive damage and have 100% increased radius."
+      "description": "[Micro Missiles] are replaced with 6 Heavy Rockets, which deal 350% more explosive damage and have 100% increased radius.",
+      "iconPath": "res/power/dva/dva_legendary_loadout.png"
     },
     {
       "title": "OVERSTOCKED",
-      "description": "Gain 1 extra charge of [Micro Missiles]."
+      "description": "Gain 1 extra charge of [Micro Missiles].",
+      "iconPath": "res/power/dva/dva_overstocked.png"
     },
     {
       "title": "COUNTERMEASURES",
-      "description": "When you mitigate 150 damage with [Defense Matrix], automatically fire 2 [Micro Missiles]."
+      "description": "When you mitigate 150 damage with [Defense Matrix], automatically fire 2 [Micro Missiles].",
+      "iconPath": "res/power/dva/dva_countermeasures.png"
     },
     {
       "title": "FACETANKING",
-      "description": "[Defense Matrix] heals you for 30% of the damage it blocks."
+      "description": "[Defense Matrix] heals you for 30% of the damage it blocks.",
+      "iconPath": "res/power/dva/dva_facetanking.png"
     },
     {
       "title": "ULTRAWIDE MATRIX",
-      "description": "Increase the size of [Defense Matrix] by 50% and its duration by 20%."
+      "description": "Increase the size of [Defense Matrix] by 50% and its duration by 20%.",
+      "iconPath": "res/power/dva/dva_ultrawide_matrix.png"
     },
     {
       "title": "IGNITION BURST",
-      "description": "[Boosters] leave a trail of lava that deals 30 damage every 1s."
+      "description": "[Boosters] leave a trail of lava that deals 30 damage every 1s.",
+      "iconPath": "res/power/dva/dva_ignition_burst.png"
     },
     {
       "title": "MEKA PUNCH",
-      "description": "While using [Boosters], [Quick Melee] deals 75% more damage. MEKA Punch eliminations reset the cooldown of [Boosters]."
+      "description": "While using [Boosters], [Quick Melee] deals 75% more damage. MEKA Punch eliminations reset the cooldown of [Boosters].",
+      "iconPath": "res/power/dva/dva_meka_punch.png"
     },
     {
       "title": "STAT BOOST",
-      "description": "During the first 2s of [Boosters], [Defense Matrix] recovers 100% faster."
+      "description": "During the first 2s of [Boosters], [Defense Matrix] recovers 100% faster.",
+      "iconPath": "res/power/dva/dva_stat_boost.png"
     },
     {
       "title": "TOKKI SLAM",
-      "description": "During [Boosters], use crouch to slam the ground, dealing damage equal to 20% of your max Armor and knocking up enemies hit."
+      "description": "During [Boosters], use crouch to slam the ground, dealing damage equal to 20% of your max Armor and knocking up enemies hit.",
+      "iconPath": "res/power/dva/dva_tokki_slam.png"
     },
     {
       "title": "EXPRESS DETONATION",
-      "description": "[Self-Destruct] explodes 15% faster."
+      "description": "[Self-Destruct] explodes 15% faster.",
+      "iconPath": "res/power/dva/dva_express_detonation.png"
     },
     {
       "title": "PARTY PROTECTOR",
-      "description": "When you use [Self-Destruct], allies within [Self-Destruct] radius gain 250 Overhealth for 8s."
+      "description": "When you use [Self-Destruct], allies within [Self-Destruct] radius gain 250 Overhealth for 8s.",
+      "iconPath": "res/power/dva/dva_party_protector.png"
     }
   ]
 } 

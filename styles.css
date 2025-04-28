@@ -74,7 +74,7 @@ body {
 .container::before {
     content: '';
     position: absolute;
-    width: 95%;
+    width: 100%;
     height: 2px;
     background: linear-gradient(90deg, transparent, var(--border-primary), transparent);
     top: 0;
@@ -94,7 +94,7 @@ body {
 .header::after {
     content: '';
     position: absolute;
-    width: 95%;
+    width: 100%;
     height: 2px;
     background: linear-gradient(90deg, transparent, #2a4b8d, transparent);
     bottom: 0;
@@ -113,6 +113,25 @@ body {
     border: 2px solid #3a5a9a;
     border-radius: 5px;
     overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 10px rgba(58, 90, 154, 0.6);
+}
+
+.portrait::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+.portrait:hover::after {
+    border-color: rgba(255, 107, 61, 0.6);
+    box-shadow: inset 0 0 15px rgba(255, 107, 61, 0.3);
 }
 
 .portrait-placeholder {
@@ -130,7 +149,7 @@ body {
 }
 
 .title {
-    font-size: 48px;
+    font-size: 64px;
     font-weight: bold;
     color: #8a9bbd;
     text-transform: uppercase;
@@ -138,13 +157,13 @@ body {
     text-shadow: 0 0 10px rgba(138, 155, 189, 0.5);
     font-family: 'BigNoodleToo', 'Roboto', sans-serif;
     font-style: italic;
-    margin-bottom: -24px;
+    margin-bottom: -26px;
     -webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 90%);
     mask-image: linear-gradient(to bottom, black 30%, transparent 90%);
 }
 
 .hero {
-    font-size: 54px;
+    font-size: 48px;
     font-weight: bold;
     color: #ffffff;
     text-transform: uppercase;
@@ -194,19 +213,20 @@ body {
 }
 
 .diamond-icon {
-    margin: 0 8px;
+    margin-left: 4px;
     color: transparent;
     font-size: 0;
     text-shadow: none;
     position: relative;
     display: inline-block;
-    width: 18px;
-    height: 20px;
+    width: 26px;
+    height: 26px;
     background-image: url("res/currency.png");
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: center -1px;
+    background-position: center center;
     vertical-align: middle;
+    transform: translateY(1px);
 }
 
 .item-cost .diamond-icon {
@@ -217,25 +237,57 @@ body {
     transform: translateY(0) scale(0.9);
 }
 
-.item-cost i {
+/* Currency icons - shared styles for all currency icons */
+.item-cost i,
+.currency-icon {
     font-size: 0;
     color: transparent;
     text-shadow: none;
     position: relative;
     display: inline-block;
-    width: 14px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     background-image: url("res/currency.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     vertical-align: middle;
-    margin-right: 0px;
+    transform: scale(1) translateY(-1px);
     content: "";
 }
 
 .cost {
     color: #ffffff;
+}
+
+/* Style for negative cash values */
+.negative-cash {
+    color: #ff3a3a;
+    font-weight: bold;
+    animation: pulsate 1.5s infinite alternate;
+}
+
+/* Animation keyframes - unified definitions */
+@keyframes pulsate {
+    0% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+@keyframes breathe {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { opacity: 0.5; box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+    50% { opacity: 1; box-shadow: 0 0 8px rgba(255, 255, 255, 0.7); }
+    100% { opacity: 0.5; box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+}
+
+/* Cost label in the build cost display */
+.cost-label {
+    margin-right: 5px;
+    color: #8a9bbd;
 }
 
 .section-divider {
@@ -371,8 +423,8 @@ body {
     font-size: 9px;
     color: #8a9bbd;
     text-transform: uppercase;
-    letter-spacing: 0.25px;
-    font-weight: bold;
+    font-weight: 900;
+    letter-spacing: 0.1em;
     flex-grow: 1;
     margin-bottom: 0;
     white-space: nowrap;
@@ -420,6 +472,15 @@ body {
     left: 0;
     top: 0;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    padding: 2px;
+}
+
+.stat-icon-img {
+    width: 98%;
+    height: 98%;
+    object-fit: contain;
+    filter: brightness(1.5);
+    transform: translateY(-1px);
 }
 
 /* Reserve space for the icon */
@@ -553,12 +614,7 @@ body {
     background-color: var(--health-color);
 }
 
-/* Fix icon that's not in FontAwesome */
-.fa-bullets:before {
-    content: "\f38b"; /* Using ammo alt icon */
-}
-
-/* All the power fills below are now handled directly in JavaScript and can be removed */
+/* Right panel styles */
 
 .right-panel {
     flex-grow: 1;
@@ -679,10 +735,7 @@ body {
     opacity: 0.8;
 }
 
-@keyframes breathe {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-}
+/* Using the unified breathe animation from the top of the file */
 
 .power-header {
     display: flex;
@@ -861,15 +914,16 @@ body {
 }
 
 .item-icon {
-    width: 100%;
-    height: 100%;
-    margin-top: 0;
+    width: 100% !important; /* Force it to always be 100% */
+    height: 100% !important; /* Force it to always be 100% */
+    margin: 0; /* Remove any margin */
+    padding: 0; /* Ensure no padding */
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 50%;
-    position: relative;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    box-sizing: border-box; /* Ensure border is included in the dimensions */
 }
 
 .item-cost {
@@ -882,22 +936,12 @@ body {
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
 }
 
-.item-cost i {
-    font-size: 0;
-    color: transparent;
-    text-shadow: none;
-    position: relative;
-    display: inline-block;
-    width: 14px;
-    height: 15px;
-    background-image: url("res/currency.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    vertical-align: middle;
-    transform: scale(1) translateY(-1px);
-    margin-right: 0px;
-    content: "";
+.item-slot .rare-item .item-icon {
+    border: 2px solid var(--gradient-rare-start);
+}
+
+.item-slot .epic-item .item-icon {
+    border: 2px solid var(--gradient-epic-start);
 }
 
 .empty-item {
@@ -989,31 +1033,76 @@ body {
     }
 }
 
+/* Message container styling */
+.message-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    pointer-events: none; /* Allow clicking through the container */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Base message styling */
 .message {
     position: fixed;
     top: 20px;
     left: 50%;
     transform: translateX(-50%) translateY(-100px);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
+    background-color: rgba(12, 26, 48, 0.85);
+    color: var(--text-primary);
     padding: 12px 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     font-weight: bold;
-    border: 1px solid #ff6b3d;
-    box-shadow: 0 0 15px rgba(255, 107, 61, 0.5);
-    transition: transform 0.3s ease;
+    border: 1px solid rgba(42, 75, 141, 0.6);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, opacity 0.3s ease;
     z-index: 1000;
+    opacity: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    max-width: 80%;
+    text-align: center;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
 }
 
 .message.show {
     transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* Message type-specific styling */
+.message-error {
+    background-color: rgba(220, 53, 69, 0.85);
+    border-color: rgba(220, 53, 69, 0.6);
+}
+
+.message-warning {
+    background-color: rgba(255, 193, 7, 0.85);
+    border-color: rgba(255, 193, 7, 0.6);
+    color: #333; /* Darker text for better contrast on yellow */
+}
+
+.message-success {
+    background-color: rgba(40, 167, 69, 0.85);
+    border-color: rgba(40, 167, 69, 0.6);
+}
+
+.message-info {
+    background-color: rgba(23, 162, 184, 0.85);
+    border-color: rgba(23, 162, 184, 0.6);
 }
 
 .item-slot .item {
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    margin-bottom: 0;
+    margin-bottom: 3px;
     box-sizing: border-box;
     border: 1px solid white;
 }
@@ -1074,16 +1163,17 @@ body {
 }
 
 .power-slot:not(.unlocked) .empty-slot::before {
-    content: '\f023'; /* FontAwesome lock icon */
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
+    content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 20px;
-    color: #4a5a7a;
-    opacity: 0.8;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('res/ui/ui_lock.svg');
+    background-size: 25%;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 3;
 }
 
 .power-slot:not(.unlocked) .empty-slot::after {
@@ -1108,66 +1198,6 @@ body {
 .tooltip-header.tooltip-power.epic,
 .tooltip-header.tooltip-power.common {
     display: none; /* Hide all power tooltips */
-}
-
-.tooltip-stats {
-    padding: 2px 0;
-    margin-bottom: 5px;
-}
-
-.tooltip-stat {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 6px;
-}
-
-.stat-name {
-    color: var(--tooltip-stat);
-    font-weight: 500;
-}
-
-.stat-value {
-    color: #ffffff;
-    font-weight: bold;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
-}
-
-.tooltip-cost {
-    color: var(--tooltip-cost);
-    margin-top: 5px;
-    text-align: right;
-    font-weight: bold;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
-}
-
-.tooltip-cost i {
-    color: var(--tooltip-cost);
-    margin-right: 5px;
-    font-size: 14px;
-}
-
-/* Base style for item-image */
-.item-image {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.item-slot .rare-item .item-image,
-.item-slot .rare-item .item-icon {
-    border: 2px solid var(--gradient-rare-start);
-}
-
-.item-slot .epic-item .item-image,
-.item-slot .epic-item .item-icon {
-    border: 2px solid var(--gradient-epic-start);
 }
 
 /* Make sure there's only one instance of these common target slot highlighting styles */
@@ -1198,17 +1228,7 @@ body {
     pointer-events: none;
 }
 
-/* Unify all animation keyframes */
-@keyframes pulse {
-    0% { opacity: 0.5; box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
-    50% { opacity: 1; box-shadow: 0 0 8px rgba(255, 255, 255, 0.7); }
-    100% { opacity: 0.5; box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
-}
-
-@keyframes breathe {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-}
+/* Animation keyframes are now unified at the top of the file */
 
 /* Style for highlighting original items when hovering over slot items */
 .highlight-original {
@@ -1266,7 +1286,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 93%;
+    margin-right: 20px;
     margin-bottom: 4px;
 }
 
@@ -1547,16 +1567,16 @@ body {
 }
 
 .power-card.disabled::after {
-    content: '\f023'; /* FontAwesome lock icon */
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
+    content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 24px;
-    color: #4a5a7a;
-    opacity: 0.8;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('res/ui/ui_lock.svg');
+    background-size: 8%;
+    background-position: center;
+    background-repeat: no-repeat;
     z-index: 3;
 }
 
@@ -1598,11 +1618,7 @@ body {
     display: block;
 }
 
-@keyframes pulse {
-    0% { opacity: 0.5; }
-    50% { opacity: 1; }
-    100% { opacity: 0.5; }
-}
+/* Using the unified pulse animation from the top of the file */
 
 .power-slot.active-round.between-rounds::after {
     border: 2px dashed #ff6b3d;
@@ -1771,22 +1787,580 @@ body {
     font-size: 14px;
 }
 
-/* Base style for item-image */
-.item-image {
+/* Hero roster in header */
+.hero-roster {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-left: 15px;
+}
+
+.hero-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.hero-row {
+    display: flex;
+    gap: 5px;
+    justify-content: flex-end;
+}
+
+.hero-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 5px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #3a5a9a;
+    transition: all 0.2s ease;
+    opacity: 0.8;
+    position: relative;
+    box-shadow: 0 0 5px rgba(58, 90, 154, 0.4);
+}
+
+.hero-icon::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+.hero-icon:hover {
+    border-color: #ff6b3d;
+    opacity: 1;
+    transform: scale(1.1);
+    z-index: 5;
+    box-shadow: 0 0 8px rgba(255, 107, 61, 0.5);
+}
+
+.hero-icon:hover::after {
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.hero-icon.active {
+    border-color: #ff6b3d;
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(255, 107, 61, 0.6);
+}
+
+.hero-icon.active::after {
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+.hero-icon img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.power-icon-img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain; /* Adjust as needed: contain, cover, scale-down */
+    display: block; /* Or inline-block if preferred for layout */
+    margin: 0; /* Reset any potential default margin */
+    border: 1px solid var(--power-border); /* Added border */
+    border-radius: 3px; /* Add slight rounding to match other elements */
+}
+
+/* Advanced Options Styles */
+.advanced-options {
+    padding: 15px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px; /* Base font size for consistency */
+}
+
+.advanced-section {
+    background-color: var(--bg-panel);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-secondary);
+}
+
+.option-row {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.option-label {
+    font-weight: 500;
+    width: 150px;
+    padding-right: 15px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+}
+
+.option-control {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.option-control.center-button {
+    justify-content: center;
+}
+
+/* Toggle Switch */
+.toggle-switch, .preset-toggle-switch {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-switch input[type="checkbox"],
+.preset-toggle-switch input[type="checkbox"] {
+    display: none;
+}
+
+/* Apply styles to both toggle types */
+.toggle-label,
+.preset-toggle-switch .toggle-label {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    background-color: var(--bg-element);
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.toggle-label::after,
+.preset-toggle-switch .toggle-label::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    background-color: var(--text-secondary);
+    top: 4px;
+    left: 4px;
+    transition: all 0.3s ease;
+}
+
+input[type="checkbox"]:checked + .toggle-label,
+.preset-toggle-switch input[type="checkbox"]:checked + .toggle-label {
+    background-color: var(--accent-orange);
+}
+
+input[type="checkbox"]:checked + .toggle-label::after,
+.preset-toggle-switch input[type="checkbox"]:checked + .toggle-label::after {
+    transform: translateX(20px);
+    background-color: white;
+}
+
+.toggle-text {
+    font-size: 14px;
+    color: var(--text-primary);
+    font-family: 'Roboto', sans-serif;
+    margin-left: 2px;
+}
+
+/* Preset toggle row */
+.preset-toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+/* Button container for Apply and Reset buttons */
+.preset-toggle-row .button-group {
+    display: flex;
+    justify-content: flex-end;
+    margin-left: auto;
+}
+
+/* Button styles for Reset Presets button */
+#reset-presets {
+    background-color: rgba(26, 42, 74, 0.4);
+    color: var(--text-secondary);
+    border: 1px solid rgba(42, 75, 141, 0.3);
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin: 0 5px;
+    min-width: 80px;
+    text-align: center;
+}
+
+#reset-presets:hover {
+    background-color: rgba(26, 42, 74, 0.6);
+    color: #8a9bbd;
+    border-color: rgba(42, 75, 141, 0.5);
+    box-shadow: 0 0 5px rgba(42, 75, 141, 0.3);
+}
+
+/* Economy slider styles */
+.economy-slider {
+    width: calc(100% - 60px);
+    height: 8px;
+    appearance: none;
+    background: #1a2a4a;
+    outline: none;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: opacity 0.3s;
+    /* Always visible, even when disabled */
+    opacity: 1 !important;
+}
+
+.economy-slider:disabled {
+    cursor: not-allowed;
+}
+
+.economy-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    background: var(--accent-orange);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    /* Always visible */
+    opacity: 1;
+    transition: all 0.2s ease;
+    border: 1px solid #ff8d6a;
+}
+
+.economy-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    background: var(--accent-orange);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    border: 1px solid #ff8d6a;
+    /* Always visible */
+    opacity: 1;
+    transition: all 0.2s ease;
+}
+
+.economy-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 6px rgba(255, 107, 61, 0.6);
+}
+
+.economy-slider::-moz-range-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 6px rgba(255, 107, 61, 0.6);
+}
+
+.slider-value {
+    width: 50px;
+    text-align: right;
+    color: var(--text-primary);
+    font-size: 14px;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+/* Additional responsive styles for advanced options */
+@media (max-width: 992px) {
+    .economy-preset-row {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+        border: 1px solid var(--border-secondary);
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+    
+    .preset-table-header {
+        display: none;
+    }
+    
+    .round-column {
+        width: 100%;
+        margin-bottom: 10px;
+        font-size: 16px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid var(--border-secondary);
+    }
+    
+    .preset-column {
+        width: calc(33.33% - 10px);
+        margin: 5px;
+    }
+    
+    .custom-column {
+        width: 100%;
+        padding: 10px 0 0 0;
+    }
+    
+    /* Ensure sliders are wider on smaller screens */
+    .economy-slider {
+        width: calc(100% - 80px);
+    }
+    
+    .slider-value {
+        width: 70px;
+    }
+    
+    .preset-toggle-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+    
+    .preset-toggle-switch {
+        margin-bottom: 5px;
+    }
+    
+    .button-group {
+        display: flex;
+        margin-left: auto;
+    }
+    
+    #reset-presets {
+        margin: 2px;
+        min-width: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    .option-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .option-label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    
+    .option-control {
+        width: 100%;
+    }
+    
+    .toggle-switch {
+        width: 100%;
+    }
+}
+
+/* Main option button style */
+.option-button {
+    background-color: #ff6b3d; /* Solid orange background */
+    color: #ffffff; /* White text */
+    border: 1px solid #ff8d6a; /* Lighter orange border for contrast */
+    border-radius: 3px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 8px rgba(255, 107, 61, 0.4), inset 0 0 3px rgba(255, 255, 255, 0.3); /* Enhanced glow */
+}
+
+/* Option button hover and active states */
+.option-button:hover {
+    background-color: #ff8054; /* Slightly lighter orange on hover */
+    color: #ffffff;
+    border-color: #ff9e80;
+    box-shadow: 0 0 8px rgba(255, 107, 61, 0.7), inset 0 0 3px rgba(255, 255, 255, 0.5);
+}
+
+.option-button:active {
+    transform: scale(0.95);
+    background-color: #e65d34; /* Slightly darker when clicked */
+    box-shadow: 0 0 5px rgba(255, 107, 61, 0.3), inset 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Preset Table Header */
+.preset-table-header {
+    display: flex;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-secondary);
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Preset Column in the header only */
+.preset-table-header .preset-column {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    color: var(--text-primary);
+    pointer-events: none;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+    padding: 6px 8px;
+    text-align: center;
+    width: 18%;
+    margin: 0 2px;
+    font-size: 14px;
+}
+
+/* Regular preset column (not in header) */
+.economy-preset-row .preset-column {
+    font-family: 'Roboto', sans-serif;
+    padding: 6px 8px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
+    width: 18%;
+    margin: 0 2px;
+    color: var(--text-secondary);
+    opacity: 1 !important; /* Always visible */
+    pointer-events: auto !important; /* Always clickable */
+    background-color: rgba(26, 42, 74, 0.4);
+    border: 1px solid rgba(42, 75, 141, 0.3);
+}
+
+/* Economy Preset Row */
+.economy-preset-row {
+    display: flex;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.economy-preset-row:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Custom column styles */
+.custom-column {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 25%;
+    font-size: 0.9rem;
+    padding: 0 5px;
+    transition: opacity 0.3s ease;
+}
+
+/* Only the custom column is disabled by default, not its children */
+.custom-column {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.custom-column.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Add the highlight-enabled class for preset columns */
+.preset-column.highlight-enabled:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Only show selected state when highlight-enabled */
+.preset-column.selected.highlight-enabled {
+    background-color: #2a4b8d; /* Stronger highlight blue */
+    color: #ffffff; /* Bright white text */
+    border-color: #4a6ba6; /* Lighter border for contrast */
+    box-shadow: 0 0 8px rgba(42, 75, 141, 0.8), inset 0 0 3px rgba(255, 255, 255, 0.3); /* Enhanced glow */
+}
+
+/* Budget selector styles */
+.budget-selector {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #f8e58c;
+    transition: color 0.3s ease;
+    font-weight: bold;
+}
+
+.budget-selector:hover {
+    color: #fff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+.budget-preset-menu {
+    background-color: rgba(12, 26, 48, 0.85);
+    border: 1px solid rgba(42, 75, 141, 0.6);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    overflow: hidden;
+    width: 180px;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+.budget-preset-menu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+}
+
+.budget-preset-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #8a9bbd;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(42, 75, 141, 0.3);
+    position: relative;
+}
+
+.budget-preset-item:last-child {
+    border-bottom: none;
+}
+
+.budget-preset-item::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background-color: currentColor;
     border-radius: 50%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    opacity: 0.7;
 }
 
-.item-slot .rare-item .item-image,
-.item-slot .rare-item .item-icon {
-    border: 2px solid var(--gradient-rare-start);
+.budget-preset-item:hover {
+    background-color: rgba(42, 75, 141, 0.4);
+    color: #fff;
 }
 
-.item-slot .epic-item .item-image,
-.item-slot .epic-item .item-icon {
-    border: 2px solid var(--gradient-epic-start);
+/* Low preset color indicator - RED */
+.budget-preset-item[data-preset-type="low"]::after {
+    background-color: #ff4d4d;
+    box-shadow: 0 0 8px rgba(255, 77, 77, 0.5);
+}
+
+/* Normal preset color indicator - BLUE */
+.budget-preset-item[data-preset-type="normal"]::after {
+    background-color: #2a9aff;
+    box-shadow: 0 0 8px rgba(42, 154, 255, 0.5);
+}
+
+/* High preset color indicator - GREEN */
+.budget-preset-item[data-preset-type="high"]::after {
+    background-color: #2aff4a;
+    box-shadow: 0 0 8px rgba(42, 255, 74, 0.5);
 }

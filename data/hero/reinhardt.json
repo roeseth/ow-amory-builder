@@ -33,7 +33,7 @@
       "moveSpeedModifier": 0
     }
   ],
-  "specialItems": [
+  "items": [
     {
       "name": "ROCKET HAMMER UPGRADE",
       "cost": 3000,
