@@ -8,12 +8,39 @@
   "shield": 0,
   "items": {
     "weapon": {
+      "rare": [
+        {
+          "name": "ASA'S ARMAMENTS",
+          "cost": 4000,
+          "description": "<b>[Kunai]</b> bounce off surfaces <b>1 time</b>.",
+          "iconPath": "res/items/kiriko/kiriko_asas_armaments.png",
+          "stats": {}
+        },
+        {
+          "name": "FARSIGHT FOCUS SASH",
+          "cost": 5000,
+          "description": "When you deal damage, gain <b>200%</b> <b>[Healing Ofuda]</b> Projectile Speed for <b>5s</b>.",
+          "iconPath": "res/items/kiriko/kiriko_farsight_focus_sash.png",
+          "stats": {
+            "weaponPower": 10
+          }
+        },
+        {
+          "name": "TEAMWORK TOOLKIT",
+          "cost": 5000,
+          "description": "When you heal an ally, grant them <b>10%</b> Move Speed for <b>3s</b>.",
+          "iconPath": "res/items/kiriko/kiriko_teamwork_toolkit.png",
+          "stats": {
+            "weaponPower": 10
+          }
+        }
+      ],
       "epic": [
         {
           "name": "RY\u014cTA'S RELOADER",
           "cost": 10000,
           "description": "After using an ability, restore <b>100%</b> of your ammo.",
-          "iconPath": "res/items/kiriko/kiriko_ry\u014dtas_reloader.png",
+          "iconPath": "res/items/kiriko/kiriko_ryotas_reloader.png",
           "stats": {}
         },
         {

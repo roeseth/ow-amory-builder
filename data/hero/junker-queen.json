@@ -8,6 +8,26 @@
   "shield": 0,
   "items": {
     "weapon": {
+      "rare": [
+        {
+          "name": "GUTPUNCH GAUNTLET",
+          "cost": 4000,
+          "description": "While not holding <b>[Jagged Blade]</b>, <b>[Quick Melee]</b> deals <b>75%</b> more damage and knocks back.",
+          "iconPath": "res/items/junker-queen/junker-queen_gutpunch_gauntlet.png",
+          "stats": {
+            "weaponPower": 10
+          }
+        },
+        {
+          "name": "MONARCH'S DECREE",
+          "cost": 4000,
+          "description": "<b>[Commanding Shout]</b> grants you <b>15%</b> Attack Speed.",
+          "iconPath": "res/items/junker-queen/junker-queen_monarchs_decree.png",
+          "stats": {
+            "weaponPower": 5
+          }
+        }
+      ],
       "epic": [
         {
           "name": "SHRED AND LEAD",

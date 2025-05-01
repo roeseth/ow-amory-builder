@@ -8,7 +8,42 @@
   "shield": 0,
   "items": {
     "weapon": {
-      "epic": []
+      "rare": [
+        {
+          "name": "TARGET TRACKER",
+          "cost": 4000,
+          "description": "For each enemy or ally affected by <b>[Biotic Grenade]</b>, gain <b>5%</b> Attack Speed, up to <b>25%</b>.",
+          "iconPath": "res/items/ana/ana_target_tracker.png",
+          "stats": {}
+        },
+        {
+          "name": "POTENT PROJECTILES",
+          "cost": 5000,
+          "description": "Unscoped <b>[Biotic Rifle]</b> projectiles are <b>100%</b> larger.",
+          "iconPath": "res/items/ana/ana_potent_projectiles.png",
+          "stats": {
+            "weaponPower": 10
+          }
+        },
+        {
+          "name": "QUICK SCOPE",
+          "cost": 5000,
+          "description": "Deal <b>20%</b> more damage to airborne enemies.",
+          "iconPath": "res/items/ana/ana_quick_scope.png",
+          "stats": {
+            "weaponPower": 5
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "UNSCOPPED RESOURCES",
+          "cost": 11000,
+          "description": "+4 Max Ammo. Unscoped <b>[Rifle]</b> shots have a <b>60%</b> chance not to consume ammo.",
+          "iconPath": "res/items/ashe/ashe_unscopped_resources.png",
+          "stats": {}
+        }
+      ]
     },
     "ability": {
       "rare": [

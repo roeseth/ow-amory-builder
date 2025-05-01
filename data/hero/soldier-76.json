@@ -8,6 +8,15 @@
   "shield": 0,
   "items": {
     "weapon": {
+      "rare": [
+        {
+          "name": "PULSE CONVERTER",
+          "cost": 4000,
+          "description": "When you use <b>[Helix Rocket]</b>, restore <b>20%</b> of your ammo.",
+          "iconPath": "res/items/soldier-76/soldier-76_pulse_converter.png",
+          "stats": {}
+        }
+      ],
       "epic": []
     },
     "ability": {

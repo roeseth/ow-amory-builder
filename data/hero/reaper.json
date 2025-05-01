@@ -8,6 +8,15 @@
   "shield": 0,
   "items": {
     "weapon": {
+      "rare": [
+        {
+          "name": "SPECTRAL SLUGS",
+          "cost": 4000,
+          "description": "Using <b>[Shadow Step]</b> restores <b>100%</b> of your ammo.",
+          "iconPath": "res/items/reaper/reaper_spectral_slugs.png",
+          "stats": {}
+        }
+      ],
       "epic": [
         {
           "name": "ONSLAUGHT",

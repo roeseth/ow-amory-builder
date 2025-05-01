@@ -8,6 +8,15 @@
   "shield": 0,
   "items": {
     "weapon": {
+      "rare": [
+        {
+          "name": "QUICKLOAD CHAMBER",
+          "cost": 4000,
+          "description": "Reloading within <b>6m</b> of an enemy adds <b>20%</b> of Max Ammo as extra Ammo.",
+          "iconPath": "res/items/cassidy/cassidy_quickload_chamber.png",
+          "stats": {}
+        }
+      ],
       "epic": [
         {
           "name": "COMPETITIVE ANALYSIS",

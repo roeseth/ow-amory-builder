@@ -8,6 +8,17 @@
   "shield": 150,
   "items": {
     "weapon": {
+      "rare": [
+        {
+          "name": "VANTAGE SHOT",
+          "cost": 4000,
+          "description": "While airborne, <b>[Mediblaster]</b> deals <b>15%</b> more damage.",
+          "iconPath": "res/items/juno/juno_vantage_shot.png",
+          "stats": {
+            "weaponPower": 5
+          }
+        }
+      ],
       "epic": [
         {
           "name": "PULSE SPIKE",

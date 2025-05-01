@@ -8,6 +8,31 @@
   "shield": 0,
   "items": {
     "weapon": {
+      "rare": [
+        {
+          "name": "MAXED MAG",
+          "cost": 4000,
+          "description": "Gain <b>3%</b> Attack Speed for each remaining Ammo above <b>50%</b> of your Max Ammo.",
+          "iconPath": "res/items/ashe/ashe_maxed_mag.png",
+          "stats": {}
+        },
+        {
+          "name": "TRIPOD",
+          "cost": 4000,
+          "description": "<b>[The Viper]</b>, <b>[Coach Gun]</b>, and <b>[Dynamite]</b> deal <b>10%</b> more damage to enemies that are below you.",
+          "iconPath": "res/items/ashe/ashe_tripod.png",
+          "stats": {
+            "weaponPower": 5
+          }
+        },
+        {
+          "name": "GREASED LOADER",
+          "cost": 5000,
+          "description": "",
+          "iconPath": "res/items/ashe/ashe_greased_loader.png",
+          "stats": {}
+        }
+      ],
       "epic": [
         {
           "name": "IRONSIGHTS",

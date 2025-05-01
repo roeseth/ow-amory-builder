@@ -8,6 +8,15 @@
   "shield": 0,
   "items": {
     "weapon": {
+      "rare": [
+        {
+          "name": "MID-AIR MOBILIZER",
+          "cost": 4000,
+          "description": "While airborne gain: <ul><li><b>5%</b> Weapon Power</li><li><b>10%</b> Attack Speed</li></ul>",
+          "iconPath": "res/items/mercy/mercy_mid_air_mobilizer.png",
+          "stats": {}
+        }
+      ],
       "epic": [
         {
           "name": "CADUCEUS EX",

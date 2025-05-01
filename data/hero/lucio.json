@@ -8,6 +8,7 @@
   "shield": 0,
   "items": {
     "weapon": {
+      "rare": [],
       "epic": [
         {
           "name": "B-SIDE BOP",

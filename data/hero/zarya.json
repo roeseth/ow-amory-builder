@@ -8,6 +8,17 @@
   "shield": 225,
   "items": {
     "weapon": {
+      "rare": [
+        {
+          "name": "HYBRID BATTERY",
+          "cost": 4000,
+          "description": "<b>[Energy]</b> cannot be reduced below <b>20</b>.",
+          "iconPath": "res/items/zarya/zarya_hybrid_battery.png",
+          "stats": {
+            "weaponPower": 5
+          }
+        }
+      ],
       "epic": [
         {
           "name": "LIGHT LAUNCHER",
@@ -43,21 +54,21 @@
       ],
       "epic": [
         {
+          "name": "LYNX'S DATADRIVE",
+          "cost": 10000,
+          "description": "Casting <b>[Projected Barrier]</b> on an ally refunds <b>20%</b> of <b>[Barrier]</b> Cooldown",
+          "iconPath": "res/items/zarya/zarya_lynxs_datadrive.png",
+          "stats": {
+            "abilityPower": 15
+          }
+        },
+        {
           "name": "SUPERCONDUCTOR",
           "cost": 10000,
           "description": "",
           "iconPath": "res/items/zarya/zarya_superconductor.png",
           "stats": {
             "health": 25,
-            "abilityPower": 15
-          }
-        },
-        {
-          "name": "LYNX'S DATADRIVE",
-          "cost": 10000,
-          "description": "Casting <b>[Projected Barrier]</b> on an ally refunds <b>20%</b> of <b>[Barrier]</b> Cooldown",
-          "iconPath": "res/items/zarya/zarya_lynxs_datadrive.png",
-          "stats": {
             "abilityPower": 15
           }
         }

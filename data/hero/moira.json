@@ -8,6 +8,24 @@
   "shield": 0,
   "items": {
     "weapon": {
+      "rare": [
+        {
+          "name": "BIO-NEEDLES",
+          "cost": 4000,
+          "description": "<b>[Biotic Grasp]</b>'s secondary fire restores <b>50%</b> more <b>[Biotic Energy]</b>.",
+          "iconPath": "res/items/moira/moira_bio_needles.png",
+          "stats": {}
+        },
+        {
+          "name": "HIGH CAPACITY TUBING",
+          "cost": 4000,
+          "description": "",
+          "iconPath": "res/items/moira/moira_high_capacity_tubing.png",
+          "stats": {
+            "weaponPower": 10
+          }
+        }
+      ],
       "epic": [
         {
           "name": "ALTERNATIVE ENERGY",

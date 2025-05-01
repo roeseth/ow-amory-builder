@@ -8,6 +8,15 @@
   "shield": 0,
   "items": {
     "weapon": {
+      "rare": [
+        {
+          "name": "SPIKED GRIP",
+          "cost": 3750,
+          "description": "While climbing, restore <b>20%</b> of your ammo every Is.",
+          "iconPath": "res/items/genji/genji_spiked_grip.png",
+          "stats": {}
+        }
+      ],
       "epic": [
         {
           "name": "AMBUSHER OPTICS",

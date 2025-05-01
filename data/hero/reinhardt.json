@@ -8,6 +8,18 @@
   "shield": 0,
   "items": {
     "weapon": {
+      "rare": [
+        {
+          "name": "IRONCLAD CLEATS",
+          "cost": 3750,
+          "description": "",
+          "iconPath": "res/items/reinhardt/reinhardt_ironclad_cleats.png",
+          "stats": {
+            "armor": 25,
+            "weaponPower": 5
+          }
+        }
+      ],
       "epic": [
         {
           "name": "DAMPENER GRIP",

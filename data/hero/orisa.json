@@ -8,6 +8,31 @@
   "shield": 0,
   "items": {
     "weapon": {
+      "rare": [
+        {
+          "name": "ELECTRO LIGHTS",
+          "cost": 4000,
+          "description": "Recover from being <b>[Overheated] 25%</b> faster.",
+          "iconPath": "res/items/orisa/orisa_electro_lights.png",
+          "stats": {}
+        },
+        {
+          "name": "ENHANCED TARGET SENSORS",
+          "cost": 4000,
+          "description": "Deal <b>25%</b> more damage to enemies farther than <b>12m</b> away.",
+          "iconPath": "res/items/orisa/orisa_enhanced_target_sensors.png",
+          "stats": {}
+        },
+        {
+          "name": "OPTIMIZED ENERGY",
+          "cost": 5000,
+          "description": "Critical hits reduce your <b>[Heat]</b> by <b>5%</b>.",
+          "iconPath": "res/items/orisa/orisa_optimized_energy.png",
+          "stats": {
+            "weaponPower": 10
+          }
+        }
+      ],
       "epic": []
     },
     "ability": {
@@ -27,6 +52,13 @@
           "stats": {
             "abilityPower": 10
           }
+        },
+        {
+          "name": "REFRACTION TILES",
+          "cost": 4000,
+          "description": "While <b>[Javelin Spin]</b> is active, gain <b>50%</b> damage reduction from beams.",
+          "iconPath": "res/items/orisa/orisa_refraction_tiles.png",
+          "stats": {}
         }
       ],
       "epic": [
