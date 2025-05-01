@@ -291,6 +291,22 @@ document.addEventListener('DOMContentLoaded', async function () {
         tooltip.classList.add('item-tooltip');
         tooltip.style.display = 'none';
         document.body.appendChild(tooltip);
+        
+        // Add click event listener to document to dismiss tooltip on mobile
+        document.addEventListener('click', (event) => {
+            // Only process if tooltip is visible
+            if (tooltip.style.display === 'block') {
+                // Check if we're in mobile view (max-width: 767.98px)
+                if (window.innerWidth <= 992) {
+                    // Check if click is outside the tooltip and not on an item
+                    if (!tooltip.contains(event.target) &&
+                        !event.target.closest('.item') &&
+                        !event.target.closest('.item-slot')) {
+                        hideTooltip();
+                    }
+                }
+            }
+        });
 
         // Initialize tabs (event listeners)
         initTabs();
@@ -2243,6 +2259,9 @@ function showTooltip(item, event) {
         }
         tooltipContent += '</div>';
     }
+
+    // Add description
+    tooltipContent += `<div class="tooltip-description">${item.description}</div>`;
 
     // Add cost
     tooltipContent += `<div class="tooltip-cost"> <span>${item.cost.toLocaleString()}</span></div>`;
