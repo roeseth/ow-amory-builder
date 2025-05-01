@@ -6,8 +6,6 @@
   "health": 225,
   "armor": 325,
   "shield": 0,
-  "moveSpeed": 5.5,
-  "meleeDamage": 30,
   "items": {
     "weapon": {
       "epic": [
