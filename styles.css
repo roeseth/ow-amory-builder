@@ -25,7 +25,7 @@
     /* Item & power color gradients */
     --gradient-common-start: #2aff4a;
     --gradient-common-end: #0a8020;
-    --gradient-rare-start: #2a9aff; 
+    --gradient-rare-start: #2a9aff;
     --gradient-rare-end: #0a4080;
     --gradient-epic-start: #aa2aff;
     --gradient-epic-end: #5a0a80;
@@ -41,6 +41,17 @@
     --tooltip-stat: #9ee5ff;
     --tooltip-cost: #ffdd44;
     --subtle-text: #6a7b9d;
+    
+    /* Responsive breakpoints */
+    --breakpoint-xl: 1199.98px;
+    --breakpoint-lg: 991.98px;
+    --breakpoint-md: 767.98px;
+    --breakpoint-sm: 575.98px;
+    --breakpoint-xs: 399.98px;
+    
+    /* Base sizing units */
+    --base-spacing: 1rem;
+    --touch-target-size: 44px;
 }
 
 * {
@@ -59,7 +70,8 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding: 20px;
+    padding: clamp(0.5rem, 5vw, 1.25rem);
+    font-size: 16px;
 }
 
 .container {
@@ -82,13 +94,14 @@ body {
 }
 
 .header {
-    padding: 20px 20px 15px;
+    padding: clamp(0.75rem, 4vw, 1.25rem) clamp(0.75rem, 4vw, 1.25rem) clamp(0.5rem, 3vw, 0.9rem);
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: none;
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
     position: relative;
+    flex-wrap: wrap;
 }
 
 .header::after {
@@ -107,9 +120,9 @@ body {
 }
 
 .portrait {
-    width: 72px;
-    height: 72px;
-    margin-right: 15px;
+    width: clamp(3.5rem, 15vw, 4.5rem);
+    height: clamp(3.5rem, 15vw, 4.5rem);
+    margin-right: 0.9375rem;
     border: 2px solid #3a5a9a;
     border-radius: 5px;
     overflow: hidden;
@@ -145,11 +158,11 @@ body {
     display: flex;
     flex-direction: column;
     width: auto;
-    min-width: 300px; /* Ensure enough width for the text */
+    min-width: clamp(200px, 50vw, 300px); /* Responsive width for the text */
 }
 
 .title {
-    font-size: 64px;
+    font-size: clamp(2.5rem, 10vw, 4rem);
     font-weight: bold;
     color: #8a9bbd;
     text-transform: uppercase;
@@ -157,13 +170,13 @@ body {
     text-shadow: 0 0 10px rgba(138, 155, 189, 0.5);
     font-family: 'BigNoodleToo', 'Roboto', sans-serif;
     font-style: italic;
-    margin-bottom: -26px;
+    margin-bottom: clamp(-1.5rem, -5vw, -1.625rem);
     -webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 90%);
     mask-image: linear-gradient(to bottom, black 30%, transparent 90%);
 }
 
 .hero {
-    font-size: 48px;
+    font-size: clamp(2rem, 8vw, 3rem);
     font-weight: bold;
     color: #ffffff;
     text-transform: uppercase;
@@ -176,18 +189,19 @@ body {
 
 .main-content {
     display: flex;
-    height: 700px;
+    min-height: 700px;
+    max-height: 80vh;
 }
 
 .left-panel {
     width: 340px;
     flex-shrink: 0;
     background-color: #0c1a30;
-    padding: 25px 20px 0;
+    padding: 1.5625rem 1.25rem 0;
     border: 1px solid #2a4b8d;
     border-radius: 10px;
     position: relative;
-    margin-right: 15px;
+    margin-right: 0.9375rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     overflow-y: auto;
     max-height: 700px;
@@ -321,10 +335,17 @@ body {
     letter-spacing: 1px;
 }
 
-.power-slots, .item-slots {
+.power-slots {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+}
+
+.item-slots {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .power-slot, .item-slot {
@@ -339,25 +360,29 @@ body {
     flex-direction: column;
     align-items: center;
     width: calc(33.33% - 6px);
-    margin-bottom: 12px;
+    margin-bottom: 0.75rem;
 }
 
 .item-slot .empty-slot {
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    width: clamp(3.5rem, 15vw, 3.75rem);
+    height: clamp(3.5rem, 15vw, 3.75rem);
+    min-width: var(--touch-target-size);
+    min-height: var(--touch-target-size);
     background-color: #1a2a4a;
     border: 1px solid #4a5a7a;
-    margin-bottom: 3px;
+    margin-bottom: 0.1875rem;
 }
 
 .empty-slot {
-    width: 60px;
-    height: 60px;
+    width: clamp(3.5rem, 15vw, 3.75rem);
+    height: clamp(3.5rem, 15vw, 3.75rem);
+    min-width: var(--touch-target-size);
+    min-height: var(--touch-target-size);
     border-radius: 5px;
     background-color: #1a2a4a;
     border: 1px solid #4a5a7a;
-    margin-bottom: 5px;
+    margin-bottom: 0.3125rem;
 }
 
 .slot-label {
@@ -621,12 +646,13 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    min-width: 0; /* Prevent flex items from overflowing */
 }
 
 .tab-container {
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
     display: inline-block;
+    max-width: 100%;
 }
 
 .tabs {
@@ -634,16 +660,21 @@ body {
     background-color: #081020;
     border-radius: 5px;
     overflow: hidden;
+    flex-wrap: wrap;
 }
 
 .tab {
-    padding: 15px 20px;
+    padding: clamp(0.625rem, 3vw, 0.9375rem) clamp(0.75rem, 4vw, 1.25rem);
     font-weight: 900;
     cursor: pointer;
     transition: all 0.3s ease;
     border-radius: 3px;
     margin: 2px 3px;
     letter-spacing: 1px;
+    min-height: var(--touch-target-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .tab:hover:not(.active) {
@@ -676,16 +707,16 @@ body {
     display: flex;
     flex-grow: 1;
     padding: 0;
-    gap: 15px;
+    gap: 0.9375rem;
     height: 100%;
 }
 
 .power-grid {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0.625rem;
     height: 100%;
-    width: 110%;
+    width: 100%;
     padding: 0;
     margin-left: 0;
     position: relative;
@@ -695,7 +726,7 @@ body {
 
 .power-row {
     display: flex;
-    gap: 10px;
+    gap: 0.625rem;
     width: 100%;
     flex: 1;
 }
@@ -793,7 +824,7 @@ body {
 
 .item-column {
     flex: 1;
-    padding: 15px;
+    padding: 0.9375rem;
     border: 1px solid #2a4b8d;
     border-radius: 10px;
     background-color: #0c1a30;
@@ -802,6 +833,7 @@ body {
     flex-direction: column;
     height: 100%;
     max-width: 300px;
+    min-width: 0; /* Prevent flex items from overflowing */
 }
 
 .column-header {
@@ -827,20 +859,20 @@ body {
 }
 
 .item, .empty-item {
-    width: 60px;
-    height: 60px;
+    width: clamp(3.5rem, 15vw, 3.75rem);
+    height: clamp(3.5rem, 15vw, 3.75rem);
     border-radius: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-    margin-bottom: 25px;
+    margin-bottom: 1.5625rem;
     border: 1px solid #4a5a7a;
     transition: transform 0.2s ease;
     cursor: pointer;
     box-sizing: border-box;
-    min-width: 60px;
-    min-height: 60px;
+    min-width: var(--touch-target-size);
+    min-height: var(--touch-target-size);
 }
 
 .item:hover {
@@ -970,41 +1002,100 @@ body {
 }
 
 /* Responsive adjustments */
-@media (max-width: 1000px) {
+/* XL Breakpoint - 1199.98px */
+@media (max-width: 1199.98px) {
+    .main-content {
+        max-height: none;
+    }
+    
+    .hero-roster {
+        margin-top: 0.625rem;
+    }
+    
+    .hero-icon {
+        width: 40px;
+        height: 40px;
+        aspect-ratio: 1/1;
+    }
+}
+
+/* LG Breakpoint - 991.98px */
+@media (max-width: 991.98px) {
     .main-content {
         flex-direction: column;
+        height: auto;
     }
     
     .left-panel {
         width: 100%;
         border-right: none;
         border-bottom: 2px solid #1a2a4a;
-        margin-bottom: 15px;
+        margin-bottom: 0.9375rem;
         margin-right: 0;
+        max-height: none;
+        height: auto;
+        overflow-y: visible;
     }
     
-    .power-slot, .item-slot {
+    .power-slot {
         width: calc(25% - 8px);
     }
     
+    /* Maintain consistent 3x2 grid */
+    .item-slot {
+        width: calc(33.33% - 6px);
+    }
+    
     .round-tab.copy-button {
-        font-size: 8px;
+        font-size: 0.5rem;
         padding: 2px 4px;
         margin-left: 5px;
         height: 34px;
         min-width: 70px;
         max-width: 75px;
     }
+    
+    .item-column {
+        max-width: none;
+    }
+    
+    .power-grid {
+        width: 100%;
+    }
 }
 
-@media (max-width: 768px) {
+/* MD Breakpoint - 767.98px */
+@media (max-width: 767.98px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .hero-roster {
+        margin-left: 0;
+        margin-top: 1rem;
+        width: 100%;
+        align-items: center;
+    }
+    
+    .hero-grid {
+        width: 100%;
+        justify-content: center;
+        flex-direction: row;
+        gap: 8px; /* Slightly increase gap for better spacing on mobile */
+        max-width: 480px; /* Force wrapping on smaller screens */
+        margin: 0 auto;
+    }
+    
     .tabs {
         flex-wrap: wrap;
+        width: 100%;
     }
     
     .tab {
         flex-grow: 1;
         text-align: center;
+        font-size: 0.75rem;
     }
     
     .items-grid {
@@ -1015,7 +1106,6 @@ body {
         border-right: none;
         border-bottom: 2px solid #1a2a4a;
         width: 100%;
-        margin-bottom: 15px;
     }
     
     .item-column:last-child {
@@ -1024,12 +1114,143 @@ body {
     }
     
     .round-tab.copy-button {
-        font-size: 7px;
+        font-size: 0.4375rem;
         padding: 2px 3px;
         margin-left: 3px;
         min-width: 60px;
         max-width: 65px;
         height: 34px;
+    }
+    
+    .top-controls {
+        flex-wrap: wrap;
+    }
+    
+    .round-selector {
+        width: 100%;
+        margin-bottom: 0.5rem;
+        order: 1;
+    }
+    
+    .utility-buttons {
+        order: 2;
+        margin-top: 0.5rem;
+        width: 50%;
+        justify-content: flex-start;
+    }
+    
+    .reset-container {
+        order: 2;
+        width: 50%;
+        justify-content: flex-end;
+    }
+    
+    .round-tabs {
+        width: 100%;
+        overflow-x: auto;
+        justify-content: flex-start;
+    }
+    
+    .power-row {
+        flex-direction: column;
+    }
+    
+    .power-card {
+        margin-bottom: 0.625rem;
+    }
+}
+
+/* SM Breakpoint - 575.98px */
+@media (max-width: 575.98px) {
+    .hero-grid {
+        max-width: 320px; /* Even narrower to force more wrapping on small screens */
+    }
+    body {
+        padding: 0.5rem;
+    }
+    
+    .container {
+        border-radius: 5px;
+    }
+    
+    .portrait {
+        width: 3rem;
+        height: 3rem;
+    }
+    
+    .title {
+        font-size: 2rem;
+        margin-bottom: -1rem;
+    }
+    
+    .hero {
+        font-size: 1.5rem;
+    }
+    
+    .tab {
+        padding: 0.5rem;
+        font-size: 0.6875rem;
+    }
+    
+    .item-slot .empty-slot,
+    .empty-slot,
+    .item,
+    .empty-item {
+        width: 3rem;
+        height: 3rem;
+    }
+    
+    .power-slot, .item-slot {
+        width: calc(33.33% - 6px);
+    }
+    
+    .stat-header .stat-name {
+        font-size: 0.5625rem;
+    }
+    
+    .stat-header .stat-value {
+        font-size: 0.625rem;
+    }
+    
+    .hero-icon {
+        width: 32px;
+        height: 32px;
+        aspect-ratio: 1/1;
+    }
+}
+
+/* XS Breakpoint - 399.98px */
+@media (max-width: 399.98px) {
+    .hero-grid {
+        max-width: 240px; /* Force wrapping to 3-4 icons per row on very small screens */
+    }
+    .power-slot {
+        width: calc(50% - 6px);
+    }
+    
+    /* Maintain consistent 3x2 grid */
+    .item-slot {
+        width: calc(33.33% - 6px);
+    }
+    
+    .item-slot .empty-slot,
+    .empty-slot,
+    .item,
+    .empty-item {
+        width: 2.75rem;
+        height: 2.75rem;
+    }
+    
+    .tab {
+        padding: 0.375rem;
+        font-size: 0.625rem;
+        margin: 1px;
+    }
+    
+    .hero-icon {
+        width: 28px;
+        height: 28px;
+        aspect-ratio: 1/1;
     }
 }
 
@@ -1283,7 +1504,6 @@ body {
 }
 
 .top-controls {
-    display: flex;
     justify-content: space-between;
     align-items: center;
     margin-right: 20px;
@@ -1819,8 +2039,10 @@ body {
 
 .hero-grid {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 5px;
+    justify-content: flex-end;
+    max-width: 480px; /* Set max-width to create two rows by default on desktop */
 }
 
 .hero-row {
@@ -1832,6 +2054,7 @@ body {
 .hero-icon {
     width: 48px;
     height: 48px;
+    aspect-ratio: 1/1;
     border-radius: 5px;
     overflow: hidden;
     cursor: pointer;
@@ -1882,6 +2105,7 @@ body {
     height: 100%;
     object-fit: cover;
     display: block;
+    aspect-ratio: 1/1;
 }
 
 .power-icon-img {
