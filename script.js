@@ -2225,12 +2225,14 @@ function getReadableStatName(stat) {
         'attackSpeed': 'Attack Speed',
         'maxAmmo': 'Maximum Ammo',
         'abilityPower': 'Ability Power',
+        'abilityLifesteal': 'Ability Lifesteal',
         'cooldownReduction': 'Cooldown Reduction',
         'health': 'Health',
         'armor': 'Armor',
         'shield': 'Shield',
         'moveSpeed': 'Movement Speed',
-        'weaponLifesteal': 'Weapon Lifesteal'
+        'weaponLifesteal': 'Weapon Lifesteal',
+        'startingUltimateCharge': 'Starting Ultimate Charge'
     };
 
     return statNames[stat] || stat;

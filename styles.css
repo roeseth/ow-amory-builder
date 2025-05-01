@@ -157,7 +157,7 @@ body {
 .name {
     display: flex;
     flex-direction: column;
-    width: auto;
+    width: 100%;
     min-width: clamp(200px, 50vw, 300px); /* Responsive width for the text */
 }
 
@@ -1226,11 +1226,6 @@ body {
         border-radius: 5px;
     }
     
-    .portrait {
-        width: 3rem;
-        height: 3rem;
-    }
-    
     .title {
         font-size: 3.2rem;
         margin-bottom: -1rem;
@@ -1269,6 +1264,10 @@ body {
         width: 32px;
         height: 32px;
         aspect-ratio: 1/1;
+    }
+    .footer {
+        padding: 0.75rem 0;
+        font-size: 0.75rem;
     }
 }
 
@@ -2668,4 +2667,43 @@ input[type="checkbox"]:checked + .toggle-label::after,
 .budget-preset-item[data-preset-type="high"]::after {
     background-color: #2aff4a;
     box-shadow: 0 0 8px rgba(42, 255, 74, 0.5);
+}
+
+/* Footer styles */
+.footer {
+    width: 100%;
+    background-color: var(--bg-darker);
+    padding: 1rem 0;
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    position: relative;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #2a4b8d, transparent);
+    top: 0;
+    left: 0;
+}
+
+.footer-content {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+}
+
+.footer a {
+    color: var(--accent-orange);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: #ffffff;
+    text-decoration: underline;
 }
