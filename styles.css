@@ -1297,6 +1297,11 @@ body {
     justify-content: flex-start; /* Left align */
 }
 
+.utility-buttons {
+    display: flex;
+    margin-right: 15px;
+}
+
 .reset-container {
     display: flex;
     justify-content: flex-end; /* Right align */
@@ -1347,47 +1352,64 @@ body {
     cursor: pointer;
 }
 
-/* Style for copy to next round button */
-.round-tab.copy-button {
-    background-color: rgba(150, 50, 20, 0.5); /* Dark orange background */
-    color: rgba(255, 120, 80, 1); /* Brighter orange text */
+/* Style for utility buttons */
+.utility-button {
+    border-radius: 3px;
+    margin: 2px;
+    margin-left: 5px;
     font-weight: bold;
     transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
     white-space: normal;
     font-size: 10px;
     letter-spacing: 0.5px;
-    margin: 2px;
-    margin-left: 5px;
-    border: 1px solid rgba(180, 60, 20, 0.9); /* Darker orange border */
     text-transform: uppercase;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     line-height: 1.2;
     padding: 3px 8px;
-    height: auto;
+    height: 36px;
     min-width: 80px;
+    cursor: pointer;
+}
+
+/* Style for copy to next round button */
+.utility-button.copy-button {
+    background-color: rgba(150, 50, 20, 0.5); /* Dark orange background */
+    color: rgba(255, 120, 80, 1); /* Brighter orange text */
+    border: 1px solid rgba(180, 60, 20, 0.9); /* Darker orange border */
+    flex-direction: column;
     box-shadow: 0 0 5px rgba(180, 60, 20, 0.4), inset 0 0 3px rgba(255, 255, 255, 0.3); /* Adjusted glow to match darker border */
 }
 
-.round-tab.copy-button:hover {
+.utility-button.copy-button:hover {
     background-color: rgba(180, 60, 20, 0.7); /* Slightly brighter dark orange */
     color: #ffffff;
     border-color: rgba(200, 70, 30, 0.9);
     box-shadow: 0 0 8px rgba(200, 70, 30, 0.5), inset 0 0 3px rgba(255, 255, 255, 0.5);
-    cursor: pointer;
 }
 
-.round-tab.copy-button.active {
-    background-color: rgba(200, 70, 30, 0.9); /* Even brighter when active */
+.utility-button.copy-button:active {
+    transform: translateY(1px);
+}
+
+/* Style for share button */
+.utility-button.share-button {
+    background-color: rgba(20, 100, 150, 0.5); /* Dark blue background */
+    color: rgba(80, 180, 255, 1); /* Brighter blue text */
+    border: 1px solid rgba(20, 120, 180, 0.9); /* Darker blue border */
+    box-shadow: 0 0 5px rgba(20, 120, 180, 0.4), inset 0 0 3px rgba(255, 255, 255, 0.3); /* Adjusted glow to match darker border */
+}
+
+.utility-button.share-button:hover {
+    background-color: rgba(20, 120, 180, 0.7); /* Slightly brighter dark blue */
     color: #ffffff;
-    border-color: rgba(220, 80, 40, 1);
-    box-shadow: 0 0 8px rgba(220, 80, 40, 0.8), inset 0 0 5px rgba(255, 255, 255, 0.4);
+    border-color: rgba(30, 140, 200, 0.9);
+    box-shadow: 0 0 8px rgba(30, 140, 200, 0.5), inset 0 0 3px rgba(255, 255, 255, 0.5);
 }
 
-.round-tab.copy-button:active {
+.utility-button.share-button:active {
     transform: translateY(1px);
 }
 

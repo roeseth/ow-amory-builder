@@ -309,12 +309,110 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         // --- Update UI Based on Initial State (Render Phase) ---
         updateUI(); // Single call to render the initial state
+        
+        // Check for shared build in URL after initialization is complete
+        // This ensures items are fully loaded before applying the shared build
+        checkForSharedBuild();
 
     } catch (error) {
         console.error('Error during initialization:', error);
         showMessage('Failed to initialize application. Please refresh the page.', 'error');
     }
 });
+
+// Function to check for shared build in URL
+function checkForSharedBuild() {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const buildParam = urlParams.get('build');
+        
+        if (buildParam) {
+            console.log('Found build parameter in URL, processing...');
+            
+            // Decompress the build data
+            const jsonData = LZString.decompressFromEncodedURIComponent(buildParam);
+            
+            if (!jsonData) {
+                console.error('Failed to decompress build data');
+                showMessage('Invalid build data in URL', 'error');
+                return;
+            }
+            
+            // Parse the JSON data
+            const buildData = JSON.parse(jsonData);
+            
+            if (!buildData || !buildData.heroId) {
+                console.error('Invalid build data format');
+                showMessage('Invalid build data format', 'error');
+                return;
+            }
+            
+            console.log('Successfully parsed build data for hero:', buildData.heroId);
+            
+            // Check if the current hero matches the one in the build data
+            if (currentHero === buildData.heroId) {
+                // If it's the same hero, just apply the build data
+                // Items are already loaded at this point since we're calling this after initialization
+                console.log('Current hero matches build data hero, applying build...');
+                applySharedBuild(buildData);
+                showMessage(`Loaded shared ${getHeroName(buildData.heroId)} build!`, 'success');
+            } else {
+                // If it's a different hero, load that hero first
+                console.log('Loading hero from build data:', buildData.heroId);
+                loadHero(buildData.heroId).then(success => {
+                    if (success) {
+                        // Apply the build data after the hero is loaded
+                        // The loadHero function already calls updateUI which ensures items are loaded
+                        applySharedBuild(buildData);
+                        showMessage(`Loaded shared ${getHeroName(buildData.heroId)} build!`, 'success');
+                    } else {
+                        showMessage(`Failed to load hero: ${buildData.heroId}`, 'error');
+                    }
+                });
+            }
+        }
+    } catch (error) {
+        console.error('Error loading shared build:', error);
+        showMessage('Error loading shared build', 'error');
+    }
+}
+
+// Function to apply shared build data
+function applySharedBuild(buildData) {
+    try {
+        console.log('Applying shared build data...');
+        
+        // Get the current hero build
+        const heroBuild = getCurrentHeroBuild();
+        
+        // Apply equipped items by round
+        if (buildData.equippedItemsByRound) {
+            console.log('Applying equipped items by round');
+            heroBuild.equippedItemsByRound = buildData.equippedItemsByRound;
+        }
+        
+        // Apply equipped powers
+        if (buildData.equippedPowers) {
+            console.log('Applying equipped powers');
+            heroBuild.equippedPowers = buildData.equippedPowers;
+        }
+        
+        // Apply economy settings if available
+        if (buildData.economySettings) {
+            console.log('Applying economy settings');
+            builds.economySettings = buildData.economySettings;
+        }
+        
+        // Update the UI to reflect the changes
+        console.log('Updating UI with shared build data');
+        updateUI();
+        
+        console.log('Successfully applied shared build data');
+    } catch (error) {
+        console.error('Error applying shared build:', error);
+        showMessage('Error applying shared build', 'error');
+    }
+}
 
 // Central function to update the entire UI based on current state
 function updateUI() {
@@ -617,7 +715,7 @@ function calculateCurrentStats() {
 
 // Initialize round selector
 function initRoundSelector() {
-    const roundTabs = document.querySelectorAll('.round-tab:not(.copy-button)');
+    const roundTabs = document.querySelectorAll('.round-tab');
 
     // Set the initial active round
     roundTabs.forEach(tab => {
@@ -645,6 +743,9 @@ function initRoundSelector() {
 
     // Initialize the copy to next round button
     initCopyToNextRoundButton();
+    
+    // Initialize the share button
+    initShareButton();
 }
 
 // Initialize the copy to next round button
@@ -674,7 +775,7 @@ function initCopyToNextRoundButton() {
 
         // --- UI Update ---
         // Update the active round tab styling
-        const roundTabs = document.querySelectorAll('.round-tab:not(.copy-button)');
+        const roundTabs = document.querySelectorAll('.round-tab');
         roundTabs.forEach(tab => {
             const round = parseInt(tab.getAttribute('data-round'));
             if (round === nextRound) {
@@ -690,6 +791,84 @@ function initCopyToNextRoundButton() {
         // Show a confirmation message
         showMessage(`Copied items from Round ${roundNow} to Round ${nextRound}!`);
     });
+}
+
+// Initialize the share button
+function initShareButton() {
+    const shareButton = document.getElementById('share-build');
+    if (!shareButton) return;
+
+    shareButton.addEventListener('click', function() {
+        shareBuild();
+    });
+}
+
+// Function to share the current build
+function shareBuild() {
+    try {
+        // Get the current hero build data
+        const heroBuild = getCurrentHeroBuild();
+        const heroId = currentHero;
+        
+        // Create a data object with the necessary information
+        const shareData = {
+            heroId: heroId,
+            equippedItemsByRound: heroBuild.equippedItemsByRound,
+            equippedPowers: heroBuild.equippedPowers,
+            economySettings: builds.economySettings
+        };
+        
+        // Convert the data to a JSON string
+        const jsonData = JSON.stringify(shareData);
+        
+        // Compress the data using LZString
+        const compressedData = LZString.compressToEncodedURIComponent(jsonData);
+        
+        // Create the shareable URL
+        const baseUrl = window.location.href.split('?')[0]; // Remove any existing query parameters
+        const shareUrl = `${baseUrl}?build=${compressedData}`;
+        
+        // Copy the URL to clipboard
+        copyToClipboard(shareUrl);
+        
+        // Show success message
+        showMessage('Build URL copied to clipboard!', 'success');
+    } catch (error) {
+        console.error('Error sharing build:', error);
+        showMessage('Error sharing build. Please try again.', 'error');
+    }
+}
+
+// Helper function to copy text to clipboard
+function copyToClipboard(text) {
+    // Create a temporary textarea element
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', ''); // Make it readonly to be tamper-proof
+    textarea.style.position = 'absolute';
+    textarea.style.left = '-9999px'; // Move outside the screen to make it invisible
+    
+    document.body.appendChild(textarea);
+    
+    // Check if there is any text selected
+    const selected = document.getSelection().rangeCount > 0
+        ? document.getSelection().getRangeAt(0) // Store selection if found
+        : false;
+    
+    // Select the textarea content
+    textarea.select();
+    
+    // Copy the textarea content to clipboard
+    document.execCommand('copy');
+    
+    // Remove the textarea
+    document.body.removeChild(textarea);
+    
+    // Restore original selection if there was one
+    if (selected) {
+        document.getSelection().removeAllRanges();
+        document.getSelection().addRange(selected);
+    }
 }
 
 // Update the UI based on the current round
