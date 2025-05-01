@@ -2395,6 +2395,13 @@ input[type="checkbox"]:checked + .toggle-label::after,
         border-bottom: 1px solid var(--border-secondary);
     }
     
+    .preset-column-container {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+    
     .preset-column {
         width: calc(33.33% - 10px);
         margin: 5px;
@@ -2408,10 +2415,20 @@ input[type="checkbox"]:checked + .toggle-label::after,
     /* Ensure sliders are wider on smaller screens */
     .economy-slider {
         width: calc(100% - 80px);
+        margin-right: 10px;
     }
     
     .slider-value {
         width: 70px;
+        text-align: right;
+    }
+    
+    /* Improve custom column layout */
+    .custom-column {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 5px;
     }
     
     .preset-toggle-row {
@@ -2453,6 +2470,12 @@ input[type="checkbox"]:checked + .toggle-label::after,
     
     .toggle-switch {
         width: 100%;
+    }
+    
+    /* Further adjustments for smaller mobile screens */
+    .preset-column {
+        font-size: 12px;
+        padding: 6px 4px;
     }
 }
 
@@ -2524,6 +2547,7 @@ input[type="checkbox"]:checked + .toggle-label::after,
     cursor: pointer;
     transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
     width: 18%;
+    max-width: 200px;
     margin: 0 2px;
     color: var(--text-secondary);
     opacity: 1 !important; /* Always visible */
@@ -2539,6 +2563,16 @@ input[type="checkbox"]:checked + .toggle-label::after,
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Default styling for preset-column-container (desktop) */
+.preset-column-container {
+    display: flex;
+    flex: 1;
+}
+
+.economy-preset-row .preset-column {
+    flex: 1;
+}
+
 .economy-preset-row:hover {
     background-color: rgba(255, 255, 255, 0.05);
 }
@@ -2552,7 +2586,6 @@ input[type="checkbox"]:checked + .toggle-label::after,
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 25%;
     font-size: 0.9rem;
     padding: 0 5px;
     transition: opacity 0.3s ease;
