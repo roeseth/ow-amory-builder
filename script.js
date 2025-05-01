@@ -601,7 +601,7 @@ function updateHeroUI() {
             heroNameElement.textContent = config.hero.name;
 
             // Update document title with hero name
-            document.title = `${config.hero.name} Build Panel`;
+            document.title = `Overwatch Stadium Armory Builder - ${config.hero.name}`;
         }
 
         // Update hero portrait if available
