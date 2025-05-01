@@ -1010,6 +1010,7 @@ body {
     
     .hero-roster {
         margin-top: 0.625rem;
+        width: 100%;
     }
     
     .hero-icon {
@@ -1083,10 +1084,10 @@ body {
         justify-content: center;
         flex-direction: row;
         gap: 8px; /* Slightly increase gap for better spacing on mobile */
-        max-width: 480px; /* Force wrapping on smaller screens */
-        margin: 0 auto;
+        max-width: 360px; /* Force wrapping on smaller screens */
+        margin: 0;
     }
-    
+
     .tabs {
         flex-wrap: wrap;
         width: 100%;
@@ -1098,6 +1099,63 @@ body {
         font-size: 0.75rem;
     }
     
+    /* Change round tab text to short form on mobile */
+    .round-tab[data-round="1"] {
+        font-size: 0;
+    }
+    .round-tab[data-round="1"]::before {
+        content: "R1";
+        font-size: 10px;
+    }
+    
+    .round-tab[data-round="2"] {
+        font-size: 0;
+    }
+    .round-tab[data-round="2"]::before {
+        content: "R2";
+        font-size: 10px;
+    }
+    
+    .round-tab[data-round="3"] {
+        font-size: 0;
+    }
+    .round-tab[data-round="3"]::before {
+        content: "R3";
+        font-size: 10px;
+    }
+    
+    .round-tab[data-round="4"] {
+        font-size: 0;
+    }
+    .round-tab[data-round="4"]::before {
+        content: "R4";
+        font-size: 10px;
+    }
+    
+    .round-tab[data-round="5"] {
+        font-size: 0;
+    }
+    .round-tab[data-round="5"]::before {
+        content: "R5";
+        font-size: 10px;
+    }
+    
+    .round-tab[data-round="6"] {
+        font-size: 0;
+    }
+    .round-tab[data-round="6"]::before {
+        content: "R6";
+        font-size: 10px;
+    }
+    
+    .round-tab[data-round="7"] {
+        font-size: 0;
+    }
+    .round-tab[data-round="7"]::before {
+        content: "R7";
+        font-size: 10px;
+    }
+
     .items-grid {
         flex-direction: column;
     }
@@ -1124,6 +1182,7 @@ body {
     
     .top-controls {
         flex-wrap: wrap;
+        margin-right: 0;
     }
     
     .round-selector {
@@ -1134,15 +1193,9 @@ body {
     
     .utility-buttons {
         order: 2;
-        margin-top: 0.5rem;
-        width: 50%;
-        justify-content: flex-start;
-    }
-    
-    .reset-container {
-        order: 2;
-        width: 50%;
-        justify-content: flex-end;
+        width: 100%;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
     }
     
     .round-tabs {
@@ -1179,12 +1232,12 @@ body {
     }
     
     .title {
-        font-size: 2rem;
+        font-size: 3.2rem;
         margin-bottom: -1rem;
     }
     
     .hero {
-        font-size: 1.5rem;
+        font-size: 2.4rem;
     }
     
     .tab {
@@ -1504,27 +1557,23 @@ body {
 }
 
 .top-controls {
-    justify-content: space-between;
-    align-items: center;
-    margin-right: 20px;
-    margin-bottom: 4px;
+    display: flex;
+    margin-right: clamp(0.75rem, 4vw, 1.25rem);
 }
 
 .round-selector {
-    flex-grow: 1;
-    margin-right: 15px;
+    flex: 1;
     display: flex;
     justify-content: flex-start; /* Left align */
 }
 
 .utility-buttons {
     display: flex;
-    margin-right: 15px;
+    justify-content: space-between;
 }
 
-.reset-container {
+.utility-buttons .left-buttons {
     display: flex;
-    justify-content: flex-end; /* Right align */
 }
 
 .round-tabs {
@@ -1533,7 +1582,6 @@ body {
     border-radius: 5px;
     overflow: hidden;
     height: 36px;
-    width: auto; /* Only take up needed space */
 }
 
 .round-tab {
@@ -1576,7 +1624,6 @@ body {
 .utility-button {
     border-radius: 3px;
     margin: 2px;
-    margin-left: 5px;
     font-weight: bold;
     transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
     white-space: normal;
@@ -1589,7 +1636,6 @@ body {
     text-align: center;
     line-height: 1.2;
     padding: 3px 8px;
-    height: 36px;
     min-width: 80px;
     cursor: pointer;
 }
