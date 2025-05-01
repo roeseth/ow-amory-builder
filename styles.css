@@ -1896,7 +1896,6 @@ body {
 
 /* Advanced Options Styles */
 .advanced-options {
-    padding: 15px;
     font-family: 'Roboto', sans-serif;
     font-size: 14px; /* Base font size for consistency */
 }
@@ -1906,7 +1905,8 @@ body {
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 20px;
-    border: 1px solid var(--border-secondary);
+    border: 1px solid var(--border-primary);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .option-row {
@@ -2263,6 +2263,10 @@ input[type="checkbox"]:checked + .toggle-label::after,
 
 .economy-preset-row:hover {
     background-color: rgba(255, 255, 255, 0.05);
+}
+
+.round-column {
+    padding-right: 20px;
 }
 
 /* Custom column styles */
