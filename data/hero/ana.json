@@ -40,7 +40,7 @@
           "name": "UNSCOPPED RESOURCES",
           "cost": 11000,
           "description": "+4 Max Ammo. Unscoped <b>[Rifle]</b> shots have a <b>60%</b> chance not to consume ammo.",
-          "iconPath": "res/items/ashe/ashe_unscopped_resources.png",
+          "iconPath": "res/items/ana/ana_unscopped_resources.png",
           "stats": {}
         }
       ]
