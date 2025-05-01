@@ -3,76 +3,185 @@
   "role": "Support",
   "portraitPath": "res/portraits/juno.png",
   "powerIcon": "res/power/juno.png",
-  "health": 200,
+  "health": 75,
   "armor": 0,
-  "shield": 0,
-  "moveSpeed": 5.5,
-  "meleeDamage": 30,
-  "weapons": [
-    {
-      "name": "Placeholder Weapon",
-      "type": "healing",
-      "damageValue": 70,
-      "healingValue": 70,
-      "criticalHitMultiplier": 1.0,
-      "attackSpeed": 1.5,
-      "ammo": 12,
-      "reloadSpeed": 1.5,
-      "lifeSteal": 0
-    }
-  ],
-  "abilities": [
-    {
-      "name": "Placeholder Ability",
-      "type": "healing",
-      "damageValue": 0,
-      "healingValue": 100,
-      "duration": 3,
-      "cooldown": 8,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    }
-  ],
-  "specialItems": [
-    {
-      "name": "HEALING STAFF ENHANCEMENT",
-      "cost": 2800,
-      "description": "Enhances Juno's Healing Staff with improved healing output.",
-      "iconPath": "res/items/juno_staff.png",
-      "stats": {
-        "abilityPower": 18,
-        "cooldownReduction": 10
-      },
-      "sharedItem": false
+  "shield": 150,
+  "items": {
+    "weapon": {
+      "epic": [
+        {
+          "name": "PULSE SPIKE",
+          "cost": 11000,
+          "description": "After using <b>[Pulsar Torpedoes]</b>, gain <b>25%</b> Attack Speed for <b>4s</b>.",
+          "iconPath": "res/items/juno/juno_pulse_spike.png",
+          "stats": {}
+        },
+        {
+          "name": "LONG RANGE BLASTER",
+          "cost": 12000,
+          "description": "<b>[Mediblaster]</b> deals <b>15%</b> increased damage and healing to targets farther than <b>12m</b> away.",
+          "iconPath": "res/items/juno/juno_long_range_blaster.png",
+          "stats": {
+            "weaponPower": 15
+          }
+        },
+        {
+          "name": "GRAVITATIONAL PUSH",
+          "cost": 10000,
+          "description": "During <b>[Glide Boost]</b>, gain <b>20%</b> Attack Speed and your <b>[Quick Melee]</b> knocks enemies back.",
+          "iconPath": "res/items/juno/juno_gravitational_push.png",
+          "stats": {
+            "weaponPower": 15
+          }
+        }
+      ]
     },
-    {
-      "name": "REJUVENATION PULSE AMPLIFIER",
-      "cost": 3300,
-      "description": "Improves Juno's Rejuvenation Pulse with increased healing and range.",
-      "iconPath": "res/items/juno_pulse.png",
-      "stats": {
-        "abilityPower": 15,
-        "cooldownReduction": 12
-      },
-      "sharedItem": false
+    "ability": {
+      "rare": [
+        {
+          "name": "LOCK-ON SHIELD",
+          "cost": 4000,
+          "description": "While aiming <b>[Pulsar Torpedoes]</b>, gain Overhealth equal to <b>50%</b> of your max Shields.",
+          "iconPath": "res/items/juno/juno_lock_on_shield.png",
+          "stats": {
+            "abilityPower": 10
+          }
+        },
+        {
+          "name": "LUX LOOP",
+          "cost": 4000,
+          "description": "",
+          "iconPath": "res/items/juno/juno_lux_loop.png",
+          "stats": {
+            "abilityPower": 10
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "PULSTAR DESTROYERS",
+          "cost": 10000,
+          "description": "<b>[Pulsar Torpedoes]</b> explode on hit, dealing <b class=\"stat-ap\">20</b> damage.",
+          "iconPath": "res/items/juno/juno_pulstar_destroyers.png",
+          "stats": {
+            "abilityPower": 15
+          }
+        },
+        {
+          "name": "SOLAR SHIELDING",
+          "cost": 10000,
+          "description": "Allies affected by <b>[Hyper Ring]</b> restore <b>25</b> Shields every Is.",
+          "iconPath": "res/items/juno/juno_solar_shielding.png",
+          "stats": {
+            "abilityPower": 25
+          }
+        },
+        {
+          "name": "RED PROMISE REGULATOR",
+          "cost": 10000,
+          "description": "When you use <b>[Orbital Ray]</b>, reset your cooldowns.",
+          "iconPath": "res/items/juno/juno_red_promise_regulator.png",
+          "stats": {
+            "shield": 50,
+            "abilityPower": 15
+          }
+        }
+      ]
     },
-    {
-      "name": "PROTECTION FIELD BOOSTER",
-      "cost": 3700,
-      "description": "Enhances Juno's Protection Field with increased damage reduction and duration.",
-      "iconPath": "res/items/juno_field.png",
-      "stats": {
-        "health": 75,
-        "shield": 50
-      },
-      "sharedItem": false
+    "survival": {
+      "rare": [
+        {
+          "name": "BOOSTED ROCKETS",
+          "cost": 4000,
+          "description": "",
+          "iconPath": "res/items/juno/juno_boosted_rockets.png",
+          "stats": {
+            "shield": 25
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "FORTI-GLIDE",
+          "cost": 10000,
+          "description": "During <b>[Glide Boost]</b>, gain <b>10%</b> Damage Reduction.",
+          "iconPath": "res/items/juno/juno_forti_glide.png",
+          "stats": {
+            "shield": 75
+          }
+        },
+        {
+          "name": "SUNBURST SERUM",
+          "cost": 10000,
+          "description": "<b>[Orbital Ray]</b> gains <b>25%</b> increased healing.",
+          "iconPath": "res/items/juno/juno_sunburst_serum.png",
+          "stats": {
+            "shield": 75
+          }
+        }
+      ]
     }
-  ],
+  },
   "powers": [
     {
-      "title": "REVITALIZING PRESENCE",
-      "description": "Juno's healing abilities provide a 15% healing boost that persists for 3 seconds after the initial heal."
+      "title": "MEDIMASTER",
+      "description": "<b>[Mediblaster]</b> can now critically hit both allies and enemies.",
+      "iconPath": "res/power/juno/juno_medimaster.png"
+    },
+    {
+      "title": "STINGER",
+      "description": "<b>[Mediblaster]</b> deals an additional <b class=\"stat-ap\">10</b> damage to enemies over <b>1s</b>.\n(Does not stack).",
+      "iconPath": "res/power/juno/juno_stinger.png"
+    },
+    {
+      "title": "COSMIC COOLANT",
+      "description": "<b>[Pulsar Torpedoes]</b> cooldown is reduced by <b>1s</b> for each target it hits.",
+      "iconPath": "res/power/juno/juno_cosmic_coolant.png"
+    },
+    {
+      "title": "MEDICINAL MISSILES",
+      "description": "<b>[Pulsar Torpedoes]</b> heal for an extra <b class=\"stat-ap\">30</b> life and causes allies hit to receive <b>50%</b> more healing for <b>3s</b>.",
+      "iconPath": "res/power/juno/juno_medicinal_missiles.png"
+    },
+    {
+      "title": "PULSAR PLUS",
+      "description": "<b>[Pulsar Torpedoes]</b> gains <b>1</b> additional charge.",
+      "iconPath": "res/power/juno/juno_pulsar_plus.png"
+    },
+    {
+      "title": "BLINK BOOSTS",
+      "description": "<b>[Glide Boost]</b> gains <b>2</b> additional charges and has a <b>65%</b> reduced cooldown, but has <b>75%</b> <b>reduced</b> duration.",
+      "iconPath": "res/power/juno/juno_blink_boosts.png"
+    },
+    {
+      "title": "TORPEDO GLIDE",
+      "description": "During <b>[Glide Boost]</b>, every <b>50</b> damage you deal reduces the cooldown of <b>[Pulsar Torpedoes]</b> by <b>1s</b>.",
+      "iconPath": "res/power/juno/juno_torpedo_glide.png"
+    },
+    {
+      "title": "BLACK HOLE",
+      "description": "<b>[Hyper Ring]</b> slows the Move Speed of enemies who pass through it by <b>35%</b> for <b>1s</b>.",
+      "iconPath": "res/power/juno/juno_black_hole.png"
+    },
+    {
+      "title": "HYPER HEALER",
+      "description": "Allies affected by <b>[Hyper Ring]</b> gain <b class=\"stat-ap\">50</b> <b>Overhealth</b>.",
+      "iconPath": "res/power/juno/juno_hyper_healer.png"
+    },
+    {
+      "title": "RALLY RING",
+      "description": "Reduce <b>[Hyper Ring]</b>'s cooldown by <b>1s</b> when an ally passes through it.",
+      "iconPath": "res/power/juno/juno_rally_ring.png"
+    },
+    {
+      "title": "ORBITAL ALIGNMENT",
+      "description": "Enemies inside of <b>[Orbital Ray]</b> lose <b>35%</b> Move Speed. Allies inside of it gain <b>25%</b> Move Speed.",
+      "iconPath": "res/power/juno/juno_orbital_alignment.png"
+    },
+    {
+      "title": "STELLAR FOCUS",
+      "description": "<b>[Orbital Ray]</b> now follows you and its duration is increased by <b>35%</b>.",
+      "iconPath": "res/power/juno/juno_stellar_focus.png"
     }
   ]
-} 
+}

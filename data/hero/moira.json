@@ -3,76 +3,150 @@
   "role": "Support",
   "portraitPath": "res/portraits/moira.png",
   "powerIcon": "res/power/moira.png",
-  "health": 200,
+  "health": 225,
   "armor": 0,
   "shield": 0,
-  "moveSpeed": 5.5,
-  "meleeDamage": 30,
-  "weapons": [
-    {
-      "name": "Placeholder Weapon",
-      "type": "damage",
-      "damageValue": 50,
-      "healingValue": 0,
-      "criticalHitMultiplier": 1.0,
-      "attackSpeed": 1,
-      "ammo": 0,
-      "reloadSpeed": 0,
-      "lifeSteal": 20
-    }
-  ],
-  "abilities": [
-    {
-      "name": "Placeholder Ability",
-      "type": "healing",
-      "damageValue": 0,
-      "healingValue": 70,
-      "duration": 0,
-      "cooldown": 0,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    }
-  ],
-  "specialItems": [
-    {
-      "name": "BIOTIC GRASP ENHANCEMENT",
-      "cost": 3000,
-      "description": "Enhances Moira's Biotic Grasp with improved damage, healing, and resource generation.",
-      "iconPath": "res/items/moira_grasp.png",
-      "stats": {
-        "abilityPower": 15,
-        "weaponPower": 10
-      },
-      "sharedItem": false
+  "items": {
+    "weapon": {
+      "epic": [
+        {
+          "name": "ALTERNATIVE ENERGY",
+          "cost": 10000,
+          "description": "When you use <b>[Fade]</b>, refill your <b>[Biotic Energy]</b>.",
+          "iconPath": "res/items/moira/moira_alternative_energy.png",
+          "stats": {
+            "abilityPower": 10
+          }
+        },
+        {
+          "name": "SUBATOMIC SPLITTER",
+          "cost": 11000,
+          "description": "",
+          "iconPath": "res/items/moira/moira_subatomic_splitter.png",
+          "stats": {
+            "weaponPower": 10
+          }
+        }
+      ]
     },
-    {
-      "name": "BIOTIC ORB AMPLIFIER",
-      "cost": 3400,
-      "description": "Improves Moira's Biotic Orbs with increased damage, healing, and duration.",
-      "iconPath": "res/items/moira_orb.png",
-      "stats": {
-        "abilityPower": 18,
-        "cooldownReduction": 12
-      },
-      "sharedItem": false
+    "ability": {
+      "rare": [
+        {
+          "name": "SMART ORBS",
+          "cost": 4000,
+          "description": "<b>[Biotic Orb]</b> moves <b>50%</b> slower while it is healing or dealing damage.",
+          "iconPath": "res/items/moira/moira_smart_orbs.png",
+          "stats": {
+            "abilityPower": 5
+          }
+        },
+        {
+          "name": "LEVITATION SHAWL",
+          "cost": 4500,
+          "description": "During <b>[Coalescence]</b>, gain free flight.",
+          "iconPath": "res/items/moira/moira_levitation_shawl.png",
+          "stats": {
+            "abilityPower": 10
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "COALEGION",
+          "cost": 10000,
+          "description": "Allies healed by <b>[Coalescence]</b> deal <b>15%</b> increased damage.",
+          "iconPath": "res/items/moira/moira_coalegion.png",
+          "stats": {
+            "health": 25,
+            "abilityPower": 15
+          }
+        },
+        {
+          "name": "EXTENDRILS",
+          "cost": 11000,
+          "description": "",
+          "iconPath": "res/items/moira/moira_extendrils.png",
+          "stats": {
+            "abilityPower": 15
+          }
+        }
+      ]
     },
-    {
-      "name": "FADE OPTIMIZER",
-      "cost": 3200,
-      "description": "Enhances Moira's Fade with increased distance, duration, and reduced cooldown.",
-      "iconPath": "res/items/moira_fade.png",
-      "stats": {
-        "moveSpeed": 15,
-        "cooldownReduction": 15
-      },
-      "sharedItem": false
+    "survival": {
+      "rare": [
+        {
+          "name": "ABYSS BOOTS",
+          "cost": 4000,
+          "description": "While using <b>[Fade]</b>, you jump <b>30%</b> higher.",
+          "iconPath": "res/items/moira/moira_abyss_boots.png",
+          "stats": {
+            "health": 25
+          }
+        }
+      ],
+      "epic": []
     }
-  ],
+  },
   "powers": [
     {
-      "title": "CELLULAR REGENERATION",
-      "description": "Moira's healing resource regenerates 25% faster and Biotic Grasp healing lingers for 2 additional seconds."
+      "title": "CHAIN GRASP",
+      "description": "After using <b>[Biotic Orb]</b>, <b>[Biotic Grasp]</b>'s secondary fire chains to <b>2</b> additional targets within <b>10m</b> for <b>3s</b>.",
+      "iconPath": "res/power/moira/moira_chain_grasp.png"
+    },
+    {
+      "title": "DECONSTRUCTION",
+      "description": "After you spend 50 <b>[Biotic Energy]</b>, deal <b>20%</b> increased damage for <b>6s</b>.",
+      "iconPath": "res/power/moira/moira_deconstruction.png"
+    },
+    {
+      "title": "EMPOWERING YOU",
+      "description": "<b>[Biotic Grasp]</b>'s secondary fire can target allies, increasing their damage by <b>15%</b>.",
+      "iconPath": "res/power/moira/moira_empowering_you.png"
+    },
+    {
+      "title": "ETHEREAL EXCISION",
+      "description": "While aiming at an enemy's head with <b>[Biotic Grasp]</b>'s secondary fire, gain <b>30%</b> Move Speed, <b>30%</b> Lifesteal, and restore <b>100%</b> more Biotic Energy.",
+      "iconPath": "res/power/moira/moira_ethereal_excision.png"
+    },
+    {
+      "title": "OPTIMAL OVERFLOW",
+      "description": "After you spend 50 <b>[Biotic Energy]</b>, launch the last selected <b>[Biotic Orb]</b> with <b>75%</b> reduced duration.",
+      "iconPath": "res/power/moira/moira_optimal_overflow.png"
+    },
+    {
+      "title": "PRECARIOUS POTENCY",
+      "description": "Allies healed by your <b>[Biotic Grasp]</b> are healed for an additional <b>20%</b> of <b>[Biotic Grasp]</b>'s healing over <b>5s</b>.",
+      "iconPath": "res/power/moira/moira_precarious_potency.png"
+    },
+    {
+      "title": "CROSS-ORBAL",
+      "description": "<b>[Biotic Orb]</b> launches an additional <b>[Biotic Orb]</b> of the other type with <b>50%</b> reduced capacity.",
+      "iconPath": "res/power/moira/moira_cross_orbal.png"
+    },
+    {
+      "title": "MULTIBALL",
+      "description": "<b>[Biotic Orb]</b> launches <b>2</b> additional orbs of the chosen type with <b>85%</b> <b>reduced</b> effectiveness.",
+      "iconPath": "res/power/moira/moira_multiball.png"
+    },
+    {
+      "title": "PHANTASM",
+      "description": "When you use <b>[Fade]</b>, spawn a stationary copy of the last selected <b>[Biotic Orb]</b> with <b>50%</b> <b>reduced</b> duration.",
+      "iconPath": "res/power/moira/moira_phantasm.png"
+    },
+    {
+      "title": "SCIENTIFIC DEATHOD",
+      "description": "While using <b>[Fade]</b>, passing through enemies grants <b>5%</b> Ultimate Charge and <b>Overhealth</b> equal to <b>15%</b> of your max Life.",
+      "iconPath": "res/power/moira/moira_scientific_deathod.png"
+    },
+    {
+      "title": "VOIDHOPPERS",
+      "description": "<b>[Fade]</b> also phases other allies within <b>8m</b> for 0.<b>25s</b> and grants them <b>Overhealth</b> equal to <b>20%</b> of your max Life.",
+      "iconPath": "res/power/moira/moira_voidhoppers.png"
+    },
+    {
+      "title": "DESTRUCTION'S DIVIDE",
+      "description": "<b>[Coalescence]</b> can be toggled between pure healing or pure damage, with <b>25%</b> greater effect.",
+      "iconPath": "res/power/moira/moira_destructions_divide.png"
     }
   ]
-} 
+}

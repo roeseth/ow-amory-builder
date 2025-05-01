@@ -1,77 +1,144 @@
 {
-  "name": "Soldier 76",
-  "role": "Damage",
+  "name": "Soldier: 76",
+  "role": "Dps",
   "portraitPath": "res/portraits/soldier-76.png",
   "powerIcon": "res/power/soldier-76.png",
-  "health": 200,
+  "health": 250,
   "armor": 0,
   "shield": 0,
-  "moveSpeed": 5.5,
-  "meleeDamage": 30,
-  "weapons": [
-    {
-      "name": "Placeholder Weapon",
-      "type": "damage",
-      "damageValue": 70,
-      "criticalHitMultiplier": 2.0,
-      "attackSpeed": 1.5,
-      "ammo": 6,
-      "reloadSpeed": 1.5,
-      "lifeSteal": 0
-    }
-  ],
-  "abilities": [
-    {
-      "name": "Placeholder Ability",
-      "type": "damage",
-      "damageValue": 100,
-      "healingValue": 0,
-      "duration": 3,
-      "cooldown": 8,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    }
-  ],
-  "specialItems": [
-    {
-      "name": "HEAVY PULSE RIFLE UPGRADE",
-      "cost": 2800,
-      "description": "Enhances Soldier 76's Heavy Pulse Rifle with improved accuracy and damage.",
-      "iconPath": "res/items/soldier_rifle.png",
-      "stats": {
-        "weaponPower": 15,
-        "attackSpeed": 8
-      },
-      "sharedItem": false
+  "items": {
+    "weapon": {
+      "epic": []
     },
-    {
-      "name": "HELIX ROCKETS AMPLIFIER",
-      "cost": 3300,
-      "description": "Improves Soldier 76's Helix Rockets with increased damage and reduced cooldown.",
-      "iconPath": "res/items/soldier_rockets.png",
-      "stats": {
-        "abilityPower": 18,
-        "cooldownReduction": 12
-      },
-      "sharedItem": false
+    "ability": {
+      "rare": [
+        {
+          "name": "BATTERY PACK",
+          "cost": 4000,
+          "description": "",
+          "iconPath": "res/items/soldier-76/soldier-76_battery_pack.png",
+          "stats": {
+            "abilityPower": 10
+          }
+        },
+        {
+          "name": "BOMB DIFFUSAL BOOTS",
+          "cost": 4000,
+          "description": "When you damage yourself with <b>[Helix Rocket]</b>, it knocks you back <b>200%</b> further.",
+          "iconPath": "res/items/soldier-76/soldier-76_bomb_diffusal_boots.png",
+          "stats": {
+            "health": 25,
+            "weaponPower": 5
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "ENDGAME EQUALIZER",
+          "cost": 10000,
+          "description": "When you spend your Ultimate Charge, reset all cooldowns. While <b>[Tactical Visor]</b> is active, gain <b>20%</b> Cooldown Reduction.",
+          "iconPath": "res/items/soldier-76/soldier-76_endgame_equalizer.png",
+          "stats": {
+            "health": 25,
+            "abilityPower": 15
+          }
+        },
+        {
+          "name": "RAPID RESPONSE RADIUS",
+          "cost": 10000,
+          "description": "<b>[Biotic Field]</b> heals allies below <b>50%</b> Life <b>10%</b> more.",
+          "iconPath": "res/items/soldier-76/soldier-76_rapid_response_radius.png",
+          "stats": {
+            "abilityPower": 10
+          }
+        }
+      ]
     },
-    {
-      "name": "BIOTIC FIELD ENHANCER",
-      "cost": 3500,
-      "description": "Enhances Soldier 76's Biotic Field with increased healing and area of effect.",
-      "iconPath": "res/items/soldier_biotic.png",
-      "stats": {
-        "health": 75,
-        "cooldownReduction": 15
-      },
-      "sharedItem": false
+    "survival": {
+      "rare": [
+        {
+          "name": "COMPRESSION FATIGUES",
+          "cost": 4000,
+          "description": "",
+          "iconPath": "res/items/soldier-76/soldier-76_compression_fatigues.png",
+          "stats": {
+            "health": 25
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "IRON LUNG",
+          "cost": 10000,
+          "description": "While using <b>[Sprint]</b>, gain <b>Overhealth</b> equal to <b>5%</b> of your max Life every <b><b>1s</b></b>, up to <b>25%</b>, for <b>5s</b>.",
+          "iconPath": "res/items/soldier-76/soldier-76_iron_lung.png",
+          "stats": {
+            "health": 25
+          }
+        }
+      ]
     }
-  ],
+  },
   "powers": [
     {
-      "title": "TACTICAL VISOR ENHANCEMENT",
-      "description": "Tactical Visor duration is increased by 2 seconds and critical hits are now possible during its duration."
+      "title": "PERIPHERAL PULSE",
+      "description": "During <b>[Tactical Visor]</b>, <b>[Pulse Rifle]</b> shoots at <b>1</b> additional enemy, dealing <b>50%</b> damage.",
+      "iconPath": "res/power/soldier-76/soldier-76_peripheral_pulse.png"
+    },
+    {
+      "title": "SUPER VISOR",
+      "description": "After using <b>[Helix Rocket]</b>, activate <b>[Tactical Visor]</b> for 0.<b>75s</b>.",
+      "iconPath": "res/power/soldier-76/soldier-76_super_visor.png"
+    },
+    {
+      "title": "CHAINGUN",
+      "description": "While continuously shooting <b>[Pulse Rifle]</b>, each shot grants 0.<b>5%</b> Weapon Power, stacking up to <b>100</b> times.",
+      "iconPath": "res/power/soldier-76/soldier-76_chaingun.png"
+    },
+    {
+      "title": "MAN ON THE RUN",
+      "description": "During <b>[Sprint]</b>, restore <b>10%</b> of your Ammo every Is and increase your Max Ammo by <b>10%</b> until you reload, stacking up to <b>10 times</b>.",
+      "iconPath": "res/power/soldier-76/soldier-76_man_on_the_run.png"
+    },
+    {
+      "title": "CRATERED",
+      "description": "Increase <b>[Helix Rocket]</b> explosion radius by <b>40%</b> and explosion damage by <b>25%</b>.",
+      "iconPath": "res/power/soldier-76/soldier-76_cratered.png"
+    },
+    {
+      "title": "DOUBLE HELIX",
+      "description": "<b>[Helix Rocket]</b> fires a second homing <b>[Helix Rocket]</b> that deals <b>70%</b> <b>reduced</b> damage.",
+      "iconPath": "res/power/soldier-76/soldier-76_double_helix.png"
+    },
+    {
+      "title": "HUNKER DOWN",
+      "description": "When <b>[Helix Rocket]</b> deals damage, create a <b>[Biotic Field]</b> with a <b>reduced</b> duration at your position.",
+      "iconPath": "res/power/soldier-76/soldier-76_hunker_down.png"
+    },
+    {
+      "title": "BACK OFF",
+      "description": "Enemies within your <b>[Biotic Field]</b> take damage equal to <b>100%</b> of its healing output.",
+      "iconPath": "res/power/soldier-76/soldier-76_back_off.png"
+    },
+    {
+      "title": "BIOTIC BULLSEYE",
+      "description": "While in <b>[Biotic Field]</b>, critical hits restore <b>5%</b> Max Ammo and extend the duration of <b>[Biotic Field]</b> by 0.<b>5s</b>, up to <b>5s</b>.",
+      "iconPath": "res/power/soldier-76/soldier-76_biotic_bullseye.png"
+    },
+    {
+      "title": "FRONTLINERS",
+      "description": "Allies in range of your <b>[Biotic Field]</b> when it spawns gain <b>Overhealth</b> equal to <b>30%</b> of your max Life for <b>3s</b>.",
+      "iconPath": "res/power/soldier-76/soldier-76_frontliners.png"
+    },
+    {
+      "title": "ON ME!",
+      "description": "<b>[Biotic Field]</b> moves with you and grants you <b>20%</b> increased Max Life while active.",
+      "iconPath": "res/power/soldier-76/soldier-76_on_me!.png"
+    },
+    {
+      "title": "TRACK AND FIELD",
+      "description": "During <b>[Sprint]</b>, <b>[Biotic Field]</b> cooldown refreshes <b>150%</b> faster.",
+      "iconPath": "res/power/soldier-76/soldier-76_track_and_field.png"
     }
   ]
-} 
+}

@@ -3,75 +3,163 @@
   "role": "Tank",
   "portraitPath": "res/portraits/orisa.png",
   "powerIcon": "res/power/orisa.png",
-  "health": 275,
-  "armor": 275,
+  "health": 150,
+  "armor": 325,
   "shield": 0,
-  "moveSpeed": 5.5,
-  "meleeDamage": 30,
-  "weapons": [
-    {
-      "name": "Placeholder Weapon",
-      "type": "damage",
-      "damageValue": 70,
-      "criticalHitMultiplier": 2.0,
-      "attackSpeed": 1.5,
-      "ammo": 6,
-      "reloadSpeed": 1.5,
-      "lifeSteal": 0
-    }
-  ],
-  "abilities": [
-    {
-      "name": "Placeholder Ability",
-      "type": "damage",
-      "damageValue": 100,
-      "healingValue": 0,
-      "duration": 3,
-      "cooldown": 8,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    }
-  ],
-  "specialItems": [
-    {
-      "name": "AUGMENTED FUSION DRIVER",
-      "cost": 3200,
-      "description": "Enhances Orisa's primary weapon with improved accuracy and damage.",
-      "iconPath": "res/items/orisa_fusion.png",
-      "stats": {
-        "weaponPower": 15,
-        "attackSpeed": 10
-      },
-      "sharedItem": false
+  "items": {
+    "weapon": {
+      "epic": []
     },
-    {
-      "name": "FORTIFICATION MODULE",
-      "cost": 3700,
-      "description": "Improves Orisa's Fortify ability, providing additional damage reduction.",
-      "iconPath": "res/items/orisa_fortify.png",
-      "stats": {
-        "armor": 40,
-        "health": 75
-      },
-      "sharedItem": false
+    "ability": {
+      "rare": [
+        {
+          "name": "ARCFINDER",
+          "cost": 4000,
+          "description": "<b>[Energy Javelin]</b> deals <b>25%</b> increased damage to enemies farther than <b>12m</b> away.",
+          "iconPath": "res/items/orisa/orisa_arcfinder.png",
+          "stats": {}
+        },
+        {
+          "name": "ELITE ROTATOR CUFF",
+          "cost": 4000,
+          "description": "",
+          "iconPath": "res/items/orisa/orisa_elite_rotator_cuff.png",
+          "stats": {
+            "abilityPower": 10
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "EFI'S THEOREM",
+          "cost": 10000,
+          "description": "",
+          "iconPath": "res/items/orisa/orisa_efis_theorem.png",
+          "stats": {
+            "abilityLifesteal": 20
+          }
+        },
+        {
+          "name": "3D-PRINTED LANCE",
+          "cost": 11000,
+          "description": "<b>[Energy Javelin]</b> cooldown is reduced by <b>15%</b>, but each use generates <b>25</b> <b>[Heat]</b>.",
+          "iconPath": "res/items/orisa/orisa_3d_printed_lance.png",
+          "stats": {
+            "abilityPower": 15
+          }
+        },
+        {
+          "name": "OLADELE-COPTER BLADES",
+          "cost": 12000,
+          "description": "While using <b>[Javelin Spin]</b>, gain free flight and <b>20%</b> Move Speed.",
+          "iconPath": "res/items/orisa/orisa_oladele_copter_blades.png",
+          "stats": {
+            "abilityPower": 15
+          }
+        }
+      ]
     },
-    {
-      "name": "JAVELIN ENHANCEMENT",
-      "cost": 4200,
-      "description": "Increases the damage and stun duration of Orisa's Javelin.",
-      "iconPath": "res/items/orisa_javelin.png",
-      "stats": {
-        "abilityPower": 20,
-        "cooldownReduction": 15
-      },
-      "sharedItem": false
+    "survival": {
+      "rare": [
+        {
+          "name": "CHARGED CHASSIS",
+          "cost": 4000,
+          "description": "<b>[Fortify]</b> grants additional <b>Overhealth</b> equal to <b>10%</b> of your max Life.",
+          "iconPath": "res/items/orisa/orisa_charged_chassis.png",
+          "stats": {
+            "health": 25
+          }
+        },
+        {
+          "name": "SIPHONIC SPEAR",
+          "cost": 4000,
+          "description": "When you deal damage with <b>[Energy Javelin]</b>, heal <b>10%</b> of your max Life over <b>3s</b>.",
+          "iconPath": "res/items/orisa/orisa_siphonic_spear.png",
+          "stats": {}
+        },
+        {
+          "name": "SOLAR REGENERGY",
+          "cost": 4000,
+          "description": "After using an ability, restore Armor equal to <b>5%</b> of your max Life.",
+          "iconPath": "res/items/orisa/orisa_solar_regenergy.png",
+          "stats": {
+            "health": 25
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "HOLLAGRAM HELMET",
+          "cost": 10000,
+          "description": "When you use <b>[Fortify]</b>, allies within line of sight gain <b>Unstoppable</b> for <b>2s</b>.",
+          "iconPath": "res/items/orisa/orisa_hollagram_helmet.png",
+          "stats": {
+            "armor": 50
+          }
+        }
+      ]
     }
-  ],
+  },
   "powers": [
     {
-      "title": "IMPENETRABLE",
-      "description": "Fortify reduces damage taken by an additional 15% and reduces cooldown by 2 seconds."
+      "title": "SCORCHED EARTH",
+      "description": "When you <b>[Overheat]</b>, apply <b>Burning</b> to enemies within <b>6m</b>, dealing damage equal to <b>10%</b> of your max Life over <b>5s</b>.",
+      "iconPath": "res/power/orisa/orisa_scorched_earth.png"
+    },
+    {
+      "title": "SHIELD DIVERGENCE",
+      "description": "When you <b>[Overheat]</b>, deploy a <b>Barrier</b> with <b class=\"stat-ap\">600</b> Health in front.",
+      "iconPath": "res/power/orisa/orisa_shield_divergence.png"
+    },
+    {
+      "title": "ADVANCED THROWBOTICS",
+      "description": "When you use <b>[Javelin Spin]</b>, launch an <b>[Energy Javelin]</b> with <b>50%</b> less damage.",
+      "iconPath": "res/power/orisa/orisa_advanced_throwbotics.png"
+    },
+    {
+      "title": "HOT ROTATE-O",
+      "description": "<b>[Javelin Spin]</b> gains <b>35%</b> Cooldown Reduction but now generates <b>[Heat]</b>.",
+      "iconPath": "res/power/orisa/orisa_hot_rotate_o.png"
+    },
+    {
+      "title": "SPYNSTEM UPDATE",
+      "description": "<b>[Javelin Spin]</b> now deflects projectiles and grants <b>20%</b> of damage dealt from deflecting as Ultimate Charge.",
+      "iconPath": "res/power/orisa/orisa_spynstem_update.png"
+    },
+    {
+      "title": "FACTORY RESET",
+      "description": "While <b>[Fortify]</b> is active, <b>[Javelin Spin]</b> and <b>[Energy Javelin]</b> gain <b>25%</b> Cooldown Reduction.",
+      "iconPath": "res/power/orisa/orisa_factory_reset.png"
+    },
+    {
+      "title": "HOOVES OF STEEL",
+      "description": "After <b>[Fortify]</b> ends, gain Shields equal to <b>50%</b> of the damage received during <b>[Fortify]</b>.\n<br />\nResets when you next use <b>[Fortify]</b>.",
+      "iconPath": "res/power/orisa/orisa_hooves_of_steel.png"
+    },
+    {
+      "title": "RESTORTIFY",
+      "description": "While <b>[Fortify]</b> is active, heal for <b>10%</b> of your max Life every <b>1s</b>.",
+      "iconPath": "res/power/orisa/orisa_restortify.png"
+    },
+    {
+      "title": "RIDE WITH ME",
+      "description": "While <b>[Fortify]</b> is active, grant allies in line of sight <b>30%</b> Move Speed and <b>Overhealth</b> equal to <b>10%</b> of your max Life.",
+      "iconPath": "res/power/orisa/orisa_ride_with_me.png"
+    },
+    {
+      "title": "LASSOED",
+      "description": "On impact, <b>[Energy Javelin]</b> will pull enemies within <b>4m</b> towards itself.",
+      "iconPath": "res/power/orisa/orisa_lassoed.png"
+    },
+    {
+      "title": "CENTRIPETAL CHARGE",
+      "description": "<b>25%</b> Ultimate Cost Reduction.\n<br/>\nAfter using <b>[Terra Surge]</b>, reset your ability cooldowns.",
+      "iconPath": "res/power/orisa/orisa_centripetal_charge.png"
+    },
+    {
+      "title": "SUPERCHARGER",
+      "description": "When you use <b>[Terra Surge]</b>, drop a <b>[Supercharger]</b> that increases the damage of nearby allies by <b>25%</b> for <b>15s</b>.",
+      "iconPath": "res/power/orisa/orisa_supercharger.png"
     }
   ]
-} 
+}

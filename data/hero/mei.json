@@ -1,77 +1,161 @@
 {
   "name": "Mei",
-  "role": "Damage",
+  "role": "Dps",
   "portraitPath": "res/portraits/mei.png",
   "powerIcon": "res/power/mei.png",
-  "health": 250,
+  "health": 300,
   "armor": 0,
   "shield": 0,
-  "moveSpeed": 5.5,
-  "meleeDamage": 30,
-  "weapons": [
-    {
-      "name": "Placeholder Weapon",
-      "type": "damage",
-      "damageValue": 70,
-      "criticalHitMultiplier": 2.0,
-      "attackSpeed": 1.5,
-      "ammo": 6,
-      "reloadSpeed": 1.5,
-      "lifeSteal": 0
-    }
-  ],
-  "abilities": [
-    {
-      "name": "Placeholder Ability",
-      "type": "damage",
-      "damageValue": 100,
-      "healingValue": 0,
-      "duration": 3,
-      "cooldown": 8,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    }
-  ],
-  "specialItems": [
-    {
-      "name": "ENDOTHERMIC ENHANCER",
-      "cost": 2800,
-      "description": "Enhances Mei's Endothermic Blaster with improved freeze rate and damage.",
-      "iconPath": "res/items/mei_blaster.png",
-      "stats": {
-        "weaponPower": 12,
-        "cooldownReduction": 10
-      },
-      "sharedItem": false
+  "items": {
+    "weapon": {
+      "epic": [
+        {
+          "name": "FOCUSED FLURRIES",
+          "cost": 10000,
+          "description": "Max Ammo is increased by <b>75%</b> but reloading takes <b>50%</b> longer.",
+          "iconPath": "res/items/mei/mei_focused_flurries.png",
+          "stats": {}
+        },
+        {
+          "name": "SNOWBOOT",
+          "cost": 10000,
+          "description": "Frozen ground increases Mei's Movement Speed by <b>35%</b>.",
+          "iconPath": "res/items/mei/mei_snowboot.png",
+          "stats": {}
+        },
+        {
+          "name": "HIMALAYAN HAT",
+          "cost": 10000,
+          "description": "While within <b>[Blizzard]</b>, gain <b>10%</b> Attack Speed.",
+          "iconPath": "res/items/mei/mei_himalayan_hat.png",
+          "stats": {}
+        }
+      ]
     },
-    {
-      "name": "ICE WALL REINFORCEMENT",
-      "cost": 3200,
-      "description": "Strengthens Mei's Ice Wall with increased health and reduced cooldown.",
-      "iconPath": "res/items/mei_wall.png",
-      "stats": {
-        "abilityPower": 15,
-        "cooldownReduction": 12
-      },
-      "sharedItem": false
+    "ability": {
+      "rare": [],
+      "epic": [
+        {
+          "name": "STURDY SNOWFORT",
+          "cost": 10000,
+          "description": "Ability Power is increased by <b>5%</b> per each spawned Ice Pillars.",
+          "iconPath": "res/items/mei/mei_sturdy_snowfort.png",
+          "stats": {
+            "abilityPower": 15
+          }
+        },
+        {
+          "name": "ECOPOINT CRYOBED",
+          "cost": 10000,
+          "description": "On near death, go into <b>[Cryo-Freeze]</b> and gain <b>15%</b> Ultimate Charge. Can happen once every round.",
+          "iconPath": "res/items/mei/mei_ecopoint_cryobed.png",
+          "stats": {}
+        },
+        {
+          "name": "ICY VEINS",
+          "cost": 10000,
+          "description": "<b>[Blizzard]</b> deals <b>100%</b> increased base damage.",
+          "iconPath": "res/items/mei/mei_icy_veins.png",
+          "stats": {
+            "abilityPower": 10
+          }
+        }
+      ]
     },
-    {
-      "name": "CRYO-FREEZE OPTIMIZER",
-      "cost": 3500,
-      "description": "Improves Mei's Cryo-Freeze with enhanced healing and reduced cooldown.",
-      "iconPath": "res/items/mei_freeze.png",
-      "stats": {
-        "health": 75,
-        "cooldownReduction": 15
-      },
-      "sharedItem": false
+    "survival": {
+      "rare": [
+        {
+          "name": "COLDSPOT",
+          "cost": 4000,
+          "description": "Primary fire and <b>[Blizzard]</b> can remove burn.",
+          "iconPath": "res/items/mei/mei_coldspot.png",
+          "stats": {
+            "health": 25
+          }
+        },
+        {
+          "name": "MEICICLE",
+          "cost": 4000,
+          "description": "<b>[Cryo-Freeze]</b> duration is increased by <b>25%</b>.",
+          "iconPath": "res/items/mei/mei_meicicle.png",
+          "stats": {
+            "health": 25
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "ICE SHEET",
+          "cost": 10000,
+          "description": "<b>[Ice Wall]</b> Duration is increased by <b>1s</b> and health is increased by <b>100%</b>.",
+          "iconPath": "res/items/mei/mei_ice_sheet.png",
+          "stats": {
+            "health": 25
+          }
+        }
+      ]
     }
-  ],
+  },
   "powers": [
     {
-      "title": "DEEP FREEZE",
-      "description": "Mei's primary fire freezes enemies 20% faster and frozen enemies take 25% more damage from all sources."
+      "title": "EXTENDOTHERMICS",
+      "description": "<b>[Endothermic Blaster]</b>'s primary fire range is increased by <b>6m</b>.",
+      "iconPath": "res/power/mei/mei_extendothermics.png"
+    },
+    {
+      "title": "FROST ARMOR",
+      "description": "Gain Armor equal to <b>5%</b> of the primary fire damage you deal, up to <b>100</b>, until the end of the round.",
+      "iconPath": "res/power/mei/mei_frost_armor.png"
+    },
+    {
+      "title": "PERMAFROST",
+      "description": "Increase your max health by <b>50%</b> of your ability power.",
+      "iconPath": "res/power/mei/mei_permafrost.png"
+    },
+    {
+      "title": "SLOWBALL",
+      "description": "<b>[Endothermic Blaster]</b>'s secondary fire now shoots a snowball that applies <b>30%</b> slow for Is on critical hit.",
+      "iconPath": "res/power/mei/mei_slowball.png"
+    },
+    {
+      "title": "ICEBERG",
+      "description": "<b>[Ice Wall]</b> spawns a mini <b>[Blizzard]</b> that slows enemies.",
+      "iconPath": "res/power/mei/mei_iceberg.png"
+    },
+    {
+      "title": "SNOWBALL FLIGHT",
+      "description": "Jumping while mid-air creates a large <b>[Ice Wall]</b> pillar under you.\n(<b>12s</b> Cooldown)",
+      "iconPath": "res/power/mei/mei_snowball_flight.png"
+    },
+    {
+      "title": "TWICE AS ICE",
+      "description": "When you use <b>[Cryo-Freeze]</b>, reset the next cooldown of <b>[Ice Wall]</b>.",
+      "iconPath": "res/power/mei/mei_twice_as_ice.png"
+    },
+    {
+      "title": "COULDER",
+      "description": "<b>[Cryo-Freeze]</b> now encases you in a rolling iceball that can knock back enemies and deal <b class=\"stat-ap\">10</b> damage.",
+      "iconPath": "res/power/mei/mei_coulder.png"
+    },
+    {
+      "title": "CRYCLONE",
+      "description": "<b>[Cryo-Freeze]</b> spawns a mini <b>[Blizzard]</b> that slows enemies.",
+      "iconPath": "res/power/mei/mei_cryclone.png"
+    },
+    {
+      "title": "FROST NOVA",
+      "description": "When <b>[Cryo-Freeze]</b> ends, knock back nearby enemies, dealing <b class=\"stat-ap\">60</b> damage.",
+      "iconPath": "res/power/mei/mei_frost_nova.png"
+    },
+    {
+      "title": "AVALANCHE",
+      "description": "Visible enemies within <b>20m</b> of <b>[Blizzard]</b> are slowed by <b>25%</b>.",
+      "iconPath": "res/power/mei/mei_avalanche.png"
+    },
+    {
+      "title": "BLIZZNADO",
+      "description": "While within <b>[Blizzard]</b>, heal <b>5%</b> of your life every <b>1s</b>.",
+      "iconPath": "res/power/mei/mei_blizznado.png"
     }
   ]
-} 
+}

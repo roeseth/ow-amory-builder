@@ -1,77 +1,176 @@
 {
   "name": "Reaper",
-  "role": "Damage",
+  "role": "Dps",
   "portraitPath": "res/portraits/reaper.png",
   "powerIcon": "res/power/reaper.png",
-  "health": 250,
+  "health": 300,
   "armor": 0,
   "shield": 0,
-  "moveSpeed": 5.5,
-  "meleeDamage": 30,
-  "weapons": [
-    {
-      "name": "Placeholder Weapon",
-      "type": "damage",
-      "damageValue": 70,
-      "criticalHitMultiplier": 2.0,
-      "attackSpeed": 1.5,
-      "ammo": 6,
-      "reloadSpeed": 1.5,
-      "lifeSteal": 0
-    }
-  ],
-  "abilities": [
-    {
-      "name": "Placeholder Ability",
-      "type": "damage",
-      "damageValue": 100,
-      "healingValue": 0,
-      "duration": 3,
-      "cooldown": 8,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    }
-  ],
-  "specialItems": [
-    {
-      "name": "HELLFIRE SHOTGUNS UPGRADE",
-      "cost": 3000,
-      "description": "Enhances Reaper's Hellfire Shotguns with improved damage and life steal.",
-      "iconPath": "res/items/reaper_shotguns.png",
-      "stats": {
-        "weaponPower": 15,
-        "weaponLifesteal": 10
-      },
-      "sharedItem": false
+  "items": {
+    "weapon": {
+      "epic": [
+        {
+          "name": "ONSLAUGHT",
+          "cost": 10000,
+          "description": "Every <b>3rd</b> shot fires both of your <b>[Hellfire Shotguns]</b>. The extra shot does not consume ammo but deals <b>80%</b> <b>reduced</b> damage.",
+          "iconPath": "res/items/reaper/reaper_onslaught.png",
+          "stats": {}
+        }
+      ]
     },
-    {
-      "name": "WRAITH FORM EXTENSION",
-      "cost": 3300,
-      "description": "Improves Reaper's Wraith Form with increased duration and movement speed.",
-      "iconPath": "res/items/reaper_wraith.png",
-      "stats": {
-        "moveSpeed": 15,
-        "cooldownReduction": 12
-      },
-      "sharedItem": false
+    "ability": {
+      "rare": [],
+      "epic": [
+        {
+          "name": "NIGHTCREEPER",
+          "cost": 9500,
+          "description": "Using <b>[Wraith Form]</b> reduces the cooldown of <b>[Shadow Step]</b> by <b>2s</b>.",
+          "iconPath": "res/items/reaper/reaper_nightcreeper.png",
+          "stats": {}
+        },
+        {
+          "name": "WREATH OF RUIN",
+          "cost": 10000,
+          "description": "",
+          "iconPath": "res/items/reaper/reaper_wreath_of_ruin.png",
+          "stats": {
+            "abilityPower": 20
+          }
+        },
+        {
+          "name": "CROWD CONTROL",
+          "cost": 11000,
+          "description": "<b>[Death Blossom]</b> gains <b>5%</b> Ability Power for each enemy within its range.",
+          "iconPath": "res/items/reaper/reaper_crowd_control.png",
+          "stats": {
+            "abilityPower": 15
+          }
+        }
+      ]
     },
-    {
-      "name": "SHADOW STEP ENHANCER",
-      "cost": 3500,
-      "description": "Enhances Reaper's Shadow Step with reduced cast time and cooldown.",
-      "iconPath": "res/items/reaper_shadow.png",
-      "stats": {
-        "cooldownReduction": 20,
-        "moveSpeed": 8
-      },
-      "sharedItem": false
+    "survival": {
+      "rare": [
+        {
+          "name": "DEVASTATION",
+          "cost": 4000,
+          "description": "Each <b>[Death Blossom]</b> elimination increases your Health by <b>25</b> until the end of the round, up to <b>100</b> Health.",
+          "iconPath": "res/items/reaper/reaper_devastation.png",
+          "stats": {
+            "abilityLifesteal": 15
+          }
+        },
+        {
+          "name": "NEVERFROST",
+          "cost": 4000,
+          "description": "Reduce effectiveness of enemy slows by <b>50%</b>.",
+          "iconPath": "res/items/reaper/reaper_neverfrost.png",
+          "stats": {
+            "health": 25,
+            "weaponPower": 5
+          }
+        },
+        {
+          "name": "POCKET MIST",
+          "cost": 4000,
+          "description": "While below <b>50%</b> Life, gain <b>20%</b> Move Speed.",
+          "iconPath": "res/items/reaper/reaper_pocket_mist.png",
+          "stats": {
+            "health": 25
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "WRETCHED WINGS",
+          "cost": 10000,
+          "description": "While using <b>[Wraith Form]</b>, gain the ability to fly and gain <b>20%</b> Move Speed.",
+          "iconPath": "res/items/reaper/reaper_wretched_wings.png",
+          "stats": {
+            "health": 25
+          }
+        },
+        {
+          "name": "DAUNTLESS DRAUGHT",
+          "cost": 10000,
+          "description": "",
+          "iconPath": "res/items/reaper/reaper_dauntless_draught.png",
+          "stats": {
+            "health": 50
+          }
+        },
+        {
+          "name": "CRIMSON CLOAK",
+          "cost": 11000,
+          "description": "Using <b>[Death Blossom]</b> grants you <b>Overhealth</b> equal to <b>15%</b> of your max Life.",
+          "iconPath": "res/items/reaper/reaper_crimson_cloak.png",
+          "stats": {
+            "health": 25,
+            "abilityPower": 10
+          }
+        }
+      ]
     }
-  ],
+  },
   "powers": [
     {
-      "title": "SOUL HARVEST",
-      "description": "Reaper's life steal from damage is increased by 20% and eliminations restore 50 health."
+      "title": "BACKSTABBER",
+      "description": "After using an ability, your next shot deals <b>50%</b> additional damage over <b>3s</b> to enemies struck from behind.",
+      "iconPath": "res/power/reaper/reaper_backstabber.png"
+    },
+    {
+      "title": "HARVEST FEST",
+      "description": "<b>[Hellfire Shotgun]</b> hits have a <b>10%</b> chance to spawn a Soul Globe. When picked up, restore <b>25%</b> Life, <b>25%</b>\nAmmo, and gain <b>25%</b> Move Speed for <b>3s</b>.",
+      "iconPath": "res/power/reaper/reaper_harvest_fest.png"
+    },
+    {
+      "title": "REVOLVING RUIN",
+      "description": "Close-range (7m) <b>[Hellfire Shotgun]</b> hits grant <b>5%</b> Attack Speed for Is, stacking up to <b>8 times</b>.",
+      "iconPath": "res/power/reaper/reaper_revolving_ruin.png"
+    },
+    {
+      "title": "SHARED SIPHON",
+      "description": "<b>[The Reaping]</b> also heals the nearest ally within 10m for <b>30%</b> of Reaper's damage dealt.",
+      "iconPath": "res/power/reaper/reaper_shared_siphon.png"
+    },
+    {
+      "title": "SHROUDED SHRAPNEL",
+      "description": "Using <b>[Wraith Form]</b> increases the number of pellets per shot in your next magazine by <b>25%</b> and its spread by <b>50%</b>.",
+      "iconPath": "res/power/reaper/reaper_shrouded_shrapnel.png"
+    },
+    {
+      "title": "SPIRITED TO SLAY",
+      "description": "Eliminations reset your cooldowns.",
+      "iconPath": "res/power/reaper/reaper_spirited_to_slay.png"
+    },
+    {
+      "title": "VAMPIRIC TOUCH",
+      "description": "Hits with <b>[Quick Melee]</b> mark enemies for <b>5s</b>. Allies gain <b>20%</b> Lifesteal against marked enemies.",
+      "iconPath": "res/power/reaper/reaper_vampiric_touch.png"
+    },
+    {
+      "title": "DEATH STEP",
+      "description": "After using <b>[Shadow Step]</b>, cast <b>[Death Blossom]</b> for 1.<b>5s</b> with <b>50%</b> reduced damage.",
+      "iconPath": "res/power/reaper/reaper_death_step.png"
+    },
+    {
+      "title": "SILENT AS THE GRAVE",
+      "description": "Your footsteps and <b>[Shadow Step]</b> are significantly quieter.",
+      "iconPath": "res/power/reaper/reaper_silent_as_the_grave.png"
+    },
+    {
+      "title": "STRANGLE STEP",
+      "description": "After using <b>[Shadow Step]</b>, <b>double</b> your Lifesteal for <b>3s</b>.",
+      "iconPath": "res/power/reaper/reaper_strangle_step.png"
+    },
+    {
+      "title": "GHOSTED",
+      "description": "While in <b>[Wraith Form]</b>, passing through enemies slows their Move Speed and Attack Speed by <b>30%</b> for <b>3s</b>.",
+      "iconPath": "res/power/reaper/reaper_ghosted.png"
+    },
+    {
+      "title": "WRAITH RENEWAL",
+      "description": "While in <b>[Wraith Form]</b>, restore <b>10%</b> of your Life every Is. Double this while below <b>50%</b> Life.",
+      "iconPath": "res/power/reaper/reaper_wraith_renewal.png"
     }
   ]
-} 
+}

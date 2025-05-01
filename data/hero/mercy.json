@@ -3,76 +3,164 @@
   "role": "Support",
   "portraitPath": "res/portraits/mercy.png",
   "powerIcon": "res/power/mercy.png",
-  "health": 200,
+  "health": 225,
   "armor": 0,
   "shield": 0,
-  "moveSpeed": 5.5,
-  "meleeDamage": 30,
-  "weapons": [
-    {
-      "name": "Placeholder Weapon",
-      "type": "healing",
-      "damageValue": 0,
-      "healingValue": 55,
-      "criticalHitMultiplier": 1.0,
-      "attackSpeed": 1,
-      "ammo": 0,
-      "reloadSpeed": 0,
-      "lifeSteal": 0
-    }
-  ],
-  "abilities": [
-    {
-      "name": "Placeholder Ability",
-      "type": "healing",
-      "damageValue": 0,
-      "healingValue": 100,
-      "duration": 3,
-      "cooldown": 8,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    }
-  ],
-  "specialItems": [
-    {
-      "name": "CADUCEUS STAFF AMPLIFIER",
-      "cost": 2900,
-      "description": "Enhances Mercy's Caduceus Staff with improved healing and damage boost.",
-      "iconPath": "res/items/mercy_staff.png",
-      "stats": {
-        "abilityPower": 20,
-        "cooldownReduction": 10
-      },
-      "sharedItem": false
+  "items": {
+    "weapon": {
+      "epic": [
+        {
+          "name": "CADUCEUS EX",
+          "cost": 10000,
+          "description": "",
+          "iconPath": "res/items/mercy/mercy_caduceus_ex.png",
+          "stats": {
+            "weaponPower": 10
+          }
+        },
+        {
+          "name": "CELESTIAL CLIP",
+          "cost": 10000,
+          "description": "<b>[Caduceus Blaster]</b> has a <b>10%</b> chance to fire an extra shot that doesn't consume additional ammo.",
+          "iconPath": "res/items/mercy/mercy_celestial_clip.png",
+          "stats": {
+            "weaponPower": 10
+          }
+        }
+      ]
     },
-    {
-      "name": "GUARDIAN ANGEL ENHANCEMENT",
-      "cost": 3100,
-      "description": "Improves Mercy's Guardian Angel with increased range and speed.",
-      "iconPath": "res/items/mercy_angel.png",
-      "stats": {
-        "moveSpeed": 15,
-        "cooldownReduction": 12
-      },
-      "sharedItem": false
+    "ability": {
+      "rare": [
+        {
+          "name": "LONG DISTANCE WINGS",
+          "cost": 4000,
+          "description": "",
+          "iconPath": "res/items/mercy/mercy_long_distance_wings.png",
+          "stats": {
+            "abilityPower": 10
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "RESURRECTION RANGEFINDER",
+          "cost": 10000,
+          "description": "",
+          "iconPath": "res/items/mercy/mercy_resurrection_rangefinder.png",
+          "stats": {}
+        },
+        {
+          "name": "ANGELIC ACROBATICS",
+          "cost": 10000,
+          "description": "[Guardian Angell's cooldown starts as soon as you jump or crouch.",
+          "iconPath": "res/items/mercy/mercy_angelic_acrobatics.png",
+          "stats": {}
+        }
+      ]
     },
-    {
-      "name": "RESURRECT OPTIMIZER",
-      "cost": 4500,
-      "description": "Enhances Mercy's Resurrect with reduced cast time and cooldown.",
-      "iconPath": "res/items/mercy_resurrect.png",
-      "stats": {
-        "cooldownReduction": 20,
-        "abilityPower": 15
-      },
-      "sharedItem": false
+    "survival": {
+      "rare": [
+        {
+          "name": "AERODYNAMIC FEATHERS",
+          "cost": 4000,
+          "description": "While affected by <b>[Angelic Descent]</b>, continuously gain <b>10%</b> Move Speed every Is up to <b>60%</b>.",
+          "iconPath": "res/items/mercy/mercy_aerodynamic_feathers.png",
+          "stats": {
+            "health": 25
+          }
+        },
+        {
+          "name": "ANGELEISURE WEAR",
+          "cost": 4000,
+          "description": "While affected by <b>[Angelic Descent]</b> or <b>[Guardian Angel]</b>, heal <b>3%</b> of your Life every IS.",
+          "iconPath": "res/items/mercy/mercy_angeleisure_wear.png",
+          "stats": {
+            "health": 25
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "BLESSED BOOSTERS",
+          "cost": 9000,
+          "description": "Your launch velocity is increased by <b>25%</b> when canceling <b>[Guardian Angel]</b> with crouch or jump.",
+          "iconPath": "res/items/mercy/mercy_blessed_boosters.png",
+          "stats": {
+            "health": 50
+          }
+        },
+        {
+          "name": "CHAIN EVOKER",
+          "cost": 10000,
+          "description": "",
+          "iconPath": "res/items/mercy/mercy_chain_evoker.png",
+          "stats": {
+            "armor": 50
+          }
+        }
+      ]
     }
-  ],
+  },
   "powers": [
     {
-      "title": "VALKYRIE'S BLESSING",
-      "description": "Healing and damage boosting beams chain to an additional target and have 20% increased effectiveness."
+      "title": "DISTORTION",
+      "description": "Allies boosted by <b>[Caduceus Staff]</b> gain Lifesteal.",
+      "iconPath": "res/power/mercy/mercy_distortion.png"
+    },
+    {
+      "title": "GLASS EXTRA FULL",
+      "description": "Healing from <b>[Caduceus Staff]</b> targeting full health allies is converted to <b>Overhealth</b>, up to 50.",
+      "iconPath": "res/power/mercy/mercy_glass_extra_full.png"
+    },
+    {
+      "title": "PROTECTIVE BEAM",
+      "description": "<b>[Caduceus Staff]</b> targets above <b>80%</b> Life gain <b>10%</b> <b>Damage Reduction</b>.",
+      "iconPath": "res/power/mercy/mercy_protective_beam.png"
+    },
+    {
+      "title": "SERENITY",
+      "description": "<b>[Sympathetic Recovery]</b> heals for <b>20%</b> more and heals you even while you are healing a full health ally.",
+      "iconPath": "res/power/mercy/mercy_serenity.png"
+    },
+    {
+      "title": "THREADS OF FATE",
+      "description": "<b>[Caduceus Staff]</b> chains to your previous target for <b>3s</b>, at <b>50%</b> effectiveness.",
+      "iconPath": "res/power/mercy/mercy_threads_of_fate.png"
+    },
+    {
+      "title": "BATTLE MEDIC",
+      "description": "Every <b>1s</b> your Staff is attached, <b>[Caduceus Blaster]</b> gains <b>4%</b> Attack Speed (stacks <b>10 times</b>) until you reload or swap to your Staff.",
+      "iconPath": "res/power/mercy/mercy_battle_medic.png"
+    },
+    {
+      "title": "EQUIVALENT EXCHANGE",
+      "description": "You have <b>3 charges</b> of <b>[Resurrect]</b> with <b>33%</b> reduced cast time, but their cooldowns only reset at the start of a round.",
+      "iconPath": "res/power/mercy/mercy_equivalent_exchange.png"
+    },
+    {
+      "title": "FIRST RESPONDER",
+      "description": "When you <b>[Resurrect]</b> an ally, you both gain <b class=\"stat-ap\">250</b> <b>Overhealth</b> for <b>6s</b>.",
+      "iconPath": "res/power/mercy/mercy_first_responder.png"
+    },
+    {
+      "title": "RENAISSANCE",
+      "description": "After succesfully using <b>[Resurrect]</b>, activate <b>[Valkyrie]</b> for <b>5s</b>.",
+      "iconPath": "res/power/mercy/mercy_renaissance.png"
+    },
+    {
+      "title": "THE WHAMBULANCE",
+      "description": "When <b>[Guardian Angel]</b> ends, heal your target for <b class=\"stat-ap\">4</b> Life for every <b>1m</b> you traveled.",
+      "iconPath": "res/power/mercy/mercy_the_whambulance.png"
+    },
+    {
+      "title": "TRIAGE UNIT",
+      "description": "When using <b>[Guardian Angel]</b> on allies below <b>50%</b> Life, <b>[Caduceus Staff]</b> heals them <b>30%</b> more for <b>3s</b>.",
+      "iconPath": "res/power/mercy/mercy_triage_unit.png"
+    },
+    {
+      "title": "CREPUSCULAR CIRCLE",
+      "description": "While <b>[Valkyrie]</b> is active, the healing and damage boost of <b>[Caduceus Staff]</b> are automatically applied to nearby allies.",
+      "iconPath": "res/power/mercy/mercy_crepuscular_circle.png"
     }
   ]
-} 
+}

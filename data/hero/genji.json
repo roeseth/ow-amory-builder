@@ -1,77 +1,183 @@
 {
   "name": "Genji",
-  "role": "Damage",
+  "role": "Dps",
   "portraitPath": "res/portraits/genji.png",
   "powerIcon": "res/power/genji.png",
-  "health": 200,
+  "health": 250,
   "armor": 0,
   "shield": 0,
-  "moveSpeed": 6.0,
-  "meleeDamage": 30,
-  "weapons": [
-    {
-      "name": "Placeholder Weapon",
-      "type": "damage",
-      "damageValue": 70,
-      "criticalHitMultiplier": 2.0,
-      "attackSpeed": 1.5,
-      "ammo": 6,
-      "reloadSpeed": 1.5,
-      "lifeSteal": 0
-    }
-  ],
-  "abilities": [
-    {
-      "name": "Placeholder Ability",
-      "type": "damage",
-      "damageValue": 100,
-      "healingValue": 0,
-      "duration": 3,
-      "cooldown": 8,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    }
-  ],
-  "specialItems": [
-    {
-      "name": "SHURIKEN ENHANCEMENT",
-      "cost": 2700,
-      "description": "Enhances Genji's Shurikens with improved accuracy and damage.",
-      "iconPath": "res/items/genji_shuriken.png",
-      "stats": {
-        "weaponPower": 15,
-        "criticalDamage": 10
-      },
-      "sharedItem": false
+  "items": {
+    "weapon": {
+      "epic": [
+        {
+          "name": "AMBUSHER OPTICS",
+          "cost": 10000,
+          "description": "<b>[Quick Melee]</b> can critically hit when striking enemies from behind, dealing <b>50%</b> increased damage.",
+          "iconPath": "res/items/genji/genji_ambusher_optics.png",
+          "stats": {}
+        },
+        {
+          "name": "ENDURING EDGE",
+          "cost": 10000,
+          "description": "",
+          "iconPath": "res/items/genji/genji_enduring_edge.png",
+          "stats": {
+            "weaponPower": 10
+          }
+        },
+        {
+          "name": "SWIFT-LOADER",
+          "cost": 10000,
+          "description": "Damaging an enemy with <b>[Swift Strike]</b> restores <b>20%</b> of your ammo.",
+          "iconPath": "res/items/genji/genji_swift_loader.png",
+          "stats": {}
+        }
+      ]
     },
-    {
-      "name": "SWIFT STRIKE EXTENSION",
-      "cost": 3300,
-      "description": "Improves Genji's Swift Strike with increased range and damage.",
-      "iconPath": "res/items/genji_strike.png",
-      "stats": {
-        "abilityPower": 18,
-        "cooldownReduction": 12
-      },
-      "sharedItem": false
+    "ability": {
+      "rare": [
+        {
+          "name": "TRAVERSAL KINETICS",
+          "cost": 3750,
+          "description": "<b>[Swift Strike]</b> cooldown is reduced by <b>50%</b> if it deals no damage.",
+          "iconPath": "res/items/genji/genji_traversal_kinetics.png",
+          "stats": {}
+        },
+        {
+          "name": "NINJA SOLES",
+          "cost": 4000,
+          "description": "",
+          "iconPath": "res/items/genji/genji_ninja_soles.png",
+          "stats": {}
+        }
+      ],
+      "epic": [
+        {
+          "name": "CLEAN SWEEP",
+          "cost": 10000,
+          "description": "",
+          "iconPath": "res/items/genji/genji_clean_sweep.png",
+          "stats": {
+            "abilityPower": 10,
+            "abilityLifesteal": 15
+          }
+        },
+        {
+          "name": "DEFLECTING DASH",
+          "cost": 10000,
+          "description": "During <b>[Swift Strike]</b>, deflect incoming projectiles toward your reticle.",
+          "iconPath": "res/items/genji/genji_deflecting_dash.png",
+          "stats": {
+            "abilityPower": 15
+          }
+        }
+      ]
     },
-    {
-      "name": "DEFLECTION MASTERY",
-      "cost": 3700,
-      "description": "Enhances Genji's Deflect with longer duration and reduced cooldown.",
-      "iconPath": "res/items/genji_deflect.png",
-      "stats": {
-        "cooldownReduction": 15,
-        "moveSpeed": 10
-      },
-      "sharedItem": false
+    "survival": {
+      "rare": [
+        {
+          "name": "ANTI-BEAM COATING",
+          "cost": 4000,
+          "description": "<b>[Deflect]</b> now blocks <b>Beam</b> attacks.",
+          "iconPath": "res/items/genji/genji_anti_beam_coating.png",
+          "stats": {
+            "armor": 25
+          }
+        },
+        {
+          "name": "EQUILIBRIUM GEAR",
+          "cost": 4000,
+          "description": "While climbing, heal <b>5%</b> of your Life every <b>1s</b>.",
+          "iconPath": "res/items/genji/genji_equilibrium_gear.png",
+          "stats": {
+            "health": 25
+          }
+        },
+        {
+          "name": "SPARROWHAWK FEATHER",
+          "cost": 4000,
+          "description": "Gain an additional jump.",
+          "iconPath": "res/items/genji/genji_sparrowhawk_feather.png",
+          "stats": {
+            "health": 25
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "SLICY COOLANT",
+          "cost": 10000,
+          "description": "",
+          "iconPath": "res/items/genji/genji_slicy_coolant.png",
+          "stats": {
+            "armor": 50
+          }
+        },
+        {
+          "name": "TRANSFERENCE DELTA",
+          "cost": 10000,
+          "description": "Convert <b>100</b> Health into Armor. Using <b>[Dragonblade]</b> heals your Armor fully.",
+          "iconPath": "res/items/genji/genji_transference_delta.png",
+          "stats": {}
+        }
+      ]
     }
-  ],
+  },
   "powers": [
     {
-      "title": "CYBERNETIC AGILITY",
-      "description": "Swift Strike cooldown is reduced by 2 seconds on elimination and Genji's wall climb lasts 50% longer."
+      "title": "CYBERNETIC SPEED",
+      "description": "Dealing damage with <b>[Shuriken]</b> grants <b>2%</b> <b>[Shuriken]</b> Attack Speed for <b>3s</b>, stacking up to <b>15 times</b>.",
+      "iconPath": "res/power/genji/genji_cybernetic_speed.png"
+    },
+    {
+      "title": "HASHIMOTO'S BANE",
+      "description": "After using an ability, your next secondary fire throws <b>2</b> extra <b>[Shuriken]</b> that seek enemies but deal <b>50%</b> less damage.",
+      "iconPath": "res/power/genji/genji_hashimotos_bane.png"
+    },
+    {
+      "title": "SACRED SHURIKEN",
+      "description": "<b>[Shuriken]</b>'s primary fire throws <b>2</b> additional <b>[Shuriken]</b> that don't consume any ammo.",
+      "iconPath": "res/power/genji/genji_sacred_shuriken.png"
+    },
+    {
+      "title": "HANAMURA HEALING",
+      "description": "Critical hits and <b>[Swift Strike]</b> grant <b>Overhealth</b> equal to <b>25%</b> of their damage dealt for <b>5s</b>.",
+      "iconPath": "res/power/genji/genji_hanamura_healing.png"
+    },
+    {
+      "title": "HIDDEN BLADE",
+      "description": "Gain <b>50%</b> Melee Lifesteal and increase <b>[Quick Melee]</b> damage by 25.",
+      "iconPath": "res/power/genji/genji_hidden_blade.png"
+    },
+    {
+      "title": "LACERATION",
+      "description": "<b>[Swift Strike]</b> deals <b>25%</b> additional damage over <b>3s</b> to enemies hit.",
+      "iconPath": "res/power/genji/genji_laceration.png"
+    },
+    {
+      "title": "WYRM'S MAW",
+      "description": "Targets hit by <b>[Shuriken]</b> take <b>10%</b> more damage from <b>[Swift Strike]</b> for <b>4s</b>, stacking up to <b>5 times</b>.",
+      "iconPath": "res/power/genji/genji_wyrms_maw.png"
+    },
+    {
+      "title": "FORGED UNDER FIRE",
+      "description": "While <b>[Deflect]</b> is active, heal for <b>60%</b> of the damage it prevents.",
+      "iconPath": "res/power/genji/genji_forged_under_fire.png"
+    },
+    {
+      "title": "IAIDO STRIKE",
+      "description": "After <b>[Deflect]</b> ends, quickly swing your <b>[Dragonblade]</b> once.",
+      "iconPath": "res/power/genji/genji_iaido_strike.png"
+    },
+    {
+      "title": "SPIRIT OF SOJIRO",
+      "description": "When <b>[Deflect]</b> stops incoming damage, reduce the cooldown of <b>[Swift Strike]</b> by Is, up to <b>5s</b>.",
+      "iconPath": "res/power/genji/genji_spirit_of_sojiro.png"
+    },
+    {
+      "title": "DRAGON'S BREATH",
+      "description": "<b>[Dragonblade]</b> swings launch a large piercing projectile that deals <b>50%</b> of <b>[Dragonblade]</b>'s damage.",
+      "iconPath": "res/power/genji/genji_dragons_breath.png"
     }
   ]
-} 
+}

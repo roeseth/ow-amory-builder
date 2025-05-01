@@ -1,77 +1,175 @@
 {
   "name": "Ashe",
-  "role": "Damage",
+  "role": "Dps",
   "portraitPath": "res/portraits/ashe.png",
   "powerIcon": "res/power/ashe.png",
-  "health": 200,
+  "health": 250,
   "armor": 0,
   "shield": 0,
-  "moveSpeed": 5.5,
-  "meleeDamage": 30,
-  "weapons": [
-    {
-      "name": "Placeholder Weapon",
-      "type": "damage",
-      "damageValue": 70,
-      "criticalHitMultiplier": 2.0,
-      "attackSpeed": 1.5,
-      "ammo": 6,
-      "reloadSpeed": 1.5,
-      "lifeSteal": 0
-    }
-  ],
-  "abilities": [
-    {
-      "name": "Placeholder Ability",
-      "type": "damage",
-      "damageValue": 100,
-      "healingValue": 0,
-      "duration": 3,
-      "cooldown": 8,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    }
-  ],
-  "specialItems": [
-    {
-      "name": "VIPER ENHANCEMENT",
-      "cost": 2800,
-      "description": "Enhances Ashe's Viper rifle with improved accuracy and damage.",
-      "iconPath": "res/items/ashe_viper.png",
-      "stats": {
-        "weaponPower": 15,
-        "criticalDamage": 10
-      },
-      "sharedItem": false
+  "items": {
+    "weapon": {
+      "epic": [
+        {
+          "name": "IRONSIGHTS",
+          "cost": 11000,
+          "description": "When the target is further than <b>10m</b>, scoped shot gains <b>1%</b> damage for each meter.",
+          "iconPath": "res/items/ashe/ashe_ironsights.png",
+          "stats": {}
+        },
+        {
+          "name": "SIDEWINDER",
+          "cost": 11000,
+          "description": "When the target is within <b>10m</b>, unscoped shot gains <b>15%</b> increased damage.",
+          "iconPath": "res/items/ashe/ashe_sidewinder.png",
+          "stats": {}
+        }
+      ]
     },
-    {
-      "name": "COACH GUN UPGRADE",
-      "cost": 3200,
-      "description": "Improves Ashe's Coach Gun with increased knockback and reduced cooldown.",
-      "iconPath": "res/items/ashe_coach.png",
-      "stats": {
-        "cooldownReduction": 15,
-        "abilityPower": 12
-      },
-      "sharedItem": false
+    "ability": {
+      "rare": [
+        {
+          "name": "FURNACE FUEL",
+          "cost": 4000,
+          "description": "Cleansed Burns grant <b>3%</b> Ultimate Charge.",
+          "iconPath": "res/items/ashe/ashe_furnace_fuel.png",
+          "stats": {
+            "health": 25,
+            "abilityPower": 5
+          }
+        },
+        {
+          "name": "SILVER LIGHTER",
+          "cost": 4000,
+          "description": "Damage dealt to <b>Burning</b> targets grants <b>20%</b> more Ultimate Charge.",
+          "iconPath": "res/items/ashe/ashe_silver_lighter.png",
+          "stats": {
+            "abilityPower": 10
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "INFRARED LENSES",
+          "cost": 10000,
+          "description": "Deal <b>25%</b> increased damage to Burning enemies.",
+          "iconPath": "res/items/ashe/ashe_infrared_lenses.png",
+          "stats": {
+            "abilityPower": 15
+          }
+        },
+        {
+          "name": "STACKED STICKS",
+          "cost": 10000,
+          "description": "",
+          "iconPath": "res/items/ashe/ashe_stacked_sticks.png",
+          "stats": {
+            "abilityPower": 15
+          }
+        },
+        {
+          "name": "BUILD-A-BLAST BUCKSHOT",
+          "cost": 10000,
+          "description": "<b>[Coach Gun]</b> has <b>50%</b> increased self knockback.",
+          "iconPath": "res/items/ashe/ashe_build_a_blast_buckshot.png",
+          "stats": {}
+        }
+      ]
     },
-    {
-      "name": "BOB OPTIMIZATION",
-      "cost": 4500,
-      "description": "Enhances B.O.B.'s combat capabilities with increased damage and duration.",
-      "iconPath": "res/items/ashe_bob.png",
-      "stats": {
-        "abilityPower": 20,
-        "cooldownReduction": 10
-      },
-      "sharedItem": false
+    "survival": {
+      "rare": [
+        {
+          "name": "SILVER SPURS",
+          "cost": 4000,
+          "description": "After using <b>[Coach Gun]</b>, gain <b>20%</b> Move Speed for <b>3s</b>.",
+          "iconPath": "res/items/ashe/ashe_silver_spurs.png",
+          "stats": {
+            "health": 25
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "FIRESTARTER",
+          "cost": 10000,
+          "description": "Your <b>Burning</b> effects gain <b>35%</b> Lifesteal.",
+          "iconPath": "res/items/ashe/ashe_firestarter.png",
+          "stats": {
+            "health": 50
+          }
+        },
+        {
+          "name": "B.O.B WIRE DEFENSE",
+          "cost": 10000,
+          "description": "When <b>[B.O.B.]</b> finishes charging, <b>[B.O.B.]</b> gains 300 Armor.",
+          "iconPath": "res/items/ashe/ashe_bob_wire_defense.png",
+          "stats": {
+            "health": 50,
+            "armor": 25
+          }
+        }
+      ]
     }
-  ],
+  },
   "powers": [
     {
-      "title": "SHARPSHOOTER",
-      "description": "Aiming down sights with The Viper reduces damage falloff by 30% and increases headshot damage by 20%."
+      "title": "HEAD HONCHO",
+      "description": "Each <b>unscoped</b> shot you land increases the damage of the next <b>scoped</b> shot you land by <b>3%</b>, up to <b>30%</b>. Resets on reload.",
+      "iconPath": "res/power/ashe/ashe_head_honcho.png"
+    },
+    {
+      "title": "INCENDIARY ROUNDS",
+      "description": "While <b>scoped</b>, hitting the same target without missing deals <b class=\"stat-wp\">30</b> extra damage.",
+      "iconPath": "res/power/ashe/ashe_incendiary_rounds.png"
+    },
+    {
+      "title": "MY BUSINESS, MY RULES",
+      "description": "When you deal damage to a <b>Burning</b> enemy with <b>[The Viper]</b>, reduce the cooldown of your abilities by <b>10%</b>.",
+      "iconPath": "res/power/ashe/ashe_my_business,_my_rules.png"
+    },
+    {
+      "title": "RELOAD THERAPY",
+      "description": "When you reload a shot, heal <b>3%</b> of your Life.",
+      "iconPath": "res/power/ashe/ashe_reload_therapy.png"
+    },
+    {
+      "title": "CALAMITY",
+      "description": "Using <b>[Coach Gun]</b> reloads <b>2</b> Ammo. <b>[The Viper]</b>'s next <b>2</b> hits deal <b class=\"stat-ap\">40</b> additional damage over <b>3s</b>.",
+      "iconPath": "res/power/ashe/ashe_calamity.png"
+    },
+    {
+      "title": "DOUBLE BARRELED",
+      "description": "<b>[Coach Gun]</b> gains an additional charge.",
+      "iconPath": "res/power/ashe/ashe_double_barreled.png"
+    },
+    {
+      "title": "INCENDIARY BLAST",
+      "description": "<b>[Coach Gun]</b> applies Burning, dealing <b class=\"stat-ap\">100</b> damage over <b>5s</b>. If the target was Burning, deal <b class=\"stat-ap\">75</b> additional damage instantly.",
+      "iconPath": "res/power/ashe/ashe_incendiary_blast.png"
+    },
+    {
+      "title": "EARLY DETONATION",
+      "description": "Shooting <b>[Dynamite]</b> reloads <b>5</b> Ammo and reduces the cooldown of <b>[Dynamite]</b> by <b>3s</b>.",
+      "iconPath": "res/power/ashe/ashe_early_detonation.png"
+    },
+    {
+      "title": "MOLTEN MUNITIONS",
+      "description": "When <b>[Dynamite]</b> explodes on the ground, it leaves lava that <b>Burns</b> enemies for <b class=\"stat-ap\">50</b> every Is.",
+      "iconPath": "res/power/ashe/ashe_molten_munitions.png"
+    },
+    {
+      "title": "OUT WITH A BANG",
+      "description": "When <b>[Dynamite]</b> explodes, it spawns <b>3</b> sticky explosives that deal <b>66%</b> reduced damage.",
+      "iconPath": "res/power/ashe/ashe_out_with_a_bang.png"
+    },
+    {
+      "title": "B.O.B JR.",
+      "description": "<b>[B.O.B.]</b> costs <b>50%</b> less Ultimate Charge but has reduced Life, <b>50%</b> <b>reduced</b> Attack Speed, and is significantly smaller.",
+      "iconPath": "res/power/ashe/ashe_bob_jr.png"
+    },
+    {
+      "title": "PARTNERS IN CRIME",
+      "description": "You are healed for <b>100%</b> of <b>[B.O.B.]</b>'s damage dealt and <b>[B.O.B.]</b> is healed for <b>100%</b> of your damage dealt.",
+      "iconPath": "res/power/ashe/ashe_partners_in_crime.png"
     }
   ]
-} 
+}

@@ -1,78 +1,170 @@
 {
-  "name": "Lucio",
+  "name": "L\u00facio",
   "role": "Support",
   "portraitPath": "res/portraits/lucio.png",
   "powerIcon": "res/power/lucio.png",
-  "health": 200,
+  "health": 225,
   "armor": 0,
   "shield": 0,
-  "moveSpeed": 5.5,
-  "meleeDamage": 30,
-  "weapons": [
-    {
-      "name": "Placeholder Weapon",
-      "type": "damage",
-      "damageValue": 20,
-      "healingValue": 0,
-      "criticalHitMultiplier": 2.0,
-      "attackSpeed": 4,
-      "ammo": 20,
-      "reloadSpeed": 1.5,
-      "lifeSteal": 0
-    }
-  ],
-  "abilities": [
-    {
-      "name": "Placeholder Ability",
-      "type": "healing",
-      "damageValue": 0,
-      "healingValue": 16,
-      "duration": 0,
-      "cooldown": 0,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 20
-    }
-  ],
-  "specialItems": [
-    {
-      "name": "SONIC AMPLIFIER ENHANCEMENT",
-      "cost": 2700,
-      "description": "Enhances Lucio's Sonic Amplifier with improved damage and knockback.",
-      "iconPath": "res/items/lucio_sonic.png",
-      "stats": {
-        "weaponPower": 15,
-        "attackSpeed": 10
-      },
-      "sharedItem": false
+  "items": {
+    "weapon": {
+      "epic": [
+        {
+          "name": "B-SIDE BOP",
+          "cost": 10000,
+          "description": "After using <b>[Soundwave]</b>, your next <b>[Quick Melee]</b> grants decaying Overhealth equal to <b>200%</b> of damage dealt.",
+          "iconPath": "res/items/lucio/lucio_b_side_bop.png",
+          "stats": {
+            "health": 25
+          }
+        },
+        {
+          "name": "RIFF REPEATER",
+          "cost": 10000,
+          "description": "<b>[Sonic Amplifier]</b> projectiles ricochet off walls <b>3</b> times.",
+          "iconPath": "res/items/lucio/lucio_riff_repeater.png",
+          "stats": {
+            "weaponPower": 15
+          }
+        }
+      ]
     },
-    {
-      "name": "CROSSFADE BOOSTER",
-      "cost": 3200,
-      "description": "Improves Lucio's Crossfade with increased healing and speed boost effects.",
-      "iconPath": "res/items/lucio_crossfade.png",
-      "stats": {
-        "abilityPower": 18,
-        "moveSpeed": 15
-      },
-      "sharedItem": false
+    "ability": {
+      "rare": [
+        {
+          "name": "#1 SINGLE",
+          "cost": 4000,
+          "description": "When allies leave your <b>[Crossfade]</b> area, the effect lingers for <b>2s</b>.",
+          "iconPath": "res/items/lucio/lucio_#1_single.png",
+          "stats": {
+            "abilityPower": 10
+          }
+        },
+        {
+          "name": "LOFLY BEATS",
+          "cost": 4000,
+          "description": "While in <b>[Speed Boost]</b>, <b>[Soundwave]</b> also knocks you back.",
+          "iconPath": "res/items/lucio/lucio_lofly_beats.png",
+          "stats": {
+            "weaponPower": 5,
+            "abilityPower": 5
+          }
+        },
+        {
+          "name": "NANO BOOP",
+          "cost": 4000,
+          "description": "Environmental Kills grant <b>[Nano Boost]</b> for <b>5s</b>.",
+          "iconPath": "res/items/lucio/lucio_nano_boop.png",
+          "stats": {}
+        }
+      ],
+      "epic": [
+        {
+          "name": "AIRWAVES",
+          "cost": 10000,
+          "description": "<b>[Sound Barrier]</b> effectiveness is increased by <b>25%</b> for every Is <b>[Sound Barrier]</b> is channeled, up to <b>50%</b>.",
+          "iconPath": "res/items/lucio/lucio_airwaves.png",
+          "stats": {
+            "health": 25,
+            "abilityPower": 15
+          }
+        },
+        {
+          "name": "ALL-OUT AUDITIVA",
+          "cost": 11000,
+          "description": "",
+          "iconPath": "res/items/lucio/lucio_all_out_auditiva.png",
+          "stats": {
+            "abilityPower": 20
+          }
+        }
+      ]
     },
-    {
-      "name": "AMPED UP AMPLIFIER",
-      "cost": 3600,
-      "description": "Enhances Lucio's Amp It Up with increased effect magnitude and reduced cooldown.",
-      "iconPath": "res/items/lucio_amp.png",
-      "stats": {
-        "abilityPower": 15,
-        "cooldownReduction": 15
-      },
-      "sharedItem": false
+    "survival": {
+      "rare": [
+        {
+          "name": "SPEED SKATES",
+          "cost": 3750,
+          "description": "After <b>[Wallriding]</b>, gain <b>30%</b> Move Speed for <b>2s</b>.",
+          "iconPath": "res/items/lucio/lucio_speed_skates.png",
+          "stats": {
+            "health": 25
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "HIP HOP",
+          "cost": 9000,
+          "description": "After <b>[Wallriding]</b>, gain an additional jump while airborne.",
+          "iconPath": "res/items/lucio/lucio_hip_hop.png",
+          "stats": {
+            "health": 25
+          }
+        }
+      ]
     }
-  ],
+  },
   "powers": [
     {
-      "title": "WALL RIDER",
-      "description": "Lucio's speed increases by 30% while wall riding and projectile speed is increased by 25%."
+      "title": "FAST FORWARD",
+      "description": "While above <b>50%</b> Move Speed, increase damage by <b>25%</b>.",
+      "iconPath": "res/power/lucio/lucio_fast_forward.png"
+    },
+    {
+      "title": "SIGNATURE SHIFT",
+      "description": "After using an ability, your next <b>[Sonic Amplifier]</b> shot shoots a volley of <b>6</b> ammo with <b>20%</b> increased projectile size.",
+      "iconPath": "res/power/lucio/lucio_signature_shift.png"
+    },
+    {
+      "title": "SONIC BOOM",
+      "description": "<b>[Sonic Amplifier]</b> Damage heals all allies affected by <b>[Crossfade]</b> equal to <b>20%</b> of damage dealt.",
+      "iconPath": "res/power/lucio/lucio_sonic_boom.png"
+    },
+    {
+      "title": "MIXTAPE",
+      "description": "When switching to <b>[Healing Boost]</b>, <b>[Crossfade]</b> heals for <b>50%</b> of <b>[Crossfade]</b> healing for every <b>1s</b> <b>[Speed Boost]</b> was active.",
+      "iconPath": "res/power/lucio/lucio_mixtape.png"
+    },
+    {
+      "title": "MEGAPHONE",
+      "description": "+<b>20%</b> <b>[Amp It Up]</b> Duration\nWhile <b>[Amp It Up]</b> is active, <b>[Crossfade]</b> radius is increased by <b>150%</b>.",
+      "iconPath": "res/power/lucio/lucio_megaphone.png"
+    },
+    {
+      "title": "RADIO EDIT",
+      "description": "After using <b>[Amp It Up]</b>, trigger a <b>[Sound Barrier]</b> with <b>85%</b> <b>reduced</b> <b>Overhealth</b>.",
+      "iconPath": "res/power/lucio/lucio_radio_edit.png"
+    },
+    {
+      "title": "VIVACE",
+      "description": "While <b>[Wallriding]</b> or airborne, <b>[Soundwave]</b> cooldown refreshes <b>25%</b> faster and adds <b>1</b> Max Ammo per <b>1s</b> until you reload.",
+      "iconPath": "res/power/lucio/lucio_vivace.png"
+    },
+    {
+      "title": "WALLVIBING",
+      "description": "While <b>[Wallriding]</b> or airborne, gain temporary <b>Overhealth</b> equal to <b>3%</b> of your life every <b>1s</b>, up to <b>30%</b>.",
+      "iconPath": "res/power/lucio/lucio_wallvibing.png"
+    },
+    {
+      "title": "CROWD PLEASER",
+      "description": "After using <b>[Soundwave]</b>, heal all allies affected by <b>[Crossfade]</b> for <b>200%</b> of <b>[Crossfade]</b> healing.",
+      "iconPath": "res/power/lucio/lucio_crowd_pleaser.png"
+    },
+    {
+      "title": "LET'S BOUNCE",
+      "description": "<b>[Soundwave]</b> has <b>30%</b> increased knockback and deals <b class=\"stat-ap\">40</b> bonus damage if the target hits a wall.",
+      "iconPath": "res/power/lucio/lucio_lets_bounce.png"
+    },
+    {
+      "title": "REVERB",
+      "description": "Gain <b>1</b> extra charge of <b>[Soundwave]</b>.",
+      "iconPath": "res/power/lucio/lucio_reverb.png"
+    },
+    {
+      "title": "BEAT DROP",
+      "description": "<b>20%</b> Ultimate Cost Reduction.\nLanding on an enemy with <b>[Sound Barrier]</b> deals up to <b class=\"stat-ap\">200</b> damage.",
+      "iconPath": "res/power/lucio/lucio_beat_drop.png"
     }
   ]
-} 
+}

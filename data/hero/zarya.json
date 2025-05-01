@@ -3,75 +3,160 @@
   "role": "Tank",
   "portraitPath": "res/portraits/zarya.png",
   "powerIcon": "res/power/zarya.png",
-  "health": 250,
+  "health": 175,
   "armor": 0,
   "shield": 225,
-  "moveSpeed": 5.5,
-  "meleeDamage": 30,
-  "weapons": [
-    {
-      "name": "Placeholder Weapon",
-      "type": "damage",
-      "damageValue": 70,
-      "criticalHitMultiplier": 2.0,
-      "attackSpeed": 1.5,
-      "ammo": 6,
-      "reloadSpeed": 1.5,
-      "lifeSteal": 0
-    }
-  ],
-  "abilities": [
-    {
-      "name": "Placeholder Ability",
-      "type": "damage",
-      "damageValue": 100,
-      "healingValue": 0,
-      "duration": 3,
-      "cooldown": 8,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    }
-  ],
-  "specialItems": [
-    {
-      "name": "PARTICLE CANNON ENHANCEMENT",
-      "cost": 3100,
-      "description": "Enhances Zarya's Particle Cannon with improved damage and energy retention.",
-      "iconPath": "res/items/zarya_cannon.png",
-      "stats": {
-        "weaponPower": 18,
-        "attackSpeed": 7
-      },
-      "sharedItem": false
+  "items": {
+    "weapon": {
+      "epic": [
+        {
+          "name": "LIGHT LAUNCHER",
+          "cost": 10000,
+          "description": "Consecutive <b>[Particle Cannon]</b> secondary fire shots consume <b>20%</b> less Ammo, up to <b>60%</b>, for your current magazine.",
+          "iconPath": "res/items/zarya/zarya_light_launcher.png",
+          "stats": {
+            "weaponPower": 15
+          }
+        },
+        {
+          "name": "BIGGER BEAM",
+          "cost": 11000,
+          "description": "<b>[Particle Cannon]</b>'s primary fire range is increased by <b>20%</b>",
+          "iconPath": "res/items/zarya/zarya_bigger_beam.png",
+          "stats": {
+            "weaponPower": 10
+          }
+        }
+      ]
     },
-    {
-      "name": "PARTICLE BARRIER AMPLIFIER",
-      "cost": 3600,
-      "description": "Strengthens Zarya's Particle Barrier with increased absorption and duration.",
-      "iconPath": "res/items/zarya_barrier.png",
-      "stats": {
-        "shield": 75,
-        "cooldownReduction": 12
-      },
-      "sharedItem": false
+    "ability": {
+      "rare": [
+        {
+          "name": "BEYOND BARRIER",
+          "cost": 4000,
+          "description": "",
+          "iconPath": "res/items/zarya/zarya_beyond_barrier.png",
+          "stats": {
+            "abilityPower": 10
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "SUPERCONDUCTOR",
+          "cost": 10000,
+          "description": "",
+          "iconPath": "res/items/zarya/zarya_superconductor.png",
+          "stats": {
+            "health": 25,
+            "abilityPower": 15
+          }
+        },
+        {
+          "name": "LYNX'S DATADRIVE",
+          "cost": 10000,
+          "description": "Casting <b>[Projected Barrier]</b> on an ally refunds <b>20%</b> of <b>[Barrier]</b> Cooldown",
+          "iconPath": "res/items/zarya/zarya_lynxs_datadrive.png",
+          "stats": {
+            "abilityPower": 15
+          }
+        }
+      ]
     },
-    {
-      "name": "PROJECTED BARRIER BOOSTER",
-      "cost": 3900,
-      "description": "Improves Zarya's Projected Barrier with longer duration and increased energy gain.",
-      "iconPath": "res/items/zarya_projected.png",
-      "stats": {
-        "abilityPower": 15,
-        "cooldownReduction": 10
-      },
-      "sharedItem": false
+    "survival": {
+      "rare": [
+        {
+          "name": "BLASTPROOF BOOTS",
+          "cost": 3750,
+          "description": "<b>[Particle Cannon]</b>'s secondary fire self knockback is increased by <b>100%</b> and no longer damages yourself.",
+          "iconPath": "res/items/zarya/zarya_blastproof_boots.png",
+          "stats": {
+            "health": 25
+          }
+        },
+        {
+          "name": "JUMPER CABLES",
+          "cost": 4000,
+          "description": "After using a <b>[Barrier]</b>, start regenerating Shields instantly.",
+          "iconPath": "res/items/zarya/zarya_jumper_cables.png",
+          "stats": {
+            "shield": 25,
+            "abilityPower": 5
+          }
+        },
+        {
+          "name": "PROTEIN SHAKE",
+          "cost": 4000,
+          "description": "While <b>[Particle Barrier]</b> is active, become unstoppable and <b>[Quick Melee]</b> knocks back enemies.",
+          "iconPath": "res/items/zarya/zarya_protein_shake.png",
+          "stats": {
+            "health": 25
+          }
+        }
+      ],
+      "epic": []
     }
-  ],
+  },
   "powers": [
     {
-      "title": "MAXIMUM CHARGE",
-      "description": "Zarya's maximum energy charge increases to 125 and decays 30% slower."
+      "title": "NO LIMITS",
+      "description": "Maximum <b>[Energy]</b> increased to <b>150</b>. <b>[Energy]</b> always decays above <b>100</b> <b>[Energy]</b> at a <b>150%</b> faster rate.",
+      "iconPath": "res/power/zarya/zarya_no_limits.png"
+    },
+    {
+      "title": "PARTICLE ACCELERATOR",
+      "description": "Gain <b>15%</b> Attack Speed for <b>[Particle Cannon]</b>'s secondary fire. After using an ability, <b>quadruple</b> this bonus for <b>5s</b>.",
+      "iconPath": "res/power/zarya/zarya_particle_accelerator.png"
+    },
+    {
+      "title": "PIERCING BEAM",
+      "description": "Above <b>80</b> <b>[Energy]</b>, <b>[Particle Cannon]</b>'s Primary Fire will pierce enemies.",
+      "iconPath": "res/power/zarya/zarya_piercing_beam.png"
+    },
+    {
+      "title": "PRE-WORKOUT",
+      "description": "Gain Weapon Lifesteal and Ability Lifesteal equal to <b>20%</b> of <b>[Energy]</b>.",
+      "iconPath": "res/power/zarya/zarya_pre_workout.png"
+    },
+    {
+      "title": "BARRIER BENEFITS",
+      "description": "When <b>[Barriers]</b> expire, grant <b>Overhealth</b> equal to <b>50%</b> of remaining Barrier Health to the target for <b>3s</b>",
+      "iconPath": "res/power/zarya/zarya_barrier_benefits.png"
+    },
+    {
+      "title": "CONTAINMENT SHIELD",
+      "description": "<b>[Barrier]</b> heals <b class=\"stat-ap\">25</b> Life, increased by <b>[Energy]</b>, and grants <b>20%</b> Move Speed while active.",
+      "iconPath": "res/power/zarya/zarya_containment_shield.png"
+    },
+    {
+      "title": "FISSION FIELD",
+      "description": "<b>[Projected Barrier]</b> also applies to <b>1</b> additional ally within <b>10m</b>, but has <b>20%</b> reduced duration.",
+      "iconPath": "res/power/zarya/zarya_fission_field.png"
+    },
+    {
+      "title": "HERE TO SPOT YOU",
+      "description": "<b>[Projected Barrier]</b> pulls you to the targeted ally and heals you for <b>15%</b> of Max Life over <b>3s</b>.",
+      "iconPath": "res/power/zarya/zarya_here_to_spot_you.png"
+    },
+    {
+      "title": "LIFELIFT",
+      "description": "<b>+</b><b>50%</b> <b>[Particle Barrier]</b> Size.\n<br/>\nIncrease <b>[Particle Barrier]</b> Health by <b>100%</b> of Bonus Max Life.",
+      "iconPath": "res/power/zarya/zarya_lifelift.png"
+    },
+    {
+      "title": "MAJOR FLEX",
+      "description": "<b>[Barrier]</b> knocks back and deals <b class=\"stat-ap\">25</b> damage, increased by <b>[Energy]</b>, to enemies within <b>5m</b> every <b>1s</b>.",
+      "iconPath": "res/power/zarya/zarya_major_flex.png"
+    },
+    {
+      "title": "VOLSKAYA VORTEX",
+      "description": "After a <b>[Barrier]</b> is cast, <b>[Particle Cannon]</b>'s next secondary fire spawns a slowing vortex that deals <b class=\"stat-ap\">100</b> damage over <b>2s</b>.",
+      "iconPath": "res/power/zarya/zarya_volskaya_vortex.png"
+    },
+    {
+      "title": "GRAVITON ANOMALY",
+      "description": "<b>25%</b> Ultimate Cost Reduction.\n<br/>\n<b>[Graviton Surge]</b> base damage is increased to <b>30</b> and increased by <b>[Energy]</b>, but has <b>50%</b> reduced duration.",
+      "iconPath": "res/power/zarya/zarya_graviton_anomaly.png"
     }
   ]
-} 
+}

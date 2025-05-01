@@ -1,77 +1,148 @@
 {
   "name": "Cassidy",
-  "role": "Damage",
+  "role": "Dps",
   "portraitPath": "res/portraits/cassidy.png",
   "powerIcon": "res/power/cassidy.png",
-  "health": 225,
+  "health": 275,
   "armor": 0,
   "shield": 0,
-  "moveSpeed": 5.5,
-  "meleeDamage": 30,
-  "weapons": [
-    {
-      "name": "Placeholder Weapon",
-      "type": "damage",
-      "damageValue": 70,
-      "criticalHitMultiplier": 2.0,
-      "attackSpeed": 1.5,
-      "ammo": 6,
-      "reloadSpeed": 1.5,
-      "lifeSteal": 0
-    }
-  ],
-  "abilities": [
-    {
-      "name": "Placeholder Ability",
-      "type": "damage",
-      "damageValue": 100,
-      "healingValue": 0,
-      "duration": 3,
-      "cooldown": 8,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    }
-  ],
-  "specialItems": [
-    {
-      "name": "PEACEKEEPER UPGRADE",
-      "cost": 2900,
-      "description": "Enhances Cassidy's Peacekeeper with improved accuracy and damage.",
-      "iconPath": "res/items/cassidy_peacekeeper.png",
-      "stats": {
-        "weaponPower": 15,
-        "criticalDamage": 12
-      },
-      "sharedItem": false
+  "items": {
+    "weapon": {
+      "epic": [
+        {
+          "name": "COMPETITIVE ANALYSIS",
+          "cost": 11000,
+          "description": "Deal <b>15%</b> increased primary fire damage to enemies in the <b>Damage role</b>.",
+          "iconPath": "res/items/cassidy/cassidy_competitive_analysis.png",
+          "stats": {}
+        }
+      ]
     },
-    {
-      "name": "COMBAT ROLL ENHANCEMENT",
-      "cost": 3300,
-      "description": "Improves Cassidy's Combat Roll with reduced cooldown and increased mobility.",
-      "iconPath": "res/items/cassidy_roll.png",
-      "stats": {
-        "cooldownReduction": 15,
-        "moveSpeed": 10
-      },
-      "sharedItem": false
+    "ability": {
+      "rare": [
+        {
+          "name": "BLACKWATCH TECH",
+          "cost": 4000,
+          "description": "<b>[Deadeye]</b> eliminations reduce <b>[Flashbang]</b> max cooldown by <b>10%</b>, up to <b>40%</b> for the round.",
+          "iconPath": "res/items/cassidy/cassidy_blackwatch_tech.png",
+          "stats": {
+            "abilityPower": 10
+          }
+        },
+        {
+          "name": "STREAMLINED PONCHO",
+          "cost": 5000,
+          "description": "<b>[Combat Roll]</b> reduces <b>[Flashbang]</b> cooldown by <b>2s</b>.",
+          "iconPath": "res/items/cassidy/cassidy_streamlined_poncho.png",
+          "stats": {}
+        }
+      ],
+      "epic": [
+        {
+          "name": "IMPROVISED DYNAMITE",
+          "cost": 11000,
+          "description": "<b>[Flashbang]</b> explosion radius is increased by <b>50%</b>.",
+          "iconPath": "res/items/cassidy/cassidy_improvised_dynamite.png",
+          "stats": {
+            "abilityPower": 20
+          }
+        }
+      ]
     },
-    {
-      "name": "MAGNETIC GRENADE AMPLIFIER",
-      "cost": 3800,
-      "description": "Enhances Cassidy's Magnetic Grenade with increased damage and radius.",
-      "iconPath": "res/items/cassidy_grenade.png",
-      "stats": {
-        "abilityPower": 20,
-        "cooldownReduction": 12
-      },
-      "sharedItem": false
+    "survival": {
+      "rare": [
+        {
+          "name": "WANTED POSTER",
+          "cost": 4000,
+          "description": "<b>[Deadeye]</b> eliminations reward extra <b>500 Stadium Cash</b> each.",
+          "iconPath": "res/items/cassidy/cassidy_wanted_poster.png",
+          "stats": {
+            "health": 25
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "FRANKIE'S FIXER",
+          "cost": 10000,
+          "description": "Heal <b class=\"stat-ap\">10</b> Life for each Ammo loaded using <b>[Combat Roll]</b>.",
+          "iconPath": "res/items/cassidy/cassidy_frankies_fixer.png",
+          "stats": {
+            "health": 50
+          }
+        },
+        {
+          "name": "EAGLE EYE",
+          "cost": 12000,
+          "description": "Take <b>25%</b> less damage from enemies farther than <b>12m</b>.",
+          "iconPath": "res/items/cassidy/cassidy_eagle_eye.png",
+          "stats": {
+            "health": 50
+          }
+        }
+      ]
     }
-  ],
+  },
   "powers": [
     {
-      "title": "QUICKDRAW",
-      "description": "The first shot after Combat Roll deals 40% more damage and has perfect accuracy."
+      "title": "BULLSEYE",
+      "description": "Critical hit reduces <b>[Combat Roll]</b>'s cooldown by <b>2s</b>.",
+      "iconPath": "res/power/cassidy/cassidy_bullseye.png"
+    },
+    {
+      "title": "DEAD MAN WALKING",
+      "description": "Eliminating an enemy you've recently critically hit grants <b>1</b> Max Ammo for the round.",
+      "iconPath": "res/power/cassidy/cassidy_dead_man_walking.png"
+    },
+    {
+      "title": "FULL HOUSE",
+      "description": "For each Ammo available, <b>[Peacekeeper]</b> 's primary fire gains 1 % increased damage, up to <b>25%</b>.",
+      "iconPath": "res/power/cassidy/cassidy_full_house.png"
+    },
+    {
+      "title": "QUICK DRAW",
+      "description": "After using <b>[Combat Roll]</b>, <b>[Peacekeeper]</b>'s next primary fire can auto-aim within <b>9m</b> while under cooldown.",
+      "iconPath": "res/power/cassidy/cassidy_quick_draw.png"
+    },
+    {
+      "title": "THINK FLASHT",
+      "description": "When you start a <b>[Combat Roll]</b>, leave a <b>[Flashbang]</b> behind.",
+      "iconPath": "res/power/cassidy/cassidy_think_flasht.png"
+    },
+    {
+      "title": "BARREL ROLL",
+      "description": "<b>[Combat Roll]</b> takes you <b>50%</b> further and deals <b class=\"stat-ap\">65</b> damage to enemies.",
+      "iconPath": "res/power/cassidy/cassidy_barrel_roll.png"
+    },
+    {
+      "title": "JUST ROLL WITH IT",
+      "description": "During <b>[Combat Roll]</b>, prevent all incoming damage.\nAfter <b>[Combat Roll]</b> ends, heal <b>30%</b> of your Life over <b>3s</b>.",
+      "iconPath": "res/power/cassidy/cassidy_just_roll_with_it.png"
+    },
+    {
+      "title": "FLASH IN THE PAIN",
+      "description": "Eliminating an enemy recently damaged by <b>[Flashbang]</b> grants <b>15%</b> Ultimate Charge.",
+      "iconPath": "res/power/cassidy/cassidy_flash_in_the_pain.png"
+    },
+    {
+      "title": "HOT POTATO",
+      "description": "<b>[Flashbang]</b> adds <b>3</b> extra Ammo on hit until <b>[Peacekeeper]</b> is reloaded.",
+      "iconPath": "res/power/cassidy/cassidy_hot_potato.png"
+    },
+    {
+      "title": "EASY RIDER",
+      "description": "While using <b>[Deadeye]</b>, gain <b class=\"stat-ap\">100</b> <b>Overhealth</b> and <b>25%</b> Move Speed.",
+      "iconPath": "res/power/cassidy/cassidy_easy_rider.png"
+    },
+    {
+      "title": "SUNRISE",
+      "description": "Using <b>[Deadeye]</b> slows all visible enemies by <b>35%</b> for 1.<b>5s</b>.",
+      "iconPath": "res/power/cassidy/cassidy_sunrise.png"
+    },
+    {
+      "title": "SUNSET",
+      "description": "<b>[Deadeye]</b> eliminations grant <b>15%</b> Ultimate Charge each.",
+      "iconPath": "res/power/cassidy/cassidy_sunset.png"
     }
   ]
-} 
+}

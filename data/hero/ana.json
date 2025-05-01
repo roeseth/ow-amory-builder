@@ -3,76 +3,163 @@
   "role": "Support",
   "portraitPath": "res/portraits/ana.png",
   "powerIcon": "res/power/ana.png",
-  "health": 200,
+  "health": 250,
   "armor": 0,
   "shield": 0,
-  "moveSpeed": 5.5,
-  "meleeDamage": 30,
-  "weapons": [
-    {
-      "name": "Placeholder Weapon",
-      "type": "healing",
-      "damageValue": 70,
-      "healingValue": 70,
-      "criticalHitMultiplier": 1.0,
-      "attackSpeed": 1.5,
-      "ammo": 12,
-      "reloadSpeed": 1.5,
-      "lifeSteal": 0
-    }
-  ],
-  "abilities": [
-    {
-      "name": "Placeholder Ability",
-      "type": "healing",
-      "damageValue": 0,
-      "healingValue": 100,
-      "duration": 3,
-      "cooldown": 8,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    }
-  ],
-  "specialItems": [
-    {
-      "name": "BIOTIC RIFLE ENHANCEMENT",
-      "cost": 2800,
-      "description": "Enhances Ana's Biotic Rifle with improved healing and damage.",
-      "iconPath": "res/items/ana_rifle.png",
-      "stats": {
-        "abilityPower": 15,
-        "weaponPower": 10
-      },
-      "sharedItem": false
+  "items": {
+    "weapon": {
+      "epic": []
     },
-    {
-      "name": "SLEEP DART PRECISION",
-      "cost": 3200,
-      "description": "Improves Ana's Sleep Dart with reduced cooldown and increased duration.",
-      "iconPath": "res/items/ana_sleep.png",
-      "stats": {
-        "cooldownReduction": 15,
-        "abilityPower": 12
-      },
-      "sharedItem": false
+    "ability": {
+      "rare": [
+        {
+          "name": "DOUBLE DOSAGE",
+          "cost": 4000,
+          "description": "Landing a <b>[Sleep Dart]</b> on target affected by <b>[Biotic Grenade]</b> reduces its cooldown by <b>35%</b>.",
+          "iconPath": "res/items/ana/ana_double_dosage.png",
+          "stats": {
+            "health": 25
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "LETHAL DOSE",
+          "cost": 9000,
+          "description": "<b>[Sleep Dart]</b> direct hit deals <b class=\"stat-ap\">100</b> bonus damage.",
+          "iconPath": "res/items/ana/ana_lethal_dose.png",
+          "stats": {
+            "abilityLifesteal": 50
+          }
+        },
+        {
+          "name": "CLUSTER CORE",
+          "cost": 10000,
+          "description": "<b>[Biotic Grenade]</b> cooldown is reduced by Is for each target it hits.",
+          "iconPath": "res/items/ana/ana_cluster_core.png",
+          "stats": {
+            "abilityLifesteal": 25
+          }
+        },
+        {
+          "name": "TRANQUILIZER",
+          "cost": 10000,
+          "description": "<b>[Sleep Dart]</b> gains: <ul><li><b>500%</b> Collision Size</li><li><b>100%</b> Projectile Speed</li><li><b>20%</b> <b>Sleep</b> Duration</li></ul>",
+          "iconPath": "res/items/ana/ana_tranquilizer.png",
+          "stats": {}
+        },
+        {
+          "name": "GRENADIUS PIN",
+          "cost": 12000,
+          "description": "",
+          "iconPath": "res/items/ana/ana_grenadius_pin.png",
+          "stats": {
+            "abilityPower": 20
+          }
+        }
+      ]
     },
-    {
-      "name": "BIOTIC GRENADE AMPLIFIER",
-      "cost": 3800,
-      "description": "Enhances Ana's Biotic Grenade with increased healing boost and anti-heal duration.",
-      "iconPath": "res/items/ana_grenade.png",
-      "stats": {
-        "abilityPower": 20,
-        "cooldownReduction": 10
-      },
-      "sharedItem": false
+    "survival": {
+      "rare": [
+        {
+          "name": "DASH BOOTS",
+          "cost": 4000,
+          "description": "Jumping in mid-air will dash you a short distance.",
+          "iconPath": "res/items/ana/ana_dash_boots.png",
+          "stats": {}
+        },
+        {
+          "name": "PERFECTED FORMULA",
+          "cost": 4000,
+          "description": "",
+          "iconPath": "res/items/ana/ana_perfected_formula.png",
+          "stats": {
+            "shield": 25
+          }
+        },
+        {
+          "name": "I.V. DRIP",
+          "cost": 4000,
+          "description": "While affected by <b>[Biotic Grenade]</b>, Ana gains <b class=\"stat-ap\">100</b> <b>Overhealth</b>.",
+          "iconPath": "res/items/ana/ana_iv_drip.png",
+          "stats": {
+            "health": 25
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "EYE OF HORUS",
+          "cost": 9000,
+          "description": "<b>[Nano Boost]</b> can target allies through walls and its range is increased to <b>60m</b>.",
+          "iconPath": "res/items/ana/ana_eye_of_horus.png",
+          "stats": {
+            "shield": 50
+          }
+        }
+      ]
     }
-  ],
+  },
   "powers": [
     {
-      "title": "COMBAT MEDIC",
-      "description": "Ana's Biotic Rifle heals 25% more to allies below 50% health and deals 20% more damage to enemies above 75% health."
+      "title": "NO SCOPE NEEDED",
+      "description": "Landing unscoped shots with <b>[Biotic Rifle]</b> grants <b>10%</b> Attack Speed for <b>2s</b>, stacking up to <b>3 times</b>.",
+      "iconPath": "res/power/ana/ana_no_scope_needed.png"
+    },
+    {
+      "title": "PINPOINT PRESCRIPTION",
+      "description": "<b>[Biotic Rifle]</b> can now critically hit both allies and enemies.",
+      "iconPath": "res/power/ana/ana_pinpoint_prescription.png"
+    },
+    {
+      "title": "TACTICAL RIFLE",
+      "description": "While scoped, <b>[Biotic Rifle]</b> will lock-on to allies for guaranteed hits.",
+      "iconPath": "res/power/ana/ana_tactical_rifle.png"
+    },
+    {
+      "title": "COMFY CLOUD",
+      "description": "<b>[Sleep Dart]</b> explodes on contact, hitting targets within <b>3m</b>, but <b>Sleep</b> has a <b>50%</b> reduced duration.",
+      "iconPath": "res/power/ana/ana_comfy_cloud.png"
+    },
+    {
+      "title": "DREAMY",
+      "description": "[Sleep Dartl can hit allies, healing <b>100%</b> of their max Life over <b>8s</b> instead of putting them to sleep.",
+      "iconPath": "res/power/ana/ana_dreamy.png"
+    },
+    {
+      "title": "SLEEP REGIMEN",
+      "description": "Gain 50 Health.\nWhen you apply Sleep to an enemy, gain 10 Health, up to 150.",
+      "iconPath": "res/power/ana/ana_sleep_regimen.png"
+    },
+    {
+      "title": "HOME REMEDY",
+      "description": "<b>[Biotic Grenade]</b> grants <b>Overhealth</b> equal to <b>100%</b> of its healing.",
+      "iconPath": "res/power/ana/ana_home_remedy.png"
+    },
+    {
+      "title": "TIME OUT",
+      "description": "<b>[Biotic Grenade]</b> now knocks enemies back and reduces their Move Speed by for 1.<b>5s</b>.",
+      "iconPath": "res/power/ana/ana_time_out.png"
+    },
+    {
+      "title": "VENOMOUS",
+      "description": "<b>[Biotic Grenade]</b> deals an additional <b class=\"stat-ap\">30</b> damage over its duration to enemies affected.",
+      "iconPath": "res/power/ana/ana_venomous.png"
+    },
+    {
+      "title": "MY TURN",
+      "description": "<b>[Nano Boost]</b> also applies to yourself for <b>50%</b> of its duration.",
+      "iconPath": "res/power/ana/ana_my_turn.png"
+    },
+    {
+      "title": "OUR TURN",
+      "description": "<b>[Nano Boost]</b> also affects other allies in your line of sight, but it has a <b>50%</b> reduced duration on them.",
+      "iconPath": "res/power/ana/ana_our_turn.png"
+    },
+    {
+      "title": "YOUR FULL POTENTIAL",
+      "description": "<b>[Nano Boost]</b> also grants the target <b>20%</b> Ultimate Charge and <b class=\"stat-ap\">200</b> <b>Overhealth</b>.",
+      "iconPath": "res/power/ana/ana_your_full_potential.png"
     }
   ]
-} 
+}

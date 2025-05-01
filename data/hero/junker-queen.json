@@ -3,75 +3,182 @@
   "role": "Tank",
   "portraitPath": "res/portraits/junker-queen.png",
   "powerIcon": "res/power/junker-queen.png",
-  "health": 425,
-  "armor": 125,
+  "health": 375,
+  "armor": 0,
   "shield": 0,
-  "moveSpeed": 5.5,
-  "meleeDamage": 30,
-  "weapons": [
-    {
-      "name": "Placeholder Weapon",
-      "type": "damage",
-      "damageValue": 70,
-      "criticalHitMultiplier": 2.0,
-      "attackSpeed": 1.5,
-      "ammo": 6,
-      "reloadSpeed": 1.5,
-      "lifeSteal": 0
-    }
-  ],
-  "abilities": [
-    {
-      "name": "Placeholder Ability",
-      "type": "damage",
-      "damageValue": 100,
-      "healingValue": 0,
-      "duration": 3,
-      "cooldown": 8,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    }
-  ],
-  "specialItems": [
-    {
-      "name": "SCATTERGUN ENHANCEMENT",
-      "cost": 3000,
-      "description": "Enhances Junker Queen's Scattergun with improved reload speed and damage.",
-      "iconPath": "res/items/junker_scattergun.png",
-      "stats": {
-        "weaponPower": 15,
-        "reloadSpeed": 10
-      },
-      "sharedItem": false
+  "items": {
+    "weapon": {
+      "epic": [
+        {
+          "name": "SHRED AND LEAD",
+          "cost": 10000,
+          "description": "When you <b>[Wound</b> an enemy, gain <b>10%</b> Attack Speed for <b>4s</b>, stacking up to <b>3 times</b>.",
+          "iconPath": "res/items/junker-queen/junker-queen_shred_and_lead.png",
+          "stats": {}
+        },
+        {
+          "name": "BLOODHOUND MASK",
+          "cost": 12000,
+          "description": "Gain <b>5%</b> Weapon Power for each enemy with a <b>[Wound]</b> within <b>12m</b>.",
+          "iconPath": "res/items/junker-queen/junker-queen_bloodhound_mask.png",
+          "stats": {
+            "weaponPower": 15
+          }
+        }
+      ]
     },
-    {
-      "name": "JAGGED BLADE UPGRADE",
-      "cost": 3500,
-      "description": "Improves the Jagged Blade with additional damage and bleeding effects.",
-      "iconPath": "res/items/junker_blade.png",
-      "stats": {
-        "abilityPower": 15,
-        "cooldownReduction": 12
-      },
-      "sharedItem": false
+    "ability": {
+      "rare": [
+        {
+          "name": "BIGGER MAGNET",
+          "cost": 4000,
+          "description": "<b>[Jagged Blade]</b>'s pull strength is increased by <b>35%</b>.",
+          "iconPath": "res/items/junker-queen/junker-queen_bigger_magnet.png",
+          "stats": {
+            "abilityPower": 10
+          }
+        }
+      ],
+      "epic": [
+        {
+          "name": "TINKER TRACKSUIT",
+          "cost": 9500,
+          "description": "<b>[Rampage]</b> and <b>[Carnage]</b> hits grant <b>10%</b> Attack Speed for <b>4s</b>.",
+          "iconPath": "res/items/junker-queen/junker-queen_tinker_tracksuit.png",
+          "stats": {
+            "abilityLifesteal": 10
+          }
+        },
+        {
+          "name": "BOOMING VOICE",
+          "cost": 11000,
+          "description": "<b>[Commanding Shout]</b> will affect allies that are out of line of sight.",
+          "iconPath": "res/items/junker-queen/junker-queen_booming_voice.png",
+          "stats": {
+            "abilityPower": 25
+          }
+        }
+      ]
     },
-    {
-      "name": "ADRENALINE BOOSTER",
-      "cost": 4000,
-      "description": "Increases healing received from dealing damage to wounded enemies.",
-      "iconPath": "res/items/junker_adrenaline.png",
-      "stats": {
-        "health": 75,
-        "lifeSteal": 15
-      },
-      "sharedItem": false
+    "survival": {
+      "rare": [
+        {
+          "name": "DEZ'S DAMAGE DAMPENERS",
+          "cost": 4000,
+          "description": "When knocked back, gain <b>25%</b> increased Move Speed for <b>3s</b>.",
+          "iconPath": "res/items/junker-queen/junker-queen_dezs_damage_dampeners.png",
+          "stats": {
+            "health": 25
+          }
+        },
+        {
+          "name": "REBELLIOUS SPIRIT",
+          "cost": 4000,
+          "description": "When <b>[Wound]</b> gets removed instead of expiring, gain <b>10%</b> of Max Life as Overhealth, up to <b>150</b>.",
+          "iconPath": "res/items/junker-queen/junker-queen_rebellious_spirit.png",
+          "stats": {
+            "health": 25
+          }
+        },
+        {
+          "name": "SLICING SPREE",
+          "cost": 4000,
+          "description": "While within 12m of an enemy with a <b>[Wound]</b>, gain <b>10%</b> Move Speed and <b>5%</b> Attack Speed.",
+          "iconPath": "res/items/junker-queen/junker-queen_slicing_spree.png",
+          "stats": {}
+        }
+      ],
+      "epic": [
+        {
+          "name": "SCAV SCRAPS",
+          "cost": 10000,
+          "description": "<b>[Carnage]</b> and <b>[Jagged Blade]</b> impact damage grants Overhealth equal to <b>40%</b> of damage dealt.",
+          "iconPath": "res/items/junker-queen/junker-queen_scav_scraps.png",
+          "stats": {
+            "health": 50
+          }
+        },
+        {
+          "name": "THICK SKULL",
+          "cost": 10000,
+          "description": "While casting <b>[Rampage]</b> or <b>[Carnage]</b>, gain <b>50%</b> <b>Damage Reduction</b>.",
+          "iconPath": "res/items/junker-queen/junker-queen_thick_skull.png",
+          "stats": {
+            "armor": 50
+          }
+        },
+        {
+          "name": "UNDYING LOYALTY",
+          "cost": 10000,
+          "description": "Allies affected by <b>[Commanding Shout]</b> are healed for <b>5%</b> of Junker Queen's life every second.",
+          "iconPath": "res/items/junker-queen/junker-queen_undying_loyalty.png",
+          "stats": {
+            "health": 50
+          }
+        }
+      ]
     }
-  ],
+  },
   "powers": [
     {
-      "title": "BATTLE CRY",
-      "description": "Commanding Shout provides 25% more health and increases its duration by 2 seconds."
+      "title": "THRILL OF BATTLE",
+      "description": "<b>[Adrenaline Rush]</b> also heals allies within <b>12m</b> for <b>50%</b> of the amount it heals you.",
+      "iconPath": "res/power/junker-queen/junker-queen_thrill_of_battle.png"
+    },
+    {
+      "title": "ROYAL BULLETS",
+      "description": "<b>[Scattergun]</b> critical hits against targets within <b>12m</b> applies <b>[Wound]</b> for <b class=\"stat-wp\">30</b> damage over <b>3s</b>.",
+      "iconPath": "res/power/junker-queen/junker-queen_royal_bullets.png"
+    },
+    {
+      "title": "TWIST THE KNIFE",
+      "description": "<b>[Scattergun]</b> critical hits extend the duration of all <b>[Wounds]</b> on the target by <b>0.</b><b>5s</b>.",
+      "iconPath": "res/power/junker-queen/junker-queen_twist_the_knife.png"
+    },
+    {
+      "title": "BLADE PARADE",
+      "description": "Holding <b>[Jagged Blade]</b> charges it, increasing its damage by up to <b>35%</b> and causing it to knockback.",
+      "iconPath": "res/power/junker-queen/junker-queen_blade_parade.png"
+    },
+    {
+      "title": "CUT 'EM, GRACIE!",
+      "description": "Each enemy hit by <b>[Jagged Blade]</b> while it returns to you reduces its cooldown by 1s.",
+      "iconPath": "res/power/junker-queen/junker-queen_cut_em,_gracie!.png"
+    },
+    {
+      "title": "LET'S GO WIN",
+      "description": "Eliminations reset the cooldown of <b>[Commanding Shout]</b>.",
+      "iconPath": "res/power/junker-queen/junker-queen_lets_go_win.png"
+    },
+    {
+      "title": "MERCILESS MAGNETISM",
+      "description": "Using <b>[Commanding Shout]</b> causes your <b>[Jagged Blade]</b> to home to a target.",
+      "iconPath": "res/power/junker-queen/junker-queen_merciless_magnetism.png"
+    },
+    {
+      "title": "RECKONER'S ROAR",
+      "description": "Using <b>[Commanding Shout]</b> <b>[Wounds]</b> enemies within <b>10m</b> for <b class=\"stat-ap\">30</b> damage over <b>3s</b>.",
+      "iconPath": "res/power/junker-queen/junker-queen_reckoners_roar.png"
+    },
+    {
+      "title": "CHOP CHOP",
+      "description": "<b>[Carnage]</b> gains an additional charge but its cooldown reduction per hit is reduced to 1s.",
+      "iconPath": "res/power/junker-queen/junker-queen_chop_chop.png"
+    },
+    {
+      "title": "SOARING STONE",
+      "description": "<b>[Carnage]</b> becomes a leaping strike if you jump during its cast time.",
+      "iconPath": "res/power/junker-queen/junker-queen_soaring_stone.png"
+    },
+    {
+      "title": "BLOODCRAZED",
+      "description": "<b>[Rampage]</b> and <b>[Carnage]</b> gives <b>15%</b> of Max Life as Overhealth per hit.",
+      "iconPath": "res/power/junker-queen/junker-queen_bloodcrazed.png"
+    },
+    {
+      "title": "BOW DOWN",
+      "description": "<b>[Rampage]</b> now also knocks down enemies hit for <b>1.</b><b>5s</b>.",
+      "iconPath": "res/power/junker-queen/junker-queen_bow_down.png"
     }
   ]
-} 
+}

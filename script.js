@@ -1579,7 +1579,7 @@ function createPowerElement(power, isEquipped = false) {
 
     const powerDescription = document.createElement('div');
     powerDescription.className = 'power-description';
-    powerDescription.textContent = power.description;
+    powerDescription.innerHTML = power.description;
 
     powerHeader.appendChild(powerIconImg); // Append the img element
     powerHeader.appendChild(powerTitle);

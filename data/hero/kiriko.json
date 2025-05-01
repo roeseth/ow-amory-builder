@@ -3,76 +3,172 @@
   "role": "Support",
   "portraitPath": "res/portraits/kiriko.png",
   "powerIcon": "res/power/kiriko.png",
-  "health": 200,
+  "health": 225,
   "armor": 0,
   "shield": 0,
-  "moveSpeed": 5.5,
-  "meleeDamage": 30,
-  "weapons": [
-    {
-      "name": "Placeholder Weapon",
-      "type": "healing",
-      "damageValue": 70,
-      "healingValue": 70,
-      "criticalHitMultiplier": 1.0,
-      "attackSpeed": 1.5,
-      "ammo": 12,
-      "reloadSpeed": 1.5,
-      "lifeSteal": 0
-    }
-  ],
-  "abilities": [
-    {
-      "name": "Placeholder Ability",
-      "type": "healing",
-      "damageValue": 0,
-      "healingValue": 100,
-      "duration": 3,
-      "cooldown": 8,
-      "criticalHitMultiplier": 1.0,
-      "lifeStealPercentage": 0,
-      "moveSpeedModifier": 0
-    }
-  ],
-  "specialItems": [
-    {
-      "name": "HEALING OFUDA ENHANCEMENT",
-      "cost": 2900,
-      "description": "Enhances Kiriko's Healing Ofuda with improved healing and seeking capabilities.",
-      "iconPath": "res/items/kiriko_ofuda.png",
-      "stats": {
-        "abilityPower": 18,
-        "cooldownReduction": 10
-      },
-      "sharedItem": false
+  "items": {
+    "weapon": {
+      "epic": [
+        {
+          "name": "RY\u014cTA'S RELOADER",
+          "cost": 10000,
+          "description": "After using an ability, restore <b>100%</b> of your ammo.",
+          "iconPath": "res/items/kiriko/kiriko_ry\u014dtas_reloader.png",
+          "stats": {}
+        },
+        {
+          "name": "SPIRITS' GUIDANCE",
+          "cost": 12000,
+          "description": "",
+          "iconPath": "res/items/kiriko/kiriko_spirits_guidance.png",
+          "stats": {
+            "weaponPower": 15
+          }
+        }
+      ]
     },
-    {
-      "name": "KUNAI PRECISION",
-      "cost": 3100,
-      "description": "Improves Kiriko's Kunai with increased damage and critical hit chance.",
-      "iconPath": "res/items/kiriko_kunai.png",
-      "stats": {
-        "weaponPower": 15,
-        "criticalDamage": 12
-      },
-      "sharedItem": false
+    "ability": {
+      "rare": [
+        {
+          "name": "EYE OF THE YOKAI",
+          "cost": 4000,
+          "description": "",
+          "iconPath": "res/items/kiriko/kiriko_eye_of_the_yokai.png",
+          "stats": {
+            "abilityPower": 10
+          }
+        },
+        {
+          "name": "CYCLIST GLOVES",
+          "cost": 5000,
+          "description": "When you use an ability, gain <b>20%</b> Attack Speed for <b>3s</b>.",
+          "iconPath": "res/items/kiriko/kiriko_cyclist_gloves.png",
+          "stats": {}
+        }
+      ],
+      "epic": [
+        {
+          "name": "DONUT DELIVERY",
+          "cost": 10000,
+          "description": "<b>[Swift Step]</b> heals nearby allies by <b class=\"stat-ap\">80</b> Life over <b>2s</b>.",
+          "iconPath": "res/items/kiriko/kiriko_donut_delivery.png",
+          "stats": {
+            "abilityPower": 10
+          }
+        },
+        {
+          "name": "OUR BIKES",
+          "cost": 10000,
+          "description": "Allies affected by <b>[Kitsune Rush]</b> are healed for <b class=\"stat-ap\">80</b> every Is.",
+          "iconPath": "res/items/kiriko/kiriko_our_bikes.png",
+          "stats": {
+            "health": 25,
+            "abilityPower": 15
+          }
+        },
+        {
+          "name": "TALISMAN OF VELOCITY",
+          "cost": 10000,
+          "description": "<b>[Protection Suzu]</b> grants <b>25%</b> Attack Speed and <b>25%</b> Move Speed for <b>4s</b>.",
+          "iconPath": "res/items/kiriko/kiriko_talisman_of_velocity.png",
+          "stats": {
+            "abilityPower": 15
+          }
+        }
+      ]
     },
-    {
-      "name": "SWIFT STEP MASTERY",
-      "cost": 3500,
-      "description": "Enhances Kiriko's Swift Step with reduced cooldown and increased range.",
-      "iconPath": "res/items/kiriko_step.png",
-      "stats": {
-        "cooldownReduction": 15,
-        "moveSpeed": 10
-      },
-      "sharedItem": false
+    "survival": {
+      "rare": [
+        {
+          "name": "KITSUNE KICKS",
+          "cost": 4000,
+          "description": "Gain the ability to <b>[Double Jump]</b>.",
+          "iconPath": "res/items/kiriko/kiriko_kitsune_kicks.png",
+          "stats": {}
+        }
+      ],
+      "epic": [
+        {
+          "name": "GODDESS'S AURA",
+          "cost": 10000,
+          "description": "After using <b>[Swift Step]</b>, gain <b class=\"stat-ap\">100</b> <b>Overhealth</b> for <b>4s</b>.",
+          "iconPath": "res/items/kiriko/kiriko_goddesss_aura.png",
+          "stats": {
+            "health": 25
+          }
+        },
+        {
+          "name": "TALISMAN OF LIFE",
+          "cost": 11000,
+          "description": "<b>[Protection Suzu]</b> grants <b class=\"stat-ap\">100</b> <b>Overhealth</b> for <b>5s</b>.",
+          "iconPath": "res/items/kiriko/kiriko_talisman_of_life.png",
+          "stats": {
+            "abilityPower": 20
+          }
+        }
+      ]
     }
-  ],
+  },
   "powers": [
     {
-      "title": "SACRED PROTECTION",
-      "description": "Protection Suzu cleansing duration is increased by 1 second and applies a 20% damage reduction effect."
+      "title": "FOXY FIREWORKS",
+      "description": "After reloading, your next <b>3</b> thrown <b>[Kunai]</b> explode on contact, dealing <b class=\"stat-wp\">20</b> damage to nearby enemies.",
+      "iconPath": "res/power/kiriko/kiriko_foxy_fireworks.png"
+    },
+    {
+      "title": "KEEN KUNAI",
+      "description": "<b>[Kunai]</b> critical hits decrease active ability cooldowns by <b>15%</b> and refund <b>3</b> ammo.",
+      "iconPath": "res/power/kiriko/kiriko_keen_kunai.png"
+    },
+    {
+      "title": "TRIPLE THREAT",
+      "description": "After using <b>[Swift Step]</b>, for <b>4s</b>, your secondary fire throws <b>2</b> additional <b>[Kunai]</b> in a spread that deal <b>50%</b> less damage.",
+      "iconPath": "res/power/kiriko/kiriko_triple_threat.png"
+    },
+    {
+      "title": "LEAF ON THE WIND",
+      "description": "<b>[Healing Ofuda]</b> bounces to another ally up to <b>2</b> times, healing for <b>30%</b> of the normal amount.",
+      "iconPath": "res/power/kiriko/kiriko_leaf_on_the_wind.png"
+    },
+    {
+      "title": "SELF-CARE",
+      "description": "When you use <b>[Healing Ofuda]</b>, heal yourself for <b>5%</b> of your max Life.",
+      "iconPath": "res/power/kiriko/kiriko_self_care.png"
+    },
+    {
+      "title": "SUPPORTED SHOOTING",
+      "description": "When <b>[Healing Ofuda]</b> heals allies, grant them <b>20%</b> increased Attack Speed for <b>3s</b>.",
+      "iconPath": "res/power/kiriko/kiriko_supported_shooting.png"
+    },
+    {
+      "title": "CLONE CONJURATION",
+      "description": "After using <b>[Swift Step]</b>, create a clone of yourself that lasts for <b>5s</b>.",
+      "iconPath": "res/power/kiriko/kiriko_clone_conjuration.png"
+    },
+    {
+      "title": "FLEET FOOT",
+      "description": "<b>[Swift Step]</b> can be used directionally without a target.",
+      "iconPath": "res/power/kiriko/kiriko_fleet_foot.png"
+    },
+    {
+      "title": "CLEANSING CHARGE",
+      "description": "When you cleanse negative effects with <b>[Protection Suzu]</b>, gain <b>5%</b> Ultimate Charge for each hero cleansed.",
+      "iconPath": "res/power/kiriko/kiriko_cleansing_charge.png"
+    },
+    {
+      "title": "TWO-ZU",
+      "description": "<b>[Protection Suzu]</b> gains an additional charge.",
+      "iconPath": "res/power/kiriko/kiriko_two_zu.png"
+    },
+    {
+      "title": "CROSSING GUARD",
+      "description": "<b>[Kitsune Rush]</b> now also reduces enemies Move Speed by <b>50%</b> for <b>2s</b>.",
+      "iconPath": "res/power/kiriko/kiriko_crossing_guard.png"
+    },
+    {
+      "title": "SPIRIT VEIL",
+      "description": "Using <b>[Kitsune Rush]</b> cleanses Kiriko of negative effects, and makes her <b>Invulnerable</b> for <b>4s</b>.",
+      "iconPath": "res/power/kiriko/kiriko_spirit_veil.png"
     }
   ]
-} 
+}
